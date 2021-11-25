@@ -8,7 +8,9 @@
 <body>
     <div class="wrapper">
          <!-- sidebar start -->
-        @include('layout.partials.sidebar')
+        @if(Auth::guard('admin')->check())
+            @include('layout.partials.admin.sidebar')
+        @endif
         <!-- sidebar end -->
         <div class="main">
         <!-- top navbar start -->

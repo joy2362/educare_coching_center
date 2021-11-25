@@ -20,10 +20,6 @@ Route::get('/', function () {
 //    return view('home');
 //})->name('home')->middleware('auth');
 
-Route::get('/das', function () {
-    return view('admin.pages.dashboard');
-})->name('dashboard');
-
 Route::get('/home', function () {
     return view('home');
 })->name('home')->middleware('auth');

@@ -1,4 +1,6 @@
 <?php
+
+use App\Http\Controllers\Admin\studentController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 use Laravel\Fortify\Http\Controllers\ConfirmablePasswordController;
@@ -16,10 +18,12 @@ use Laravel\Fortify\Http\Controllers\TwoFactorQrCodeController;
 use Laravel\Fortify\Http\Controllers\VerifyEmailController;
 
 
-Route::prefix('admin')->name('admin.')->middleware('auth:admin')->group(function () {
+Route::name('admin.')->middleware('auth:admin')->group(function () {
     Route::get('/home', function () {
-        return view('adminHome');
+        return view('admin.pages.dashboard');
     })->name('home');
+
+    Route::resource('student', studentController::class);
 
 });
 
