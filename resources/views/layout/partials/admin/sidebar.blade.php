@@ -13,8 +13,8 @@
             <li class="sidebar-header">
                 Class
             </li>
-            <li class="sidebar-item {{ request()->is('admin/student/*') ? 'active' :'' }}">
-                <a class="sidebar-link" href=" {{ route('admin.student.create') }}  ">
+            <li class="sidebar-item {{ request()->is('admin/class') ? 'active' :'' }}">
+                <a class="sidebar-link" href=" {{ route('admin.class.index') }}  ">
                     <i class="align-middle" data-feather="user-plus"></i> <span class="align-middle">Manage Class</span>
                 </a>
             </li>

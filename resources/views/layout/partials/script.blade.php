@@ -1,5 +1,8 @@
-    <script src="{{ asset('js/app.js') }}" defer></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+<script src="{{ asset('js/app.js') }}" defer></script>
     <script src="{{asset('asset/js/app.js')}}"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.11.3/datatables.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             @if ($errors->any())
@@ -11,6 +14,11 @@
             @endif
         });
 
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#example').DataTable();
+        } );
     </script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
