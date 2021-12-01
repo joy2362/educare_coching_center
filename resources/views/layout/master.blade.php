@@ -14,7 +14,9 @@
         <!-- sidebar end -->
         <div class="main">
         <!-- top navbar start -->
-        @include('layout.partials.navbar')
+        @if(Auth::guard('admin')->check())
+            @include('layout.partials.admin.navbar')
+        @endif
         <!-- top navbar end -->
         <!-- main conten start-0 -->
         @yield('content')

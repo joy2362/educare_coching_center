@@ -1,6 +1,74 @@
     <script src="{{ asset('js/app.js') }}" defer></script>
     <script src="{{asset('asset/js/app.js')}}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            @if ($errors->any())
+            @foreach ($errors->all() as $error)
 
+            toastr.error("{{ $error }}");
+
+            @endforeach
+            @endif
+        });
+
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+        @if(Session::has('messege'))
+        var type = "{{Session::get('alert-type','info')}}"
+        switch(type){
+            case 'info':
+                Swal.fire({
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    title: 'Info!',
+                    text: '{{Session::get('messege')}}',
+                    icon: 'info',
+                    position:'top-end',
+                    toast:true
+                })
+                break;
+            case 'success':
+                Swal.fire({
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    title: 'Success!',
+                    text: '{{Session::get('messege')}}',
+                    icon: 'success',
+                    position:'top-end',
+                    toast:true
+                })
+                break;
+            case 'warning':
+                Swal.fire({
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    title: 'Warning!',
+                    text: '{{Session::get('messege')}}',
+                    icon: 'warning',
+                    position:'top-end',
+                    toast:true
+                })
+                break;
+            case 'error':
+                Swal.fire({
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    title: 'Error!',
+                    text: '{{Session::get('messege')}}',
+                    icon: 'error',
+                    position:'top-end',
+                    toast:true
+                })
+                break;
+        }
+        @endif
+        });
+    </script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             var ctx = document.getElementById("chartjs-dashboard-line").getContext("2d");

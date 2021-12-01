@@ -29,6 +29,7 @@ class FortifyServiceProvider extends ServiceProvider
             config() ->set('fortify.guard','admin');
             config() ->set('fortify.home','admin/home');
             config() ->set('fortify.passwords','admins');
+            config() ->set('fortify.username','email');
         }
     }
 

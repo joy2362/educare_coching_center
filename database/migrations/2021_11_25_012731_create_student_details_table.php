@@ -21,11 +21,10 @@ class CreateStudentDetailsTable extends Migration
             $table->string('father_mobile_number');
             $table->string('mother_mobile_number');
             $table->string('father_occupation');
-            $table->string('mother_occupation');
             $table->string('mobile_number');
             $table->text('present_address');
             $table->text('permanent_address');
-            $table->string('blood_group')->nullable();
+            $table->enum('gender',['male','female']);
             $table->date('dob');
             $table->timestamps();
         });

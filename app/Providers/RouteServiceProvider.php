@@ -54,8 +54,7 @@ class RouteServiceProvider extends ServiceProvider
             ->group(base_path('routes/admin.php'));
 
         // Admin action Route file
-        Route::domain('admin.' . env('APP_URL'))
-            ->middleware('web')
+        Route::middleware('web')
             ->namespace($this->namespace)
             ->group(base_path('routes/admin_action.php'));
 
