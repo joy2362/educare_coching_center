@@ -16,6 +16,8 @@ class CreateClassesTable extends Migration
         Schema::create('classes', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->enum('status',['active','inactive'])->default('active');
+            $table->enum('deleted',['yes','no'])->default('no');
             $table->timestamps();
         });
     }

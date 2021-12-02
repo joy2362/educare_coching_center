@@ -2,24 +2,18 @@
 
 <script src="{{ asset('js/app.js') }}" defer></script>
     <script src="{{asset('asset/js/app.js')}}"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.11.3/datatables.min.js"></script>
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             @if ($errors->any())
-            @foreach ($errors->all() as $error)
-
-            toastr.error("{{ $error }}");
-
-            @endforeach
+                @foreach ($errors->all() as $error)
+                    toastr.error("{{ $error }}");
+                @endforeach
             @endif
         });
 
     </script>
-    <script>
-        $(document).ready(function() {
-            $('#example').DataTable();
-        } );
-    </script>
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
         @if(Session::has('messege'))
@@ -75,8 +69,26 @@
                 break;
         }
         @endif
+        $(document).on("click", "#delete", function(e){
+            e.preventDefault();
+            var link = $(this).attr("href");
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = link;
+                }
+            })
+            });
         });
     </script>
+
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             var ctx = document.getElementById("chartjs-dashboard-line").getContext("2d");

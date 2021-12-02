@@ -11,5 +11,6 @@
 <link href="{{ asset('css/toastr.css') }}" rel="stylesheet">
 
 <link href="{{ asset('asset/css/app.css') }}" rel="stylesheet">
+
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.11.3/datatables.min.css"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">

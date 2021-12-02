@@ -1,11 +1,10 @@
 <nav id="sidebar" class="sidebar js-sidebar">
     <div class="sidebar-content js-simplebar">
         <h4 class="sidebar-brand" >
-            <span class="align-middle">Educare </span>
+            <span class="align-middle">Educare</span>
         </h4>
-
         <ul class="sidebar-nav">
-            <li class="sidebar-item {{ request()->is('admin/home') ? 'active' :'' }}">
+            <li class="sidebar-item {{ request()->is('admin/home') ? 'active' : '' }}">
                 <a class="sidebar-link" href=" {{ route('admin.home') }}  ">
                     <i class="align-middle" data-feather="home"></i> <span class="align-middle">Dashboard</span>
                 </a>
@@ -15,7 +14,12 @@
             </li>
             <li class="sidebar-item {{ request()->is('admin/class') ? 'active' :'' }}">
                 <a class="sidebar-link" href=" {{ route('admin.class.index') }}  ">
-                    <i class="align-middle" data-feather="user-plus"></i> <span class="align-middle">Manage Class</span>
+                    <i class="align-middle" data-feather="user-plus"></i> <span class="align-middle">Class</span>
+                </a>
+            </li>
+            <li class="sidebar-item {{ request()->is('admin/section') ? 'active' :'' }}">
+                <a class="sidebar-link" href=" {{ route('admin.section.index') }}  ">
+                    <i class="align-middle" data-feather="user-plus"></i> <span class="align-middle">Section</span>
                 </a>
             </li>
             <li class="sidebar-header">
@@ -27,6 +31,5 @@
                 </a>
             </li>
         </ul>
-
     </div>
 </nav>
