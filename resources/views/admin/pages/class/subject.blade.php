@@ -1,24 +1,25 @@
 @extends('layout.master')
 @section('title')
-    <title>Class</title>
+    <title>Subject</title>
 @endsection
 @section('content')
     <main class="content">
         <div class="container-fluid p-0">
 
-            <h1 class="h3 mb-3">Class
-                <a href="#" class="float-end btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#add_class">Add New</a>
+            <h1 class="h3 mb-3">{{$class->name }} Subject <a href="{{url('/admin/class')}}" class=" btn btn-sm btn-info">Go Back</a>
+                <a href="#" class="float-end btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#add_subject">Add New</a>
             </h1>
             <!-- Modal for add  -->
-            <div class="modal fade" id="add_class" tabindex="-1" aria-labelledby="add_class_Label" aria-hidden="true">
+            <div class="modal fade" id="add_subject" tabindex="-1" aria-labelledby="add_subject_Label" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="add_class_Label">Add Class</h5>
+                            <h5 class="modal-title" id="add_subject_Label">Add Subject</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <form method="post" id="addBrandForm" action="{{route('admin.class.create')}}">
+                        <form method="post" action="{{route('admin.subject.create')}}">
                             @csrf
+                            <input type="hidden" name="id" value="{{$class->id}}">
                             <div class="modal-body">
                                 <div class="form-group mb-3">
                                     <label for="name" class="form-label">Name</label>
@@ -36,20 +37,21 @@
             <!-- end Modal for add-->
 
             <!-- Modal for update  -->
-            <div class="modal fade" id="edit_class" tabindex="-1" aria-labelledby="edit_class_Label" aria-hidden="true">
+            <div class="modal fade" id="edit_subject" tabindex="-1" aria-labelledby="edit_subject_Label" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="edit_class_Label">Edit Class</h5>
+                            <h5 class="modal-title" id="edit_subject_Label">Edit Subject</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <form method="post" action="{{route('admin.class.update')}}" >
+                        <form method="post" action="{{route('admin.subject.update')}}" >
                             @csrf
                             <div class="modal-body">
                                 <div class="form-group mb-3">
                                     <label for="edit_name" class="form-label">Name</label>
                                     <input type="text" class="form-control" id="edit_name" name="name" required>
                                     <input type="hidden" id="edit_id" name="id" >
+                                    <input type="hidden"  name="class"  value="{{$class->id}}">
                                 </div>
                                 <div class="form-group mb-3">
                                     <label  class="form-label mr-4">Status: </label>
@@ -80,7 +82,7 @@
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-border" id="classes">
+                                <table class="table table-border" id="subject">
                                     <thead>
                                     <tr>
                                         <th>ID</th>
@@ -90,17 +92,16 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach($classes as $class)
-                                    <tr>
-                                        <td>{{$class->id}}</td>
-                                        <td>{{$class->name}}</td>
-                                        <td>{{$class->status}}</td>
-                                        <td>
-                                            <button class="m-2 btn btn-sm btn-primary edit_button" value="{{$class->id}}">Edit</button>
-                                            <a class="m-2 btn btn-sm btn-success" href="{{url('/admin/class/subject/'.$class->id)}}">Subject</a>
-                                            <a class="m-2 btn btn-sm btn-danger" id="delete" href="{{url('/admin/class/delete/'.$class->id)}}">Delete</a>
-                                        </td>
-                                    </tr>
+                                    @foreach($subjects as $row)
+                                        <tr>
+                                            <td>{{$row->id}}</td>
+                                            <td>{{$row->name}}</td>
+                                            <td>{{$row->status}}</td>
+                                            <td>
+                                                <button class="m-2 btn btn-sm btn-primary edit_button" value="{{$row->id}}">Edit</button>
+                                                <a class="m-2 btn btn-sm btn-danger" id="delete" href="{{url('/admin/subject/delete/'.$row->id)}}">Delete</a>
+                                            </td>
+                                        </tr>
                                     @endforeach
                                     </tbody>
                                 </table>
@@ -115,13 +116,11 @@
 @section('script')
     <script>
         $(document).ready(function() {
-            $('#classes').DataTable();
+            $('#subject').DataTable();
         });
     </script>
     <script>
-
         $(document).ready(function() {
-
             function ajaxsetup(){
                 $.ajaxSetup({
                     headers: {
@@ -133,11 +132,11 @@
             $(document).on('click','.edit_button',function(e){
                 e.preventDefault();
                 let id = $(this).val();
-                $('#edit_class').modal('show');
+                $('#edit_subject').modal('show');
                 ajaxsetup();
                 $.ajax({
                     type:'get',
-                    url:"/admin/class/show/"+id,
+                    url:"/admin/subject/show/"+id,
                     dataType:'json',
                     success: function(response){
                         if(response.status == 404){
@@ -149,10 +148,10 @@
                             )
                         }
                         else{
-                            $('#edit_id').val(response.class.id);
-                            $('#edit_name').val(response.class.name);
+                            $('#edit_id').val(response.subject.id);
+                            $('#edit_name').val(response.subject.name);
                             $('#edit_status1').checked = true;
-                            if(response.class.status === 'active'){
+                            if(response.subject.status === 'active'){
                                 $("#edit_status1").prop("checked", true);
                             }else{
                                 $("#edit_status2").prop("checked", true);
@@ -164,8 +163,6 @@
 
 
             });
-        } );
-
+        });
     </script>
-
 @endsection

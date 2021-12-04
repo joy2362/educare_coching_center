@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Classes;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ClassesController extends Controller
 {
@@ -15,7 +16,7 @@ class ClassesController extends Controller
 
     public function store(Request $request){
        $request->validate([
-            'name' => 'required|max:255',
+            'name' => 'required|unique:classes|max:255',
        ]);
        $class = new Classes();
        $class->name = $request->name;
@@ -39,7 +40,7 @@ class ClassesController extends Controller
         }else{
             return response()->json([
                 'status' => 404,
-                'message' => "Brand Not Found"
+                'message' => "Class Not Found"
             ]);
         }
     }
@@ -74,4 +75,6 @@ class ClassesController extends Controller
         );
         return Redirect()->back()->with($notification);
     }
+
+
 }
