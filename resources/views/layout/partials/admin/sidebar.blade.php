@@ -10,7 +10,7 @@
                 </a>
             </li>
             <li class="sidebar-header">
-                Class
+                Academic
             </li>
             <li class="sidebar-item {{ request()->is('admin/class*') ? 'active' :'' }}">
                 <a class="sidebar-link" href=" {{ route('admin.class.index') }}  ">
@@ -22,14 +22,7 @@
                     <i class="align-middle" data-feather="book-open"></i> <span class="align-middle">Section</span>
                 </a>
             </li>
-            <li class="sidebar-header">
-                Routin
-            </li>
-            <li class="sidebar-item {{ request()->is('admin/section') ? 'active' :'' }}">
-                <a class="sidebar-link" href=" {{ route('admin.section.index') }}  ">
-                    <i class="align-middle" data-feather="user-plus"></i> <span class="align-middle">Section</span>
-                </a>
-            </li>
+
             <li class="sidebar-header">
                 Student
             </li>

@@ -24,13 +24,15 @@ Route::prefix('admin')->name('admin.')->middleware('auth:admin')->group(function
     Route::get('/subject/delete/{id}', [SubjectController::class, 'destroy']);
     Route::get('/subject/show/{id}', [SubjectController::class, 'show']);
     Route::post('/subject/update', [SubjectController::class, 'update'])->name('subject.update');
+
     //section crud
     Route::get('/section', [SectionController::class, 'index'])->name('section.index');
     Route::get('/section/show/{id}', [SectionController::class, 'show']);
     Route::get('/section/delete/{id}', [SectionController::class, 'destroy']);
     Route::post('/section/create', [SectionController::class, 'store'])->name('section.create');
     Route::post('/section/update', [SectionController::class, 'update'])->name('section.update');
-
+    //routine crud
+    Route::get('/section/routine/{id}', [SubjectController::class, 'index']);
     Route::resource('student', studentController::class);
 
 
