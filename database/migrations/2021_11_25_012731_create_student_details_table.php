@@ -26,6 +26,10 @@ class CreateStudentDetailsTable extends Migration
             $table->text('permanent_address');
             $table->enum('gender',['male','female']);
             $table->date('dob');
+            $table->unsignedBigInteger('district_id');
+            $table->unsignedBigInteger('division_id');
+            $table->unsignedBigInteger('class_id');
+            $table->unsignedBigInteger('section_id');
             $table->timestamps();
         });
     }

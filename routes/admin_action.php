@@ -34,6 +34,8 @@ Route::prefix('admin')->name('admin.')->middleware('auth:admin')->group(function
     //routine crud
     Route::get('/section/routine/{id}', [SubjectController::class, 'index']);
     Route::resource('student', studentController::class);
+    Route::get('district/fetch/{id}', [studentController::class, 'districtList']);
+    Route::get('section/fetch/{id}', [studentController::class, 'sectionList']);
 
 
 });

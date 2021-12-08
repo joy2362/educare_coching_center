@@ -3,11 +3,16 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Mail\AccontCreated;
+use App\Models\Classes;
+use App\Models\District;
+use App\Models\Divisions;
+use App\Models\section;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class studentController extends Controller
@@ -15,21 +20,24 @@ class studentController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     *
      */
     public function index()
     {
+
         return view('admin.pages.student.index');
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     *
      */
     public function create()
     {
-        return view('admin.pages.student.create');
+        $divisions = Divisions::all();
+        $classes =  Classes::all();
+        return view('admin.pages.student.create',['divisions'=>$divisions,'classes'=>$classes]);
     }
 
     /**
@@ -40,7 +48,7 @@ class studentController extends Controller
      */
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
+         $request->validate([
             'name' => 'required|max:55',
             'dob' => 'required',
             'gender' => 'required',
@@ -53,6 +61,10 @@ class studentController extends Controller
             'present_address' => 'required',
             'permanent_address' => 'required',
             'email' => 'required',
+            'class' => 'required',
+            'section' => 'required',
+            'division' => 'required',
+            'district' => 'required',
             'avatar' => 'required',
         ]);
 
@@ -68,6 +80,10 @@ class studentController extends Controller
            'permanent_address' => $request->permanent_address,
            'gender' => $request->gender,
            'dob' => $request->dob,
+           'district_id' => $request->district,
+           'division_id' => $request->division,
+           'class_id' => $request->class,
+           'section_id' => $request->section,
         ]);
 
         $student_id = new User();
@@ -85,6 +101,8 @@ class studentController extends Controller
         }
         $student_id->email = $request->email;
         $student_id->save();
+
+        Mail::to($request->email)->send(new AccontCreated( $request->name , $student_id));
 
         $notification=array(
             'messege'=>'Student Added Successfully!',
@@ -137,5 +155,36 @@ class studentController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function districtList($id){
+        $division = Divisions::find($id);
+        $district = District::where('division_slug',$division->slug)->get();
+        if ($district){
+            return response()->json([
+                'status' => 200,
+                'district' => $district
+            ]);
+        }else{
+            return response()->json([
+                'status' => 404,
+                'message' => "District Not Found"
+            ]);
+        }
+    }
+
+    public function sectionList($id){
+        $sections = section::where('class_id',$id)->get();
+        if ($sections){
+            return response()->json([
+                'status' => 200,
+                'sections' => $sections
+            ]);
+        }else{
+            return response()->json([
+                'status' => 404,
+                'message' => "Sections Not Found"
+            ]);
+        }
     }
 }

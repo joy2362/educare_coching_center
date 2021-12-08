@@ -10,23 +10,22 @@
                 <div class="col-12">
                    <form method="post" action="{{route('admin.student.store')}}" enctype="multipart/form-data">
                        @csrf
-
                        <div class="row g-2">
-                           <div class="col-md">
+                           <div class="col-md-6">
                                <div class="form-floating">
                                    <input type="text" class="form-control @error('name') is-invalid @enderror " placeholder="name" id="name" name="name" value="{{ old('name') }}">
                                    <label for="name">Name</label>
                                </div>
                            </div>
-                           <div class="col-md">
+                           <div class="col-md-3">
                                <div class="form-floating">
-                                   <input type="date" class="form-control @error('dob') is-invalid @enderror" placeholder="dob" id="dob" name="dob" value="{{ old('dob') }}">
+                                   <input type="date" class="form-control @error('dob') is-invalid @enderror" placeholder="dob" id="dob" name="dob" value="{{ old('dob') }}" max="{{date('Y-m-d')}}" >
                                    <label for="dob">DOB</label>
                                </div>
                            </div>
-                           <div class="col-md">
+                           <div class="col-md-3">
                                <div class="form-floating">
-                                   <select class="form-select @error('dob') is-invalid @enderror" id="gender" aria-label="Gender" name="gender" >
+                                   <select class="form-select @error('gender') is-invalid @enderror" id="gender" aria-label="Gender" name="gender" >
                                        <option selected value="male">Male</option>
                                        <option value="female">Female</option>
                                    </select>
@@ -102,12 +101,52 @@
                        <div class="row mt-5 g-2">
                            <div class="col-md">
                                <div class="form-floating">
+                                   <select class="form-select @error('division') is-invalid @enderror" id="division" aria-label="Division" name="division" >
+                                       @foreach($divisions as $row)
+                                       <option  value="{{$row->id}}">{{$row->name}}</option>
+                                       @endforeach
+                                   </select>
+                                   <label for="division">Division</label>
+                               </div>
+                           </div>
+                           <div class="col-md d-none district_class">
+                               <div class="form-floating">
+                                   <select class="form-select @error('district') is-invalid @enderror" id="district" aria-label="district" name="district" >
+                                       <option  value=""></option>
+                                   </select>
+                                   <label for="district">District</label>
+                               </div>
+                           </div>
+                       </div>
+                       <div class="row mt-5 g-2">
+                           <div class="col-md">
+                               <div class="form-floating">
                                    <input class="form-control @error('avatar') is-invalid @enderror" type="file" id="avatar" accept="image/*" name="avatar">
                                    <label for="formFile">Avatar</label>
                                </div>
                            </div>
                        </div>
-                       <button type="submit" class="btn btn-outline-primary g-2 mt-5 float-right">Save</button>
+                       <div class="row mt-5 g-2">
+                           <div class="col-md">
+                               <div class="form-floating">
+                                   <select class="form-select @error('class') is-invalid @enderror" id="class" aria-label="Class" name="class" >
+                                       @foreach($classes as $row)
+                                           <option  value="{{$row->id}}">{{$row->name}}</option>
+                                       @endforeach
+                                   </select>
+                                   <label for="class">Class</label>
+                               </div>
+                           </div>
+                           <div class="col-md d-none section_class">
+                               <div class="form-floating">
+                                   <select class="form-select @error('section') is-invalid @enderror" id="section" aria-label="Section" name="section" >
+                                       <option  value=""></option>
+                                   </select>
+                                   <label for="section">Section</label>
+                               </div>
+                           </div>
+                       </div>
+                       <button type="submit" class="btn btn-outline-primary g-2 mt-5 float-right">Admit</button>
                     <!--
                            <table cellpadding="9" width="30%" bgcolor="99FFFF" align="center"
                                   cellspacing="2">
@@ -238,6 +277,69 @@
 @endsection
 @section('script')
     <script>
+        $(document).ready(function() {
+            function ajaxsetup(){
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+            }
 
+            $(document).on('change','#division',function(e){
+                let id = e.target.value;
+                ajaxsetup();
+                $.ajax({
+                    type:'get',
+                    url:"/admin/district/fetch/"+id,
+                    dataType:'json',
+                    success: function(response){
+                        if(response.status == 404){
+                            Swal.fire(
+                                'Error!',
+                                response.message,
+                                'error'
+                            )
+                        }
+                        else{
+                            $('.district_class').removeClass('d-none');
+                            var district =  $('#district').empty();
+                            $.each(response.district,function(key,val){
+                                district.append('<option value ="'+val.id+'">'+val.name+'</option>');
+                            });
+
+                        }
+                    }
+                })
+
+            });
+            $(document).on('change','#class',function(e){
+                let id = e.target.value;
+                ajaxsetup();
+                $.ajax({
+                    type:'get',
+                    url:"/admin/section/fetch/"+id,
+                    dataType:'json',
+                    success: function(response){
+                        if(response.status == 404){
+                            Swal.fire(
+                                'Error!',
+                                response.message,
+                                'error'
+                            )
+                        }
+                        else{
+                            $('.section_class').removeClass('d-none');
+                            var sections =  $('#section').empty();
+                            $.each(response.sections,function(key,val){
+                                sections.append('<option value ="'+val.id+'">'+val.name+'</option>');
+                            });
+
+                        }
+                    }
+                })
+
+            });
+        });
     </script>
 @endsection

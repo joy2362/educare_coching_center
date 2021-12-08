@@ -26,9 +26,14 @@
             <li class="sidebar-header">
                 Student
             </li>
-            <li class="sidebar-item {{ request()->is('admin/student/*') ? 'active' :'' }}">
+            <li class="sidebar-item {{ request()->is('admin/student/create') ? 'active' :'' }}">
                 <a class="sidebar-link" href=" {{ route('admin.student.create') }}  ">
                     <i class="align-middle" data-feather="user-plus"></i> <span class="align-middle">Admission</span>
+                </a>
+            </li>
+            <li class="sidebar-item {{ request()->is('admin/student') ? 'active' :'' }}">
+                <a class="sidebar-link" href=" {{ route('admin.student.index') }}  ">
+                    <i class="align-middle" data-feather="user"></i> <span class="align-middle">Student</span>
                 </a>
             </li>
         </ul>
