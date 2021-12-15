@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\studentController;
 use App\Http\Controllers\Admin\ClassesController;
 use App\Http\Controllers\Admin\SectionController;
 use App\Http\Controllers\Admin\SubjectController;
+use App\Http\Controllers\Admin\RoutineController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -26,17 +27,22 @@ Route::prefix('admin')->name('admin.')->middleware('auth:admin')->group(function
     Route::post('/subject/update', [SubjectController::class, 'update'])->name('subject.update');
 
     //section crud
-    Route::get('/section', [SectionController::class, 'index'])->name('section.index');
+    Route::get('/class/section/{id}', [SectionController::class, 'index']);
     Route::get('/section/show/{id}', [SectionController::class, 'show']);
     Route::get('/section/delete/{id}', [SectionController::class, 'destroy']);
     Route::post('/section/create', [SectionController::class, 'store'])->name('section.create');
     Route::post('/section/update', [SectionController::class, 'update'])->name('section.update');
+
     //routine crud
-    Route::get('/section/routine/{id}', [SubjectController::class, 'index']);
+    Route::get('/section/routine/{id}', [RoutineController::class, 'index']);
+    Route::post('/section/routine/create/{id}', [RoutineController::class, 'create'])->name('routine.create');
+    Route::get('/section/routine/show/{id}', [RoutineController::class, 'show']);
+    Route::post('/section/routine/update', [RoutineController::class, 'update'])->name('routine.update');
+
+    //student
     Route::resource('student', studentController::class);
     Route::get('district/fetch/{id}', [studentController::class, 'districtList']);
     Route::get('section/fetch/{id}', [studentController::class, 'sectionList']);
-
 
 });
 

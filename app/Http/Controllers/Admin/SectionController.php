@@ -10,16 +10,17 @@ use Illuminate\Support\Facades\DB;
 
 class SectionController extends Controller
 {
-    public function index(){
-        $classes = Classes::where('deleted',"no")->where('status','active')->get();
+    public function index($id){
+        $class = Classes::find($id);
 
         $section = DB::table('sections')
             ->where('sections.deleted',"no")
             ->join('classes', 'classes.id', '=', 'sections.class_id')
+            ->where('classes.id',$id)
             ->select('sections.*','classes.name as class_name')
             ->get();
 
-        return view('admin.pages.section.index',['classes'=>$classes,'sections'=>$section]);
+        return view('admin.pages.section.index',['class'=>$class,'sections'=>$section]);
     }
 
     public function store(Request $request){

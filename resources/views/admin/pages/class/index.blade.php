@@ -98,6 +98,7 @@
                                         <td>
                                             <button class="m-2 btn btn-sm btn-primary edit_button" value="{{$class->id}}">Edit</button>
                                             <a class="m-2 btn btn-sm btn-success" href="{{url('/admin/class/subject/'.$class->id)}}">Subject</a>
+                                            <a class="m-2 btn btn-sm btn-info" href="{{url('/admin/class/section/'.$class->id)}}">Section</a>
                                             <a class="m-2 btn btn-sm btn-danger" id="delete" href="{{url('/admin/class/delete/'.$class->id)}}">Delete</a>
                                         </td>
                                     </tr>

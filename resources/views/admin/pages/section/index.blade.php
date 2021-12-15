@@ -6,7 +6,7 @@
     <main class="content">
         <div class="container-fluid p-0">
 
-            <h1 class="h3 mb-3">Section
+            <h1 class="h3 mb-3">Section <a href="{{url('/admin/class')}}" class=" btn btn-sm btn-info">Go Back</a>
                 <a href="#" class="float-end btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#add_section">Add New</a>
             </h1>
             <!-- Modal for add  -->
@@ -27,11 +27,8 @@
 
                                 <div class="form-group mb-3">
                                     <label for="class" class="form-label">Class</label>
-                                    <select class="form-select" id="class" name="class" required>
-                                        @foreach($classes as $row)
-                                            <option value="{{$row->id}}">{{$row->name}}</option>
-                                        @endforeach
-                                    </select>
+                                    <input type="text" class="form-control" id="class" value="{{$class->name}}" required readonly>
+                                    <input type="hidden" value="{{$class->id}}" name="class" >
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -61,12 +58,11 @@
                                     <input type="hidden" id="edit_id" name="id" >
                                 </div>
                                 <div class="form-group mb-3">
-                                    <label for="edit_class" class="form-label">Class</label>
-                                    <select class="form-select" id="edit_class" name="class" required>
-                                        @foreach($classes as $row)
-                                            <option value="{{$row->id}}">{{$row->name}}</option>
-                                        @endforeach
-                                    </select>
+                                    <div class="form-group mb-3">
+                                        <label for="class" class="form-label">Class</label>
+                                        <input type="text" class="form-control" id="class" value="{{$class->name}}" required readonly>
+                                        <input type="hidden" value="{{$class->id}}" name="class" >
+                                    </div>
                                 </div>
                                 <div class="form-group mb-3">
                                     <label  class="form-label mr-4">Status: </label>
@@ -117,6 +113,7 @@
                                             <td>{{$row->status}}</td>
                                             <td>
                                                 <button class="m-2 btn btn-sm btn-primary edit_button" value="{{$row->id}}">Edit</button>
+                                                <a class="m-2 btn btn-sm btn-success" href="{{url('/admin/section/routine/'.$row->id)}}">Routine</a>
                                                 <a class="m-2 btn btn-sm btn-danger" id="delete" href="{{url('/admin/section/delete/'.$row->id)}}">Delete</a>
                                             </td>
                                         </tr>
@@ -172,13 +169,12 @@
                         else{
                             $('#edit_id').val(response.section.id);
                             $('#edit_name').val(response.section.name);
-                            $('#edit_status1').checked = true;
+
                             if(response.section.status === 'active'){
                                 $("#edit_status1").prop("checked", true);
                             }else{
                                 $("#edit_status2").prop("checked", true);
                             }
-                            $('#edit_class').val(response.section.class_id);
                         }
                     }
                 })

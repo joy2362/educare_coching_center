@@ -15,6 +15,12 @@ class CreateRoutinesTable extends Migration
     {
         Schema::create('routines', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('subject_id');
+            $table->unsignedBigInteger('section_id');
+            $table->string('day');
+            $table->time('class_start');
+            $table->time('class_end');
+            $table->enum('deleted',['yes','no'])->default('no');
             $table->timestamps();
         });
     }

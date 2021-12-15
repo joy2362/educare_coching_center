@@ -18,6 +18,7 @@ class CreateSectionsTable extends Migration
             $table->unsignedBigInteger('class_id');
             $table->string('name');
             $table->enum('status',['active','inactive'])->default('active');
+            $table->enum('isRoutine',['yes','no'])->default('no');
             $table->enum('deleted',['yes','no'])->default('no');
             $table->timestamps();
         });
