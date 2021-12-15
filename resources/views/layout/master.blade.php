@@ -3,6 +3,7 @@
 
 <head>
     @include('layout.partials.header')
+    @yield('css')
 </head>
 
 <body>

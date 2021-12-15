@@ -24,8 +24,14 @@ class studentController extends Controller
      */
     public function index()
     {
-
-        return view('admin.pages.student.index');
+        $students = DB::table('student_details')
+            ->join('classes','classes.id','=','student_details.class_id')
+            ->join('sections','sections.id','=','student_details.section_id')
+            ->join('districts','districts.id','=','student_details.district_id')
+            ->join('divisions','divisions.id','=','student_details.division_id')
+            ->select('student_details.*','classes.name as class','sections.name as section','districts.name as district','divisions.name as division')
+            ->get();
+        return view('admin.pages.student.index',['students'=>$students]);
     }
 
     /**

@@ -115,50 +115,53 @@
 @endsection
 @section('script')
     <script>
-        $(document).ready(function() {
-            $('#subject').DataTable();
+        document.addEventListener("DOMContentLoaded", function() {
+            $(document).ready(function() {
+                $('#subject').DataTable();
+            });
         });
     </script>
     <script>
-        $(document).ready(function() {
-            function ajaxsetup(){
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-            }
-
-            $(document).on('click','.edit_button',function(e){
-                e.preventDefault();
-                let id = $(this).val();
-                $('#edit_subject').modal('show');
-                ajaxsetup();
-                $.ajax({
-                    type:'get',
-                    url:"/admin/subject/show/"+id,
-                    dataType:'json',
-                    success: function(response){
-                        if(response.status == 404){
-                            $('#edit_brand').modal('hide');
-                            Swal.fire(
-                                'Error!',
-                                response.message,
-                                'error'
-                            )
+        document.addEventListener("DOMContentLoaded", function() {
+            $(document).ready(function () {
+                function ajaxsetup() {
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         }
-                        else{
-                            $('#edit_id').val(response.subject.id);
-                            $('#edit_name').val(response.subject.name);
-                            $('#edit_status1').checked = true;
-                            if(response.subject.status === 'active'){
-                                $("#edit_status1").prop("checked", true);
-                            }else{
-                                $("#edit_status2").prop("checked", true);
+                    });
+                }
+
+                $(document).on('click', '.edit_button', function (e) {
+                    e.preventDefault();
+                    let id = $(this).val();
+                    $('#edit_subject').modal('show');
+                    ajaxsetup();
+                    $.ajax({
+                        type: 'get',
+                        url: "/admin/subject/show/" + id,
+                        dataType: 'json',
+                        success: function (response) {
+                            if (response.status === 404) {
+                                $('#edit_brand').modal('hide');
+                                Swal.fire(
+                                    'Error!',
+                                    response.message,
+                                    'error'
+                                )
+                            } else {
+                                $('#edit_id').val(response.subject.id);
+                                $('#edit_name').val(response.subject.name);
+                                $('#edit_status1').checked = true;
+                                if (response.subject.status === 'active') {
+                                    $("#edit_status1").prop("checked", true);
+                                } else {
+                                    $("#edit_status2").prop("checked", true);
+                                }
                             }
                         }
-                    }
-                })
+                    })
+                });
             });
         });
     </script>

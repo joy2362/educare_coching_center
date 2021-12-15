@@ -277,7 +277,8 @@
 @endsection
 @section('script')
     <script>
-        $(document).ready(function() {
+        document.addEventListener("DOMContentLoaded", function() {
+            $(document).ready(function() {
             function ajaxsetup(){
                 $.ajaxSetup({
                     headers: {
@@ -294,7 +295,7 @@
                     url:"/admin/district/fetch/"+id,
                     dataType:'json',
                     success: function(response){
-                        if(response.status == 404){
+                        if(response.status === 404){
                             Swal.fire(
                                 'Error!',
                                 response.message,
@@ -303,7 +304,7 @@
                         }
                         else{
                             $('.district_class').removeClass('d-none');
-                            var district =  $('#district').empty();
+                            let district =  $('#district').empty();
                             $.each(response.district,function(key,val){
                                 district.append('<option value ="'+val.id+'">'+val.name+'</option>');
                             });
@@ -330,7 +331,7 @@
                         }
                         else{
                             $('.section_class').removeClass('d-none');
-                            var sections =  $('#section').empty();
+                            let sections =  $('#section').empty();
                             $.each(response.sections,function(key,val){
                                 sections.append('<option value ="'+val.id+'">'+val.name+'</option>');
                             });
@@ -340,6 +341,7 @@
                 })
 
             });
+        });
         });
     </script>
 @endsection

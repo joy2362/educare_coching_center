@@ -12,5 +12,24 @@
 
 <link href="{{ asset('asset/css/app.css') }}" rel="stylesheet">
 
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.11.3/datatables.min.css"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+    .dataTables_paginate .previous {
+        color: #6c757d;
+        font-size: 18px;
+        text-decoration: none;
+        margin: 4px;
+    }
+    .dataTables_paginate span a {
+        color: #6c757d;
+        font-size: 18px;
+        text-decoration: none;
+        margin: 4px;
+    }
+    .dataTables_paginate  .next{
+        color: #6c757d;
+        font-size: 18px;
+        text-decoration: none;
+        margin: 4px;
+    }
+</style>

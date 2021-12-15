@@ -114,13 +114,16 @@
 @endsection
 @section('script')
     <script>
-        $(document).ready(function() {
-            $('#classes').DataTable();
+        document.addEventListener("DOMContentLoaded", function() {
+            $(document).ready(function() {
+                $('#classes').DataTable();
+            });
         });
+
     </script>
     <script>
-
-        $(document).ready(function() {
+        document.addEventListener("DOMContentLoaded", function() {
+            $(document).ready(function() {
 
             function ajaxsetup(){
                 $.ajaxSetup({
@@ -165,7 +168,7 @@
 
             });
         } );
-
+        });
     </script>
 
 @endsection
