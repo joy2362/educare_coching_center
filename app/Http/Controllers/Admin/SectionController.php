@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Classes;
+use App\Models\Routine;
 use App\Models\section;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -82,6 +83,7 @@ class SectionController extends Controller
         $section->status = "inactive";
         $section->deleted ="yes";
         $section->save();
+        Routine::where('section_id',$id)->update(['deleted' => 'yes']);
 
         $notification=array(
             'messege'=>'Section Delete Successfully!',

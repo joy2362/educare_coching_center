@@ -59,7 +59,6 @@
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
-
                                         <small>
                                             <a href="{{ route('password.request') }}">Forgot password?</a>
                                         </small>

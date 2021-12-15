@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Classes;
+use App\Models\Routine;
+use App\Models\section;
+use App\Models\Subject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -68,6 +71,16 @@ class ClassesController extends Controller
         $class->status = "inactive";
         $class->deleted ="yes";
         $class->save();
+
+        Subject::where('class_id',$id)->update(['deleted' => 'yes']);
+
+        $section = section::where('class_id',$id)->get();
+
+        foreach ($section as $row){
+            Routine::where('section_id',$row->id)->update(['deleted' => 'yes']);
+        }
+
+        section::where('class_id',$id)->update(['deleted' => 'yes']);
 
         $notification=array(
             'messege'=>'Class Delete Successfully!',
