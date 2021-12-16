@@ -24,6 +24,18 @@
                                     <label for="name" class="form-label">Name</label>
                                     <input type="text" class="form-control" id="name" name="name" required>
                                 </div>
+                                <div class="form-group mb-3">
+                                    <label for="admission_fee" class="form-label">Admission Fee</label>
+                                    <input type="number" class="form-control" id="admission_fee" name="admission_fee" required>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="monthly_fee" class="form-label">Monthly Fee</label>
+                                    <input type="number" class="form-control" id="monthly_fee" name="monthly_fee" required>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="other_fee" class="form-label">Other Fee</label>
+                                    <input type="text" class="form-control" id="other_fee" name="other_fee" required>
+                                </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -50,6 +62,18 @@
                                     <label for="edit_name" class="form-label">Name</label>
                                     <input type="text" class="form-control" id="edit_name" name="name" required>
                                     <input type="hidden" id="edit_id" name="id" >
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="edit_admission_fee" class="form-label">Admission Fee</label>
+                                    <input type="number" class="form-control" id="edit_admission_fee" name="admission_fee" required>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="edit_monthly_fee" class="form-label">Monthly Fee</label>
+                                    <input type="number" class="form-control" id="edit_monthly_fee" name="monthly_fee" required>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="edit_other_fee" class="form-label">Other Fee</label>
+                                    <input type="text" class="form-control" id="edit_other_fee" name="other_fee" required>
                                 </div>
                                 <div class="form-group mb-3">
                                     <label  class="form-label mr-4">Status: </label>
@@ -85,6 +109,9 @@
                                     <tr>
                                         <th>ID</th>
                                         <th>Name</th>
+                                        <th>Admission Fee</th>
+                                        <th>Monthly Fee</th>
+                                        <th>Other Fee</th>
                                         <th>Status</th>
                                         <th>Actions</th>
                                     </tr>
@@ -94,12 +121,15 @@
                                     <tr>
                                         <td>{{$class->id}}</td>
                                         <td>{{$class->name}}</td>
+                                        <td>{{$class->admission_fee}}</td>
+                                        <td>{{$class->monthly_fee}}</td>
+                                        <td>{{$class->other_fee}}</td>
                                         <td>{{$class->status}}</td>
                                         <td>
-                                            <button class="m-2 btn btn-sm btn-primary edit_button" value="{{$class->id}}">Edit</button>
+                                            <button class="m-2 btn btn-sm btn-primary edit_button" value="{{$class->id}}"><i class="align-middle" data-feather="edit"></i></button>
                                             <a class="m-2 btn btn-sm btn-success" href="{{url('/admin/class/subject/'.$class->id)}}">Subject</a>
-                                            <a class="m-2 btn btn-sm btn-info" href="{{url('/admin/class/section/'.$class->id)}}">Section</a>
-                                            <a class="m-2 btn btn-sm btn-danger" id="delete" href="{{url('/admin/class/delete/'.$class->id)}}">Delete</a>
+                                            <a class="m-2 btn btn-sm btn-info" href="{{url('/admin/class/batch/'.$class->id)}}">Batch</a>
+                                            <a class="m-2 btn btn-sm btn-danger" id="delete" href="{{url('/admin/class/delete/'.$class->id)}}"><i class="align-middle" data-feather="trash-2"></i></a>
                                         </td>
                                     </tr>
                                     @endforeach
@@ -126,7 +156,7 @@
         document.addEventListener("DOMContentLoaded", function() {
             $(document).ready(function() {
 
-            function ajaxsetup(){
+            function ajax_setup(){
                 $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -138,13 +168,13 @@
                 e.preventDefault();
                 let id = $(this).val();
                 $('#edit_class').modal('show');
-                ajaxsetup();
+                ajax_setup();
                 $.ajax({
                     type:'get',
                     url:"/admin/class/show/"+id,
                     dataType:'json',
                     success: function(response){
-                        if(response.status == 404){
+                        if(response.status === 404){
                             $('#edit_brand').modal('hide');
                             Swal.fire(
                                 'Error!',
@@ -155,7 +185,10 @@
                         else{
                             $('#edit_id').val(response.class.id);
                             $('#edit_name').val(response.class.name);
-                            $('#edit_status1').checked = true;
+                            $('#edit_admission_fee').val(response.class.admission_fee);
+                            $('#edit_monthly_fee').val(response.class.monthly_fee);
+                            $('#edit_other_fee').val(response.class.other_fee);
+
                             if(response.class.status === 'active'){
                                 $("#edit_status1").prop("checked", true);
                             }else{

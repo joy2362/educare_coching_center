@@ -6,7 +6,7 @@
     <main class="content">
         <div class="container-fluid p-0">
 
-            <h1 class="h3 mb-3">{{$class->name }} Subject <a href="{{url('/admin/class')}}" class=" btn btn-sm btn-info">Go Back</a>
+            <h1 class="h3 mb-3">{{$class->name }} Subject <a href="{{url('/admin/class')}}" class=" btn btn-sm btn-info"><i class="align-middle" data-feather="corner-up-left"></i></a>
                 <a href="#" class="float-end btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#add_subject">Add New</a>
             </h1>
             <!-- Modal for add  -->
@@ -98,8 +98,8 @@
                                             <td>{{$row->name}}</td>
                                             <td>{{$row->status}}</td>
                                             <td>
-                                                <button class="m-2 btn btn-sm btn-primary edit_button" value="{{$row->id}}">Edit</button>
-                                                <a class="m-2 btn btn-sm btn-danger" id="delete" href="{{url('/admin/subject/delete/'.$row->id)}}">Delete</a>
+                                                <button class="m-2 btn btn-sm btn-primary edit_button" value="{{$row->id}}"><i class="align-middle" data-feather="eye"></i></button>
+                                                <a class="m-2 btn btn-sm btn-danger" id="delete" href="{{url('/admin/subject/delete/'.$row->id)}}"><i class="align-middle" data-feather="trash-2"></i></a>
                                             </td>
                                         </tr>
                                     @endforeach

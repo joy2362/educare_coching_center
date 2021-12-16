@@ -12,9 +12,15 @@
             <li class="sidebar-header">
                 Academic
             </li>
-            <li class="sidebar-item {{ request()->is('admin/class*') | request()->is('admin/section*')  ? 'active' :'' }}">
+            <li class="sidebar-item {{ request()->is('admin/class*')  ? 'active' :'' }}">
                 <a class="sidebar-link" href=" {{ route('admin.class.index') }}  ">
                     <i class="align-middle" data-feather="book"></i> <span class="align-middle">Class</span>
+                </a>
+            </li>
+
+            <li class="sidebar-item {{ request()->is('admin/routine*')  ? 'active' :'' }}">
+                <a class="sidebar-link" href=" {{ route('admin.routine.index') }}  ">
+                    <i class="align-middle" data-feather="calendar"></i> <span class="align-middle">Routine</span>
                 </a>
             </li>
 

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSectionsTable extends Migration
+class CreateBatchesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,12 @@ class CreateSectionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('sections', function (Blueprint $table) {
+        Schema::create('batches', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('class_id');
             $table->string('name');
+            $table->time('batch_start');
+            $table->time('batch_end');
             $table->enum('status',['active','inactive'])->default('active');
             $table->enum('isRoutine',['yes','no'])->default('no');
             $table->enum('deleted',['yes','no'])->default('no');
@@ -31,6 +33,6 @@ class CreateSectionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sections');
+        Schema::dropIfExists('batches');
     }
 }

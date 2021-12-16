@@ -16,6 +16,9 @@ class CreateClassesTable extends Migration
         Schema::create('classes', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->integer('admission_fee');
+            $table->integer('monthly_fee');
+            $table->integer('other_fee');
             $table->enum('status',['active','inactive'])->default('active');
             $table->enum('deleted',['yes','no'])->default('no');
             $table->timestamps();

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Batch;
 use App\Models\Classes;
 use App\Models\Routine;
 use App\Models\section;
@@ -17,12 +18,19 @@ class ClassesController extends Controller
         return view('admin.pages.class.index',['classes'=>$classes]);
     }
 
-    public function store(Request $request){
+    public function store(Request $request): \Illuminate\Http\RedirectResponse
+    {
        $request->validate([
             'name' => 'required|unique:classes|max:255',
+            'admission_fee' => 'required|numeric',
+            'monthly_fee' => 'required|numeric',
+            'other_fee' => 'required|numeric',
        ]);
        $class = new Classes();
-       $class->name = $request->name;
+       $class->name = $request->input('name');
+       $class->admission_fee = $request->input('admission_fee');
+       $class->monthly_fee = $request->input('monthly_fee');
+       $class->other_fee = $request->input('other_fee');
        $class->save();
 
         $notification=array(
@@ -33,7 +41,8 @@ class ClassesController extends Controller
 
     }
 
-    public function show($id){
+    public function show($id): \Illuminate\Http\JsonResponse
+    {
         $class = Classes::find($id);
         if ($class){
             return response()->json([
@@ -48,13 +57,17 @@ class ClassesController extends Controller
         }
     }
 
-    public function update(Request $request){
+    public function update(Request $request): \Illuminate\Http\RedirectResponse
+    {
         $request->validate([
             'name' => 'required|max:255',
         ]);
         $class = Classes::find($request->id);
-        $class->name = $request->name;
-        $class->status = $request->status;
+        $class->name = $request->input('name');
+        $class->admission_fee = $request->input('admission_fee');
+        $class->monthly_fee = $request->input('monthly_fee');
+        $class->other_fee = $request->input('other_fee');
+        $class->status = $request->input('status');
         $class->save();
 
         $notification=array(
@@ -65,7 +78,8 @@ class ClassesController extends Controller
 
     }
 
-    public function destroy($id){
+    public function destroy($id): \Illuminate\Http\RedirectResponse
+    {
 
         $class = Classes::find($id);
         $class->status = "inactive";
@@ -74,18 +88,19 @@ class ClassesController extends Controller
 
         Subject::where('class_id',$id)->update(['deleted' => 'yes']);
 
-        $section = section::where('class_id',$id)->get();
+        $batch = Batch::where('class_id',$id)->get();
 
-        foreach ($section as $row){
-            Routine::where('section_id',$row->id)->update(['deleted' => 'yes']);
+        foreach ($batch as $row){
+            Routine::where('batch_id',$row->id)->update(['deleted' => 'yes']);
         }
 
-        section::where('class_id',$id)->update(['deleted' => 'yes']);
+        Batch::where('class_id',$id)->update(['deleted' => 'yes']);
 
         $notification=array(
             'messege'=>'Class Delete Successfully!',
             'alert-type'=>'success'
         );
+
         return Redirect()->back()->with($notification);
     }
 

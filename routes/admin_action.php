@@ -2,9 +2,9 @@
 
 use App\Http\Controllers\Admin\studentController;
 use App\Http\Controllers\Admin\ClassesController;
-use App\Http\Controllers\Admin\SectionController;
 use App\Http\Controllers\Admin\SubjectController;
 use App\Http\Controllers\Admin\RoutineController;
+use App\Http\Controllers\Admin\BatchController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -25,19 +25,19 @@ Route::prefix('admin')->name('admin.')->middleware('auth:admin')->group(function
     Route::get('/subject/delete/{id}', [SubjectController::class, 'destroy']);
     Route::get('/subject/show/{id}', [SubjectController::class, 'show']);
     Route::post('/subject/update', [SubjectController::class, 'update'])->name('subject.update');
-
-    //section crud
-    Route::get('/class/section/{id}', [SectionController::class, 'index']);
-    Route::get('/section/show/{id}', [SectionController::class, 'show']);
-    Route::get('/section/delete/{id}', [SectionController::class, 'destroy']);
-    Route::post('/section/create', [SectionController::class, 'store'])->name('section.create');
-    Route::post('/section/update', [SectionController::class, 'update'])->name('section.update');
+    //batch crud
+    Route::get('/class/batch/{id}', [BatchController::class, 'index']);
+    Route::get('/batch/show/{id}', [BatchController::class, 'show']);
+    Route::get('/batch/delete/{id}', [BatchController::class, 'destroy']);
+    Route::post('/batch/create', [BatchController::class, 'store'])->name('batch.create');
+    Route::post('/batch/update', [BatchController::class, 'update'])->name('batch.update');
 
     //routine crud
-    Route::get('/section/routine/{id}', [RoutineController::class, 'index']);
-    Route::post('/section/routine/create/{id}', [RoutineController::class, 'create'])->name('routine.create');
-    Route::get('/section/routine/show/{id}', [RoutineController::class, 'show']);
-    Route::post('/section/routine/update', [RoutineController::class, 'update'])->name('routine.update');
+    Route::get('/routine', [RoutineController::class, 'index'])->name('routine.index');
+    Route::get('/routine/create/{id}', [RoutineController::class, 'create']);
+    Route::post('/routine/store/{id}', [RoutineController::class, 'store'])->name('routine.create');
+    Route::get('/routine/show/{id}', [RoutineController::class, 'show']);
+    Route::post('/routine/update', [RoutineController::class, 'update'])->name('routine.update');
 
     //student
     Route::resource('student', studentController::class);
