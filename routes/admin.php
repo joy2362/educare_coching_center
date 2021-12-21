@@ -76,30 +76,32 @@ Route::prefix('admin')->name('admin.')->group(function () {
     //update user information
     Route::get('/profile/edit', function () {
         return view('admin.pages.profile');
-    })->middleware('auth:admin')->name('profile');
+    })->middleware('auth:admin', 'password.confirm:admin.password.confirm')->name('profile');
+
+    Route::get('/profile/setting', function () {
+        return view('admin.pages.profile_setting.index');
+    })->middleware('auth:admin');
+
+    Route::get('/profile/setting/recovery-codes', function () {
+        return view('admin.pages.profile_setting.recovery');
+    })->middleware('auth:admin');
 
     Route::put('/profile-image', [AdminController::class, 'image_update'])
         ->middleware(['auth:admin'])
         ->name('profile-image.update');
 
     Route::put('/profile-information', [ProfileInformationController::class, 'update'])
-        ->middleware(['auth:admin'])
+        ->middleware(['auth:admin', 'password.confirm:admin.password.confirm'])
         ->name('profile-information.update');
 
-    // Passwords...
-    Route::view('password/change','adminPassword_change')
-        ->middleware('auth:admin')
-        ->name('password.change');
-
+    //update password
     Route::put('/password', [PasswordController::class, 'update'])
-        ->middleware(['auth:admin'])
-        ->name('password.update.put');
-
+        ->middleware(['auth:admin', 'password.confirm:admin.password.confirm'])
+        ->name('password.change');
 
     //confirm password
     Route::view('/confirm-password','auth.admin.password.confirm')
         ->middleware('auth:admin')->name('password.confirm');
-
 
     Route::post('/confirm-password', [ConfirmablePasswordController::class, 'store'])
         ->middleware(['auth:admin']);
@@ -120,17 +122,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
         ->middleware(['auth:admin' ])
         ->name('two-factor.enable');
 
-    Route::delete('/two-factor-authentication',function(){
-        dd("joy");
-    })
-        ->middleware(['auth:'.config('fortify.guard')])
+    Route::delete('/two-factor-authentication', [TwoFactorAuthenticationController::class, 'destroy'])
+        ->middleware(['auth:admin','password.confirm:admin.password.confirm'])
         ->name('two-factor.disable');
 
-    Route::get('/user/two-factor-qr-code', [TwoFactorQrCodeController::class, 'show'])
-        ->middleware(['auth:admin', 'password.confirm:admin.password.confirm'])
-        ->name('two-factor.qr-code');
-
-    Route::get('/user/two-factor-recovery-codes', [RecoveryCodeController::class, 'index'])
+    Route::get('/two-factor-recovery-codes', [RecoveryCodeController::class, 'index'])
         ->middleware(['auth:admin', 'password.confirm:admin.password.confirm'])
         ->name('two-factor.recovery-codes');
 

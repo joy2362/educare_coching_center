@@ -150,7 +150,7 @@
                 </a>
                 <div class="dropdown-menu dropdown-menu-end">
                     <a class="dropdown-item" href="{{route('admin.profile')}}"><i class="align-middle me-1" data-feather="user"></i>Edit Profile</a>
-                    <a class="dropdown-item" href="index.html"><i class="align-middle me-1" data-feather="settings"></i> Settings </a>
+                    <a class="dropdown-item" href="{{url('/admin/profile/setting')}}"><i class="align-middle me-1" data-feather="settings"></i> Settings </a>
 
                     <div class="dropdown-divider"></div>
                     <form method="POST" action="{{ route('admin.logout')  }}">
