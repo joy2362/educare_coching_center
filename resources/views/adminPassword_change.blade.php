@@ -36,9 +36,9 @@
                     </div>
                 @endif
                 <div class="card-body">
-                    <form method="POST" action="{{ route('admin.password.update') }}">
+                    <form method="POST" action="{{ route('admin.password.change') }}">
                         @csrf
-                        @method('put')
+
 
                         <div class="form-group row mb-4">
                             <label for="current_password" class="col-md-4 col-form-label text-md-right">{{ __('Current Password') }}</label>
@@ -86,6 +86,7 @@
                             </div>
                         </div>
                     </form>
+
                 </div>
             </div>
         </div>

@@ -56,18 +56,14 @@
                                         <label for="current_password">Current Password</label>
                                         <input type="password" class="form-control"  id="current_password" name="current_password" required>
                                         @error('current_password','updatePassword')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
+                                        <small class="text-danger">{{$message}}</small>
                                         @enderror
                                     </div>
                                     <div class="form-group g-2">
                                         <label for="password">New Password</label>
                                         <input type="password" class="form-control"  id="password" name="password" required >
                                         @error('password','updatePassword')
-                                        <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
+                                        <small class="text-danger">{{$message}}</small>
                                         @enderror
                                     </div>
                                     <div class="form-group g-2">

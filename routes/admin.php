@@ -76,7 +76,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     //update user information
     Route::get('/profile/edit', function () {
         return view('admin.pages.profile');
-    })->middleware('auth:admin', 'password.confirm:admin.password.confirm')->name('profile');
+    })->middleware('auth:admin')->name('profile');
 
     Route::get('/profile/setting', function () {
         return view('admin.pages.profile_setting.index');
@@ -91,12 +91,15 @@ Route::prefix('admin')->name('admin.')->group(function () {
         ->name('profile-image.update');
 
     Route::put('/profile-information', [ProfileInformationController::class, 'update'])
-        ->middleware(['auth:admin', 'password.confirm:admin.password.confirm'])
+        ->middleware(['auth:admin'])
         ->name('profile-information.update');
 
     //update password
-    Route::put('/password', [PasswordController::class, 'update'])
-        ->middleware(['auth:admin', 'password.confirm:admin.password.confirm'])
+    Route::view('/password/change','adminPassword_change')
+        ->middleware('auth:admin');
+
+    Route::put('/password/change', [PasswordController::class, 'update'])
+        ->middleware(['auth:admin'])
         ->name('password.change');
 
     //confirm password
