@@ -149,7 +149,7 @@
                     <img src="{{ asset(Auth::guard('admin')->user()->avatar) }}" class="avatar img-fluid rounded me-1" alt="{{Auth::guard('admin')->user()->name}}" /> <span class="text-dark">{{Auth::guard('admin')->user()->name}}</span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end">
-                    <a class="dropdown-item" href="pages-profile.html"><i class="align-middle me-1" data-feather="user"></i> Profile</a>
+                    <a class="dropdown-item" href="{{route('admin.profile')}}"><i class="align-middle me-1" data-feather="user"></i>Edit Profile</a>
                     <a class="dropdown-item" href="index.html"><i class="align-middle me-1" data-feather="settings"></i> Settings </a>
 
                     <div class="dropdown-divider"></div>

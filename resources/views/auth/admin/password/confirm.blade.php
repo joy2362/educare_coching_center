@@ -31,7 +31,7 @@
                     <h4 class="text-info">Admin Change password</h4>
                 </div>
                 <div class="card-body">
-                    <form method="POST" action="{{ route('admin.password.confirm') }}">
+                    <form method="POST" action="{{ url('admin/confirm-password') }}">
                         @csrf
 
                         <div class="form-group row mb-4">

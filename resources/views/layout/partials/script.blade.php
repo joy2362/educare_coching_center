@@ -15,6 +15,18 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            @if(Session::has('status'))
+            Swal.fire({
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                title: 'Success!',
+                text: '{{Session::get('status')}}',
+                icon: 'success',
+                position:'top-end',
+                toast:true
+            })
+            @endif
         @if(Session::has('messege'))
         var type = "{{Session::get('alert-type','info')}}"
         switch(type){
@@ -88,4 +100,4 @@
         });
     </script>
 
-    
+

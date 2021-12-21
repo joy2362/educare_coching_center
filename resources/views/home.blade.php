@@ -27,15 +27,16 @@
     <div class="row justify-content-center">
         <div class="col-md-4"></div>
         <div class="col-md-4 ">
-           Welcome {{ Auth::user()->name }}. Current guard {{Auth::getDefaultDriver()}}
+            Welcome {{ Auth::user()->name }}. Current guard {{Auth::getDefaultDriver()}}
             <br>
-            <a href="{{route('user.profile')}}">Edit profile</a>
-            <a href="{{route('user.password.change')}}">Change Password</a>
+            <a href="{{route('admin.profile')}}">Edit profile</a>
+            <a href="{{route('admin.password.change')}}">Change Password</a>
+
             <form method="POST" action="{{ route('logout')  }}">
                 @csrf
 
                 <a href="{{route('logout')}} "
-                 onclick="event.preventDefault();
+                   onclick="event.preventDefault();
                                 this.closest('form').submit();">
                     {{ __('Log Out') }}
                 </a>
@@ -47,28 +48,6 @@
     <div class="row mt-12">
         <div class="col-md-12">
             <h4>Two step verification</h4>
-            @if(Auth::user()->two_factor_secret)
-
-                <div class="m-4">
-                    <p>Currently two factor verification is enable. here is your qr code</p>
-                    {!! Auth::user()->twoFactorQrCodeSvg()  !!}
-                </div>
-                <div class="m-4">
-                    <p>Recovery code</p>
-                    <ul>
-                        @foreach(json_decode(decrypt(auth()->user()->two_factor_recovery_codes)) as $code)
-                        <li>{{$code}}</li>
-                        @endforeach
-                    </ul>
-
-
-
-                </div>
-
-            @else
-                <p>Currently two factor verification is disable</p>
-            @endif
-
             @if (session('status') == 'two-factor-authentication-enabled')
                 <div class="m-4 alert alert-success" role="alert">
                     Two factor authentication has been enabled.
@@ -79,7 +58,27 @@
                     Two factor authentication has been disabled.
                 </div>
             @endif
-            <form action="{{url('user/two-factor-authentication')}}" method="post">
+            @if(Auth::user()->two_factor_secret)
+
+                <div class="m-4">
+                    <p>Currently two factor verification is enable. here is your qr code</p>
+                    {!! Auth::user()->twoFactorQrCodeSvg()  !!}
+                </div>
+                <div class="m-4">
+                    <p>Recovery code</p>
+                    <ul>
+                        @foreach(json_decode(decrypt(auth()->user()->two_factor_recovery_codes)) as $code)
+                            <li>{{$code}}</li>
+                        @endforeach
+                    </ul>
+
+                </div>
+
+            @else
+                <p>Currently two factor verification is disable</p>
+            @endif
+
+            <form action="{{url('/admin/two-factor-authentication')}}" method="post">
                 @csrf
                 @if(Auth::user()->two_factor_secret)
                     @method('delete')

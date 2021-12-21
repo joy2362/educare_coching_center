@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::prefix('admin')->name('admin.')->middleware('auth:admin')->group(function () {
+
     Route::get('/home', function () {
         return view('admin.pages.dashboard');
     })->name('home');
@@ -43,6 +44,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth:admin')->group(function
     Route::resource('student', studentController::class);
     Route::get('district/fetch/{id}', [studentController::class, 'districtList']);
     Route::get('section/fetch/{id}', [studentController::class, 'sectionList']);
+
 
 });
 
