@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Student\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,16 +14,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+//Route::get('/', function () {
+//    return view('welcome');
+//});
 //Route::get('/home', function () {
 //    return view('home');
 //})->name('home')->middleware('auth');
 
-Route::get('/home', function () {
-    return view('home');
-})->name('home')->middleware('auth');
+Route::get('/', [HomeController::class,'index'])->name('home')
+    ->middleware('auth:web');
 
 Route::get('/profile/edit', function () {
     return view('profile');

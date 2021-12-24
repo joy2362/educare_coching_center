@@ -14,7 +14,7 @@ class BatchSeeder extends Seeder
      */
     public function run()
     {
-        for($i = 1 ; $i <= 5 ; $i++){
+        for($i = 1 ; $i <= 9 ; $i++){
             Batch::create([
                 'class_id' => $i,
                 'name'=> 'Batch 1',

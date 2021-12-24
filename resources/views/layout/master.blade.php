@@ -12,11 +12,17 @@
         @if(Auth::guard('admin')->check())
             @include('layout.partials.admin.sidebar')
         @endif
+        @if(Auth::guard('web')->check())
+            @include('layout.partials.student.sidebar')
+        @endif
         <!-- sidebar end -->
         <div class="main">
         <!-- top navbar start -->
         @if(Auth::guard('admin')->check())
             @include('layout.partials.admin.navbar')
+        @endif
+        @if(Auth::guard('web')->check())
+            @include('layout.partials.student.navbar')
         @endif
         <!-- top navbar end -->
         <!-- main conten start-0 -->

@@ -24,7 +24,7 @@
                                         <th>Name</th>
                                         <th>Mobile</th>
                                         <th>Class</th>
-                                        <th>Section</th>
+                                        <th>Batch</th>
                                         <th>Division</th>
                                         <th>District</th>
                                         <th>Actions</th>
@@ -37,7 +37,7 @@
                                                 <td>{{$row->name}}</td>
                                                 <td>{{$row->mobile_number}}</td>
                                                 <td>{{$row->class}}</td>
-                                                <td>{{$row->section}}</td>
+                                                <td>{{$row->batch}}</td>
                                                 <td>{{$row->division}}</td>
                                                 <td>{{$row->district}}</td>
                                                 <td>Action</td>

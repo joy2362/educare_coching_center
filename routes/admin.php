@@ -126,7 +126,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         ->name('two-factor.enable');
 
     Route::delete('/two-factor-authentication', [TwoFactorAuthenticationController::class, 'destroy'])
-        ->middleware(['auth:admin','password.confirm:admin.password.confirm'])
+        ->middleware(['auth:admin'])
         ->name('two-factor.disable');
 
     Route::get('/two-factor-recovery-codes', [RecoveryCodeController::class, 'index'])

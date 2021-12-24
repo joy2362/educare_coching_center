@@ -4,12 +4,14 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Mail\AccontCreated;
+use App\Models\Batch;
 use App\Models\Classes;
 use App\Models\District;
 use App\Models\Divisions;
 use App\Models\section;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -26,10 +28,10 @@ class studentController extends Controller
     {
         $students = DB::table('student_details')
             ->join('classes','classes.id','=','student_details.class_id')
-            ->join('sections','sections.id','=','student_details.section_id')
+            ->join('batches','batches.id','=','student_details.batch_id')
             ->join('districts','districts.id','=','student_details.district_id')
             ->join('divisions','divisions.id','=','student_details.division_id')
-            ->select('student_details.*','classes.name as class','sections.name as section','districts.name as district','divisions.name as division')
+            ->select('student_details.*','classes.name as class','batches.name as batch','districts.name as district','divisions.name as division')
             ->get();
         return view('admin.pages.student.index',['students'=>$students]);
     }
@@ -45,6 +47,29 @@ class studentController extends Controller
         $classes =  Classes::all();
         return view('admin.pages.student.create',['divisions'=>$divisions,'classes'=>$classes]);
     }
+     private function SendSms($number,$id,$student_password){
+         $user =env('BULKSMS_USER_ID');
+         $password =env('BULKSMS_PASSWORD');
+
+         $url = "http://66.45.237.70/api.php";
+
+         $text = "WELCOME TO EDUCARE.Admission Successful.Username:".$id ." Password:".$student_password;
+         $data= array(
+             'username'=>$user,
+             'password'=> $password,
+             'number'=>$number,
+             'message'=>"$text"
+         );
+
+         $ch = curl_init(); // Initialize cURL
+         curl_setopt($ch, CURLOPT_URL,$url);
+         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+         $smsresult = curl_exec($ch);
+
+         $p = explode("|",$smsresult);
+         $sendstatus = $p[0];
+     }
 
     /**
      * Store a newly created resource in storage.
@@ -60,15 +85,16 @@ class studentController extends Controller
             'gender' => 'required',
             'father_name' => 'required',
             'mother_name' => 'required',
-            'father_mobile_number' => 'required|unique:student_details|regex:/(01)[0-9]{9}/',
-            'mother_mobile_number' => 'required|unique:student_details|regex:/(01)[0-9]{9}/',
+            'institute' => 'required',
+            'parent_contact_number' => 'required|unique:student_details|regex:/(01)[0-9]{9}/',
+            'emergency_contact_number' => 'required|unique:student_details|regex:/(01)[0-9]{9}/',
             'father_occupation' => 'required',
             'mobile_number' => 'required|unique:student_details|regex:/(01)[0-9]{9}/',
             'present_address' => 'required',
             'permanent_address' => 'required',
             'email' => 'required',
             'class' => 'required',
-            'section' => 'required',
+            'batch' => 'required',
             'division' => 'required',
             'district' => 'required',
             'avatar' => 'required',
@@ -78,8 +104,9 @@ class studentController extends Controller
            'name' => $request->name,
            'father_name' => $request->father_name,
            'mother_name' => $request->mother_name,
-           'father_mobile_number' => $request->father_mobile_number,
-           'mother_mobile_number' => $request->mother_mobile_number,
+           'current_institute' => $request->institute,
+           'parent_contact_number' => $request->parent_contact_number,
+           'emergency_contact_number' => $request->emergency_contact_number,
            'father_occupation' => $request->father_occupation,
            'mobile_number' => $request->mobile_number,
            'present_address' => $request->present_address,
@@ -89,13 +116,14 @@ class studentController extends Controller
            'district_id' => $request->district,
            'division_id' => $request->division,
            'class_id' => $request->class,
-           'section_id' => $request->section,
+           'batch_id' => $request->batch,
         ]);
+        $student_password = Str::random('6');
 
         $student_id = new User();
-        $student_id->username = $request->mobile_number;
-        $student_id->password = Hash::make($request->mobile_number);
-        $student_id->details_id = $student;
+        $student_id->username = $student;
+        $student_id->password = Hash::make($student_password);
+
         if ($request->hasFile('avatar')){
             $file = $request->file('avatar');
             $ext = $file->getClientOriginalExtension();
@@ -105,10 +133,15 @@ class studentController extends Controller
             $file->move($folder,$fileName);
             $student_id->avatar = $url;
         }
+
         $student_id->email = $request->email;
         $student_id->save();
 
-        Mail::to($request->email)->send(new AccontCreated( $request->name , $student_id));
+        $this->SendSms($request->input('parent_contact_number'),$student ,$student_password,);
+
+        if ($request->input('email')){
+            Mail::to($request->email)->send(new AccontCreated( $request->name , $student_id,$student_password)) ;
+        }
 
         $notification=array(
             'messege'=>'Student Added Successfully!',
@@ -179,17 +212,17 @@ class studentController extends Controller
         }
     }
 
-    public function sectionList($id){
-        $sections = section::where('class_id',$id)->get();
-        if ($sections){
+    public function batchList($id){
+        $batches = Batch::where('class_id',$id)->get();
+        if ($batches){
             return response()->json([
                 'status' => 200,
-                'sections' => $sections
+                'batches' => $batches
             ]);
         }else{
             return response()->json([
                 'status' => 404,
-                'message' => "Sections Not Found"
+                'message' => "Batch Not Found"
             ]);
         }
     }

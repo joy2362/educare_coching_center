@@ -11,17 +11,18 @@ class AccontCreated extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $details , $name;
+    public $details , $name,$password;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($name,$details)
+    public function __construct($name,$details,$password)
     {
         $this->name = $name;
         $this->details = $details;
+        $this->password = $password;
     }
 
     /**

@@ -43,7 +43,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth:admin')->group(function
     //student
     Route::resource('student', studentController::class);
     Route::get('district/fetch/{id}', [studentController::class, 'districtList']);
-    Route::get('section/fetch/{id}', [studentController::class, 'sectionList']);
+    Route::get('batch/fetch/{id}', [studentController::class, 'batchList']);
 
 
 });
