@@ -10,6 +10,7 @@ use App\Models\District;
 use App\Models\Divisions;
 use App\Models\section;
 use App\Models\User;
+use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
@@ -47,7 +48,7 @@ class studentController extends Controller
         $classes =  Classes::all();
         return view('admin.pages.student.create',['divisions'=>$divisions,'classes'=>$classes]);
     }
-     private function SendSms($number,$id,$student_password){
+    private function SendSms($number,$id,$student_password){
          $user =env('BULKSMS_USER_ID');
          $password =env('BULKSMS_PASSWORD');
 
@@ -147,6 +148,22 @@ class studentController extends Controller
             'messege'=>'Student Added Successfully!',
             'alert-type'=>'success'
         );
+
+        if ($request->has('is_download')){
+        $district = District::find($request->input('district'));
+        $division = Divisions::find($request->input('division'));
+
+        $class = Classes::find($request->input('class'));
+        $batch = Batch::find($request->input('batch'));
+
+        $pdf = app('dompdf.wrapper');
+        $pdf->loadView('pdf.student_registation' , compact(
+            'request' ,'student' ,'district','division', 'class' ,'batch'));
+
+        //return $pdf->stream($student.'.pdf');
+            return $pdf->download($student.'.pdf');
+        }
+
         return Redirect()->back()->with($notification);
 
     }
@@ -155,11 +172,10 @@ class studentController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        //
+
     }
 
     /**
@@ -226,4 +242,5 @@ class studentController extends Controller
             ]);
         }
     }
+
 }

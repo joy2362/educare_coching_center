@@ -78,9 +78,9 @@
                                    </select>
                                    <label for="division">Division</label>
                                </div>
-                               <div class="form-floating g-2 mb-3 d-none district_class">
+                               <div class="form-floating g-2 mb-3 district_class">
                                    <select class="form-select @error('district') is-invalid @enderror" id="district" aria-label="district" name="district" >
-                                       <option  value=""></option>
+                                       <option selected>....</option>
                                    </select>
                                    <label for="district">District</label>
                                </div>
@@ -97,137 +97,19 @@
                                    </select>
                                    <label for="class">Class</label>
                                </div>
-                               <div class="form-floating g-2 mb-3 d-none batch_class">
+                               <div class="form-floating g-2 mb-3 batch_class">
                                    <select class="form-select @error('batch') is-invalid @enderror" id="batch" aria-label="batch" name="batch" >
-                                       <option  value=""></option>
+                                       <option selected>....</option>
                                    </select>
                                    <label for="batch">Batch</label>
+                               </div>
+                               <div class="form-check form-switch float-left">
+                                   <input class="form-check-input" type="checkbox" role="switch" id="download" checked name="is_download" value="1">
+                                   <label class="form-check-label" for="download"> Download Admission Form</label>
                                </div>
                            </div>
                        </div>
                        <button type="submit" class="btn btn-outline-primary g-2 float-right">Admit</button>
-                    <!--
-                           <table cellpadding="9" width="30%" bgcolor="99FFFF" align="center"
-                                  cellspacing="2">
-
-                               <tr>
-                                   <td colspan=2>
-                                       <center><font size=4><b>Student Admission Form</b></font></center>
-                                   </td>
-                               </tr>
-
-                               <tr>
-                                   <td>Name</td>
-                                   <td><input type=text name=textnames id="textname" size="30"></td>
-                               </tr>
-
-                               <tr>
-                                   <td>Father's Name</td>
-                                   <td><input type="text" name="fathername" id="fathername"
-                                              size="30"></td>
-                               </tr>
-                               <tr>
-                               <tr>
-                                   <td>Father's Occupation</td>
-                                   <td><input type="text" name="occupation" id="fatheroccupation"
-                                              size="30"></td>
-                               </tr>
-                               <tr>
-                                   <td>Mother's Name</td>
-                                   <td><input type="text" name="mothername" id="mothername"
-                                              size="30"></td>
-                               </tr>
-                               <td>Mother's Mobile</td>
-                               <td><input type="text" name="mobile" id="mobile" size="30"></td>
-                               </tr>
-                               <tr>
-                                   <td>Permanent Address</td>
-                                   <td><input type="text" name="paddress" id="paddress" size="30"></td>
-                               </tr>
-
-                               <tr>
-                                   <td>Present Address</td>
-                                   <td><input type="text" name="personaladdress"
-                                              id="personaladdress" size="30"></td>
-                               </tr>
-                               <tr>
-                                   <td>DOB</td>
-                                   <td><input type="text" name="dob" id="dob" size="30"></td>
-                               </tr>
-                               <tr>
-                                   <td>Mobile</td>
-                                   <td><input type="text" name="mobileno" id="mobileno" size="30"></td>
-                               </tr>
-                               <tr>
-                               <tr>
-                                   <td>Email</td>
-                                   <td><input type="text" name="email" id="email" size="30"></td>
-                               </tr>
-
-                               <tr>
-                                   <td>Sex</td>
-                                   <td><input type="radio" name="sex" value="male" size="10">Male
-                                       <input type="radio" name="sex" value="Female" size="10">Female
-                                       <input type="radio" name="sex" value="Other" size="10">Other</td>
-                               </tr>
-
-                               <tr>
-                                   <td>Class</td>
-                                   <td><select name="Class">
-                                           <option value="-1" selected>select..</option>
-                                           <option value="Five">Five</option>
-                                           <option value="Six">Six</option>
-                                           <option value="Seven">Seven</option>
-                                           <option value="Eight">Eight</option>
-                                           <option value="Nine">Nine</option>
-                                           <option value="Ten">Ten</option>
-                                           <option value="SSc">SSC</option>
-                                           <option value="Eleven">Eleven</option>
-                                           <option value="Twelve">Twelve</option>
-                                           <option value="HSc">HSC</option>
-                                       </select></td>
-                               </tr>
-
-                               <tr>
-                                   <td>District</td>
-                                   <td><select name="District">
-                                           <option value="-1" selected>select..</option>
-                                           <option value="Dhaka">Dhaka</option>
-                                           <option value="Mymensingh">Mymensingh</option>
-                                           <option value="Jamalpur">Jamalpur</option>
-                                           <option value="Sherpur">Sherpur</option>
-                                           <option value="Kishoegonj">Kishoegonj</option>
-                                           <option value="Netrokona">Netrokona</option>
-                                           <option value="Rajshahi">Rajshahi</option>
-                                           <option value="Pabna">Pabna</option>
-                                           <option value="Tangail">Tangail</option>
-                                           <option value="Gazipur">Gazipur</option>
-                                           <option value="Khulna">Khulna</option>
-                                           <option value="Dinajpur">Dinajpur</option>
-                                           <option value="Lalmonirhat">Lalmonirhat</option>
-                                           <option value="Rangpur">Rangpur</option>
-                                           <option value="Sylhet">Sylhet</option>
-                                       </select></td>
-                               </tr>
-                               <tr>
-                                   <td>Division</td>
-                                   <td><select name="City">
-                                           <option value="-1" selected>select..</option>
-                                           <option value="Dhaka">Dhaka</option>
-                                           <option value="Mymensingh">Mymensingh</option>
-                                           <option value="Khulna">Khulna</option>
-                                           <option value="Rajshahi">Rajshahi</option>
-                                           <option value="Sylhet">Sylhet</option>
-                                           <option value="Chattogram">Chattogram</option>
-                                           <option value="Barisal">Barisal</option>
-                                           <option value="Rangpur">Rangpur</option>
-                                       </select></td>
-                               </tr>
-                               <td><input type="reset"></td>
-                               <td colspan="2"><input type="submit" value="Submit"/></td>
-                               </tr>
-                           </table>
-                           -->
                    </form>
                 </div>
             </div>
@@ -262,7 +144,6 @@
                             )
                         }
                         else{
-                            $('.district_class').removeClass('d-none');
                             let district =  $('#district').empty();
                             $.each(response.district,function(key,val){
                                 district.append('<option value ="'+val.id+'">'+val.name+'</option>');
@@ -289,7 +170,6 @@
                             )
                         }
                         else{
-                            $('.batch_class').removeClass('d-none');
                             let batches =  $('#batch').empty();
                             $.each(response.batches,function(key,val){
                                 batches.append('<option value ="'+val.id+'">'+val.name + " - "+val.batch_start+ " - " + val.batch_end +'</option>');

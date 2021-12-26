@@ -38,6 +38,15 @@
                     <i class="align-middle" data-feather="user"></i> <span class="align-middle">Student</span>
                 </a>
             </li>
+            <li class="sidebar-header">
+                Notice
+            </li>
+            <li class="sidebar-item {{ request()->is('admin/student/notice')  ? 'active' :'' }}">
+                <a class="sidebar-link" href=" {{ route('admin.notice.student') }}  ">
+                    <i class="align-middle" data-feather="bell"></i> <span class="align-middle">Notice</span>
+                </a>
+            </li>
+
         </ul>
     </div>
 </nav>

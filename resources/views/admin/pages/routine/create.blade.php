@@ -42,11 +42,11 @@
                                             </div>
                                             <div class="col-md-6 g-2">
                                                 <label for="start">Class Start</label>
-                                                <input type="time" class="form-control"  min="09:00" max="18:00" name="startTime_{{$row->id}}" id="start" required>
+                                                <input type="time" class="form-control" min="06:00" max="20:00"  name="startTime_{{$row->id}}" id="start" required>
                                             </div>
                                             <div class="col-md-6 g-2">
                                                 <label for="end">Class End</label>
-                                                <input type="time" class="form-control"  min="09:00" max="18:00" name="endTime_{{$row->id}}" id="end" required>
+                                                <input type="time" class="form-control"  min="06:00" max="20:00" name="endTime_{{$row->id}}" id="end"  required>
                                             </div>
                                         </div>
                                     @endforeach

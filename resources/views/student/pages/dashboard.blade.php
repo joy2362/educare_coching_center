@@ -18,33 +18,22 @@
                                         <table class="table table-striped table-success table-hover">
                                             <thead>
                                             <tr>
-                                                <th>day</th>
-                                                <th>8:30Am - 9:30am</th>
-                                                <th>9:30Am - 11:00am</th>
+                                                <th>Subject</th>
+                                                <th>sat</th>
+                                                <th>sun</th>
+                                                <td>Mon</td>
+                                                <td>tue</td>
+                                                <td>wed</td>
+                                                <td>thu</td>
+                                                <td>fri</td>
                                             </tr>
                                             </thead>
                                             <tbody>
+                                            @foreach($subject as $row)
                                             <tr>
-                                                <td>sat</td>
+                                                 <td>{{$row->name}}</td>
                                             </tr>
-                                            <tr>
-                                                <td>sun</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Mon</td>
-                                            </tr>
-                                            <tr>
-                                                <td>tue</td>
-                                            </tr>
-                                            <tr>
-                                                <td>wed</td>
-                                            </tr>
-                                            <tr>
-                                                <td>thr</td>
-                                            </tr>
-                                            <tr>
-                                                <td>fri</td>
-                                            </tr>
+                                            @endforeach
                                             </tbody>
                                         </table>
                             </div>

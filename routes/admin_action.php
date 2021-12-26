@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\NoticeController;
 use App\Http\Controllers\Admin\studentController;
 use App\Http\Controllers\Admin\ClassesController;
 use App\Http\Controllers\Admin\SubjectController;
@@ -45,6 +46,8 @@ Route::prefix('admin')->name('admin.')->middleware('auth:admin')->group(function
     Route::get('district/fetch/{id}', [studentController::class, 'districtList']);
     Route::get('batch/fetch/{id}', [studentController::class, 'batchList']);
 
+    Route::get('/notice/student', [NoticeController::class, 'create'])->name('notice.student');
+    Route::post('/notice/student/send', [NoticeController::class, 'store'])->name('notice.student.store');
 
 });
 
