@@ -12,7 +12,7 @@
                 </a>
 
                 <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
-                    <img src="{{ asset(Auth::guard('web')->user()->avatar) }}" class="avatar img-fluid rounded me-1" alt="{{$student->name}}" /> <span class="text-dark">{{$student->name}}</span>
+                    <img src="{{ asset(Auth::guard('web')->user()->avatar) }}" class="avatar img-fluid rounded me-1" alt="{{Auth::guard('web')->user()->details->name}}" /> <span class="text-dark">{{Auth::guard('web')->user()->details->name}}</span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end">
                     <a class="dropdown-item" href="#"><i class="align-middle me-1" data-feather="user"></i> Profile</a>

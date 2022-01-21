@@ -20,7 +20,6 @@ class CreateBatchesTable extends Migration
             $table->time('batch_start');
             $table->time('batch_end');
             $table->enum('status',['active','inactive'])->default('active');
-            $table->enum('isRoutine',['yes','no'])->default('no');
             $table->enum('deleted',['yes','no'])->default('no');
             $table->timestamps();
         });

@@ -21,7 +21,6 @@ class CreateStudentDetailsTable extends Migration
             $table->string('parent_contact_number');
             $table->string('emergency_contact_number');
             $table->string('father_occupation');
-            $table->string('mobile_number');
             $table->text('present_address');
             $table->text('permanent_address');
             $table->enum('gender',['male','female']);

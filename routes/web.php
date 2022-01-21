@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminController;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Student\HomeController;
 
@@ -14,15 +16,12 @@ use App\Http\Controllers\Student\HomeController;
 |
 */
 
-//Route::get('/', function () {
-//    return view('welcome');
-//});
-//Route::get('/home', function () {
-//    return view('home');
-//})->name('home')->middleware('auth');
+Route::get('/', [HomeController::class,'index'])->name('home')->middleware('auth:web');
+Route::get('/exam-date', [HomeController::class,'exam_date'])->name('exam-date')->middleware('auth:web');
+Route::get('/exam-result', [HomeController::class,'exam_result'])->name('exam-result')->middleware('auth:web');
 
-Route::get('/', [HomeController::class,'index'])->name('home')
-    ->middleware('auth:web');
+Route::post('student/forgot-password',[HomeController::class,'forgot_password'])->name('student.forgot-password');
+
 
 Route::get('/profile/edit', function () {
     return view('profile');

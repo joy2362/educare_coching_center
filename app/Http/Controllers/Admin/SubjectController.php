@@ -10,9 +10,14 @@ use Illuminate\Support\Facades\DB;
 
 class SubjectController extends Controller
 {
+    /**
+     * @param $id
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function index($id){
         $subject = DB::table('subjects')
             ->where('subjects.deleted',"no")
+            ->where('subjects.status',"active")
             ->join('classes', 'classes.id', '=', 'subjects.class_id')
             ->where('subjects.class_id',$id)
             ->select('subjects.*','classes.name as class_name')
@@ -23,6 +28,10 @@ class SubjectController extends Controller
         return view('admin.pages.class.subject',['subjects'=>$subject,'class'=>$class]);
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function store(Request $request){
         $request->validate([
             'name' => 'required|max:255',
@@ -41,6 +50,10 @@ class SubjectController extends Controller
 
     }
 
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function show($id){
         $subject = Subject::find($id);
         if ($subject){
@@ -55,6 +68,11 @@ class SubjectController extends Controller
             ]);
         }
     }
+
+    /**
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function destroy($id){
 
         $subject = Subject::find($id);
@@ -69,6 +87,10 @@ class SubjectController extends Controller
         return Redirect()->back()->with($notification);
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function update(Request $request){
         $request->validate([
             'name' => 'required|max:255',
@@ -85,6 +107,25 @@ class SubjectController extends Controller
             'alert-type'=>'success'
         );
         return Redirect()->back()->with($notification);
+    }
 
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function subjectList($id){
+        $subjects = Subject::where('class_id',$id)->where('status','active')->where('deleted','no')->get();
+
+        if ($subjects){
+            return response()->json([
+                'status' => 200,
+                'subjects' => $subjects
+            ]);
+        }else{
+            return response()->json([
+                'status' => 404,
+                'message' => "Subject Not Found"
+            ]);
+        }
     }
 }

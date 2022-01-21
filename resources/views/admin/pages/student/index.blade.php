@@ -13,7 +13,25 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
+                            <form class="row g-3" method="post" action="{{url('admin/student/filter')}}">
+                                @csrf
+                                <div class="col-auto">
+                                    <select class="form-select @error('class') is-invalid @enderror" name="class" id="class">
 
+                                        @foreach($classes as $row)
+                                            <option value="{{$row->id}}">{{$row->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-auto">
+                                    <select class="form-select @error('batch') is-invalid @enderror" id="batch" aria-label="batch" name="batch" >
+
+                                    </select>
+                                </div>
+                                <div class="col-auto">
+                                    <button type="submit" class="btn btn-primary mb-3">Filter</button>
+                                </div>
+                            </form>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -35,12 +53,19 @@
                                             <tr>
                                                 <td>{{$row->id}}</td>
                                                 <td>{{$row->name}}</td>
-                                                <td>{{$row->mobile_number}}</td>
+                                                <td>{{$row->parent_contact_number}}</td>
                                                 <td>{{$row->class}}</td>
                                                 <td>{{$row->batch}}</td>
                                                 <td>{{$row->division}}</td>
                                                 <td>{{$row->district}}</td>
-                                                <td>Action</td>
+                                                <td>
+                                                    <form method="post" action="{{ route('admin.student.destroy', $row->id) }}">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <a class="m-2 btn btn-sm btn-primary" href="{{url('/admin/student/'.$row->id.'/edit')}}"> <i class="align-middle" data-feather="edit"></i></a>
+                                                        <button type="submit" id="destroy" class="m-2 btn btn-sm btn-danger"><i class="align-middle" data-feather="trash-2"></i></button>
+                                                    </form>
+                                                </td>
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -53,11 +78,81 @@
         </div>
     </main>
 @endsection
+
 @section('script')
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             $(document).ready(function() {
+                $('#destroy').on('click',function(e){
+                    e.preventDefault();
+                    var form = $(this).parents('form');
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: "You won't be able to revert this!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, delete it!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {form.submit();}
+                    });
+
+                });
+
                 $('#student').DataTable();
+                function ajaxsetup(){
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+                }
+                $(document).on('change','#class',function(e){
+                    let id = e.target.value;
+                    ajaxsetup();
+                    $.ajax({
+                        type:'get',
+                        url:"/admin/batch/fetch/"+id,
+                        dataType:'json',
+                        success: function(response){
+                            if(response.status === 404){
+                                Swal.fire(
+                                    'Error!',
+                                    response.message,
+                                    'error'
+                                )
+                            }
+                            else{
+                                let batches =  $('#batch').empty();
+                                $.each(response.batches,function(key,val){
+                                    batches.append('<option value ="'+val.id+'">'+val.name + " - "+val.batch_start+ " - " + val.batch_end +'</option>');
+                                });
+                            }
+                        }
+                    })
+                    $.ajax({
+                        type:'get',
+                        url:"/admin/subject/fetch/"+id,
+                        dataType:'json',
+                        success: function(response){
+                            if(response.status === 404){
+                                Swal.fire(
+                                    'Error!',
+                                    response.message,
+                                    'error'
+                                )
+                            }
+                            else{
+                                let subject =  $('#subject').empty();
+                                $.each(response.subjects,function(key,val){
+                                    subject.append('<option value ="'+val.id+'">'+val.name +'</option>');
+                                });
+                            }
+                        }
+                    })
+
+                });
             });
         });
 

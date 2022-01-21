@@ -23,6 +23,7 @@
     "dependencies": {
         "datatables.net-bs4": "^1.11.3",
         "jquery": "^3.6.0",
+        "particles.js": "^2.0.0",
         "sweetalert2": "^11.3.0",
         "toastr": "^2.1.4"
     }

@@ -33,7 +33,7 @@
                     <i class="align-middle" data-feather="user-plus"></i> <span class="align-middle">Admission</span>
                 </a>
             </li>
-            <li class="sidebar-item {{ request()->is('admin/student') ? 'active' :'' }}">
+            <li class="sidebar-item {{ request()->is('admin/student*') && !request()->is('admin/student/create') ? 'active' :'' }}">
                 <a class="sidebar-link" href=" {{ route('admin.student.index') }}  ">
                     <i class="align-middle" data-feather="user"></i> <span class="align-middle">Student</span>
                 </a>
@@ -41,9 +41,17 @@
             <li class="sidebar-header">
                 Notice
             </li>
-            <li class="sidebar-item {{ request()->is('admin/student/notice')  ? 'active' :'' }}">
+            <li class="sidebar-item {{ request()->is('admin/notice/student')  ? 'active' :'' }}">
                 <a class="sidebar-link" href=" {{ route('admin.notice.student') }}  ">
-                    <i class="align-middle" data-feather="bell"></i> <span class="align-middle">Notice</span>
+                    <i class="align-middle" data-feather="mail"></i> <span class="align-middle">Notice</span>
+                </a>
+            </li>
+            <li class="sidebar-header">
+                Exam
+            </li>
+            <li class="sidebar-item {{ request()->is('admin/exam*') ? 'active' :'' }}">
+                <a class="sidebar-link" href=" {{ route('admin.exam.index') }}  ">
+                    <i class="align-middle" data-feather="gift"></i> <span class="align-middle">Exam Date</span>
                 </a>
             </li>
 

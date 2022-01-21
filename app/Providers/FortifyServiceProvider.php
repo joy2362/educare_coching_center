@@ -49,19 +49,12 @@ class FortifyServiceProvider extends ServiceProvider
             return Limit::perMinute(5)->by($request->email.$request->ip());
         });
 
-        RateLimiter::for('two-factor', function (Request $request) {
-            return Limit::perMinute(5)->by($request->session()->get('login.id'));
-        });
-
         Fortify::loginView(function () {
             return view('auth.user.login');
         });
-        Fortify::registerView(function () {
-            return view('auth.user.registation');
-        });
 
         Fortify::requestPasswordResetLinkView(function(){
-            return view('auth.user.password.email');
+            return view('auth.user.password.sms');
         });
 
         Fortify::confirmPasswordView(function(){
@@ -69,16 +62,6 @@ class FortifyServiceProvider extends ServiceProvider
             return view('auth.user.password.confirm');
         });
 
-        Fortify::resetPasswordView(function(){
-            return view('auth.user.password.reset');
-        });
-
-        Fortify::verifyEmailView(function(){
-            return view('auth.user.verify');
-        });
-        Fortify::twoFactorChallengeView(function(){
-            return view('auth.user.twoFactorChallenge');
-        });
 
 
         if (request()->is('admin/*')) {

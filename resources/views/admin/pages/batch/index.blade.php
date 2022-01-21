@@ -133,7 +133,7 @@
                                             <td>{{$row->status}}</td>
                                             <td>
                                                 <button class="m-2 btn btn-sm btn-primary edit_button" value="{{$row->id}}"> <i class="align-middle" data-feather="edit"></i></button>
-                                                <a class="m-2 btn btn-sm btn-success" href="{{url('/admin/routine/create/'.$row->id)}}">Routine</a>
+                                                <a class="m-2 btn btn-sm btn-success" href="{{url('/admin/routine/show/'.$row->id)}}">Routine</a>
                                                 <a class="m-2 btn btn-sm btn-danger" id="delete" href="{{url('/admin/batch/delete/'.$row->id)}}"> <i class="align-middle" data-feather="trash-2"></i></a>
                                             </td>
                                         </tr>

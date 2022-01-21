@@ -155,7 +155,6 @@
                     <div class="dropdown-divider"></div>
                     <form method="POST" action="{{ route('admin.logout')  }}">
                         @csrf
-
                         <a href="{{route('admin.logout')}} "
                            class="dropdown-item"
                            onclick="event.preventDefault();

@@ -150,7 +150,6 @@
                 $('#classes').DataTable();
             });
         });
-
     </script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -198,10 +197,8 @@
                     }
                 })
 
-
-
             });
-        } );
+        });
         });
     </script>
 

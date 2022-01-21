@@ -30,7 +30,7 @@ class NoticeController extends Controller
         $this->send_sms($number , $request->input('message'));
 
         $notification=array(
-            'messege'=>'Student Added Successfully!',
+            'messege'=>'Notice Send Successfully!',
             'alert-type'=>'success'
         );
 
@@ -55,6 +55,6 @@ class NoticeController extends Controller
         curl_setopt($ch, CURLOPT_URL,$url);
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-         curl_exec($ch);
+        curl_exec($ch);
     }
 }

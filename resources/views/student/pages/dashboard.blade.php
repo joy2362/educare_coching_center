@@ -11,29 +11,26 @@
             <div class="row">
                 <div class="col-xl-12 col-xxl-12 d-flex">
                     <div class="w-100">
-
                                 <div class="card">
+                                    <div class="card-header">
+                                        <h3 class="text-center">Class Time {{date('g:i a', strtotime($batch->batch_start))}} - {{date('g:i a', strtotime($batch->batch_end))}}</h3>
+                                    </div>
                                     <div class="card-body">
 
-                                        <table class="table table-striped table-success table-hover">
+                                        <table class="table table-striped table-hover">
                                             <thead>
                                             <tr>
-                                                <th>Subject</th>
-                                                <th>sat</th>
-                                                <th>sun</th>
-                                                <td>Mon</td>
-                                                <td>tue</td>
-                                                <td>wed</td>
-                                                <td>thu</td>
-                                                <td>fri</td>
+                                                <th class="text-center">Subject</th>
+                                                <th class="text-center">Time</th>
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            @foreach($subject as $row)
-                                            <tr>
-                                                 <td>{{$row->name}}</td>
-                                            </tr>
-                                            @endforeach
+                                                @foreach($routine as $row)
+                                                    <tr>
+                                                        <td ><p class="text-center">  {{$row->subject}}</p></td>
+                                                        <td> <p class="text-center">{{$row->day}} <br> ( {{date('g:i a', strtotime($row->class_start))}} - {{date('g:i a', strtotime($row->class_end))}} )</p></td>
+                                                    </tr>
+                                                @endforeach
                                             </tbody>
                                         </table>
                             </div>

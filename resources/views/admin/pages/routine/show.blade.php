@@ -31,7 +31,7 @@
                                 </div>
                                 <div class="form-group mb-3">
                                     <label for="edit_day">Day</label>
-                                    <select class="form-select" multiple id="edit_day" required name="day[]" >
+                                    <select class="form-select" id="edit_day" required name="day" >
                                         <option value="saturday">Saturday</option>
                                         <option value="sunday">Sunday</option>
                                         <option value="monday">Monday</option>

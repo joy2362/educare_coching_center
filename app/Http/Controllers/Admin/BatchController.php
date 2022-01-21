@@ -20,7 +20,6 @@ class BatchController extends Controller
             ->where('classes.id',$id)
             ->select('batches.*','classes.name as class_name')
             ->get();
-
         return view('admin.pages.batch.index',['class'=>$class,'batches'=>$batches]);
     }
 

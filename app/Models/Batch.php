@@ -15,4 +15,13 @@ class Batch extends Model
     protected $fillable = [
         'name','class_id','batch_start','batch_end','status','deleted','isRoutine'
     ];
+
+    public function exams()
+    {
+        return $this->morphMany(Exam::class, 'examable');
+    }
+    public function students()
+    {
+        return $this->hasMany(studentDetails::class, 'batch_id', 'id');
+    }
 }
