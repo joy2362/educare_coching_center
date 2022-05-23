@@ -32,7 +32,7 @@ class AuthServiceProvider extends ServiceProvider
         //
         if (request()->is('admin/*')){
             ResetPassword::createUrlUsing(function ($user, string $token) {
-                return 'http://127.0.0.1:8000/admin/reset-password/'.$token;
+                return env('APP_URL') . "/admin/reset-password/" . $token;
             });
 
             VerifyEmail::createUrlUsing(function ($notifiable) {

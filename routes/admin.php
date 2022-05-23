@@ -136,4 +136,3 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::post('/two-factor-recovery-codes', [RecoveryCodeController::class, 'store'])
         ->middleware(['auth:admin', 'password.confirm:admin.password.confirm']);
 });
-

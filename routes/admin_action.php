@@ -59,7 +59,8 @@ Route::prefix('admin')->name('admin.')->middleware('auth:admin')->group(function
     Route::post('/exam/result/create', [ResultController::class, 'store'])->name('result.store');
     Route::post('/exam/result/update', [ResultController::class, 'update'])->name('result.update');
     //student
-    Route::resource('student', studentController::class);
+    Route::post('student/store', [studentController::class, 'storeStudent'])->name('student.stores');
+    Route::resource('student', studentController::class)->except(['store']);
     Route::post('student/filter', [studentController::class, 'filter']);
     Route::get('district/fetch/{id}', [studentController::class, 'districtList']);
     Route::get('batch/fetch/{id}', [studentController::class, 'batchList']);

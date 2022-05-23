@@ -39,7 +39,7 @@ class ResultController extends Controller
         }
 
             $exam->result_published = 'yes';
-        $exam->save();
+            $exam->save();
 
 
         $notification = array(

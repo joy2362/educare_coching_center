@@ -62,8 +62,6 @@ class FortifyServiceProvider extends ServiceProvider
             return view('auth.user.password.confirm');
         });
 
-
-
         if (request()->is('admin/*')) {
             $this->app->singleton(
                 \Laravel\Fortify\Contracts\PasswordResetResponse::class,

@@ -79,9 +79,8 @@ class studentController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request): \Illuminate\Http\RedirectResponse
+    public function storeStudent(Request $request)
     {
         $request->validate([
             'name' => 'required|max:55',
