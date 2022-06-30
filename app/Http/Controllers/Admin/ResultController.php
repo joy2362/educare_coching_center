@@ -7,10 +7,13 @@ use App\Models\Batch;
 use App\Models\Exam;
 use App\Models\Result;
 use App\Models\studentDetails;
+use App\Trait\SendSmsTrait;
 use Illuminate\Http\Request;
 
 class ResultController extends Controller
 {
+    use SendSmsTrait;
+
     public function index($id){
         $exam =Exam::find($id);
         return view('admin.pages.result.index',['exam'=>$exam]);
@@ -35,12 +38,13 @@ class ResultController extends Controller
                 'attendance' => $request->attendance[$i]
             ]);
             $result = $request->result[$i]  ?? 0;
-            $this->SendSms($request->mobile[$i] ,$exam->subject->name , $request->mark , $result);
-        }
 
+            $message = $this->result($exam->subject->name , $result, $request->mark);
+            $data = $this->prepare_data($request->mobile[$i] , $message);
+            $this->send($data);
+        }
             $exam->result_published = 'yes';
             $exam->save();
-
 
         $notification = array(
             'messege' => 'Result Published Successfully!',
@@ -84,25 +88,4 @@ class ResultController extends Controller
         return Redirect()->back()->with($notification);
     }
 
-    private function SendSms($number,$subject,$total,$result){
-        $user =env('BULKSMS_USER_ID');
-        $password =env('BULKSMS_PASSWORD');
-
-        $url = "http://66.45.237.70/api.php";
-
-        $text = "Result published for ".$subject." . Your result " .$result."/".$total.".";
-        $data= array(
-            'username'=>$user,
-            'password'=> $password,
-            'number'=>$number,
-            'message'=>"$text"
-        );
-
-        $ch = curl_init(); // Initialize cURL
-        curl_setopt($ch, CURLOPT_URL,$url);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_exec($ch);
-
-    }
 }

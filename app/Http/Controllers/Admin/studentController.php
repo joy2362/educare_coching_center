@@ -3,24 +3,21 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Mail\AccontCreated;
 use App\Models\Batch;
 use App\Models\Classes;
 use App\Models\District;
 use App\Models\Divisions;
-use App\Models\section;
 use App\Models\studentDetails;
 use App\Models\User;
-use Barryvdh\DomPDF\PDF;
+use App\Trait\SendSmsTrait;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class studentController extends Controller
 {
+    use SendSmsTrait;
     /**
      * Display a listing of the resource.
      *
@@ -51,29 +48,6 @@ class studentController extends Controller
         return view('admin.pages.student.create',['divisions'=>$divisions,'classes'=>$classes]);
     }
 
-    private function SendSms($number,$id,$student_password){
-        $user =env('BULKSMS_USER_ID');
-        $password =env('BULKSMS_PASSWORD');
-
-        $url = "http://66.45.237.70/api.php";
-
-        $text = "Congratulations.Admission Successful.Username:".$id ." Password:".$student_password .".https://www.educaremymbd.com";
-        $data= array(
-            'username'=>$user,
-            'password'=> $password,
-            'number'=>$number,
-            'message'=>"$text"
-        );
-
-        $ch = curl_init(); // Initialize cURL
-        curl_setopt($ch, CURLOPT_URL,$url);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $smsresult = curl_exec($ch);
-
-        $p = explode("|",$smsresult);
-        $sendstatus = $p[0];
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -83,7 +57,8 @@ class studentController extends Controller
     public function storeStudent(Request $request)
     {
         $request->validate([
-            'name' => 'required|max:55',
+            'firstname' => 'required|max:55',
+            'lastname' => 'required|max:55',
             'dob' => 'required',
             'gender' => 'required',
             'father_name' => 'required',
@@ -103,8 +78,10 @@ class studentController extends Controller
             'avatar' => 'required',
         ]);
 
+        $name = $request->input('firstname'). " ". $request->input('lastname');
+
         $student = DB::table('student_details')->insertGetId([
-            'name' => $request->name,
+            'name' => $name,
             'father_name' => $request->father_name,
             'mother_name' => $request->mother_name,
             'current_institute' => $request->institute,
@@ -136,13 +113,16 @@ class studentController extends Controller
             $file->move($folder,$fileName);
             $student_id->avatar = $url;
         }
+
         if($request->has('email')){
             $student_id->email = $request->email;
         }
 
         $student_id->save();
 
-        $this->SendSms($request->input('parent_contact_number'),$student ,$student_password);
+        $message = $this->admission($student ,$student_password);
+        $data = $this->prepare_data($request->input('parent_contact_number'), $message);
+        //$this->send($data);
 
         $notification=array(
             'messege'=>'Student Added Successfully!',
@@ -152,7 +132,7 @@ class studentController extends Controller
         if ($request->has('is_download')){
             $district = District::find($request->input('district'));
             $division = Divisions::find($request->input('division'));
-
+          
             $class = Classes::find($request->input('class'));
             $batch = Batch::find($request->input('batch'));
 

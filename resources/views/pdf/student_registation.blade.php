@@ -1,95 +1,235 @@
 <!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Admission Form - {{$student}}</title>
+    <head>
+        <meta charset="UTF-8">
+        <title>Admission Form</title>
+        <style>
+            .header_container{
+                width: 100%;
+                text-align: center;
+            }
+            .logo{
+                margin: 0%;
+            }
+            .InstituteName{
+                  margin: 0%;
+                line-height: 1.0;
+                font-size: 30px;
+                font-weight: bold;
+            }
+            .basic_info{
+                font-family: 20px;
+                font-weight: bold;
+                
+            }
+           .basic_info td, th {
+                padding: 10px;
+                min-width: 200px;
+                background: white;
+                box-sizing: border-box;
+                text-align: left;
+            }
+            .pi{
+                border-collapse: collapse;
+            }
+            .pi td, th {
+                border: 1px solid #000;
+                padding: 10px 5px;
+                min-width: 100px;
+                background: white;
+                box-sizing: border-box;
+                text-align: left;
+            }
+            .admission{
+                text-align: center;
+                font-size: 25px;
+            } 
+            .signature{
+                margin: 50px 2px;
+            }
+            .gurdian{
+                border-top: 2px solid #000;
+                float: left;
+                text-decoration-line: overline; 
+            }         
+        </style>
+    </head>
+    <body>
+        <div class="header_container ">
+            <div class="logo">
+                <img src="{{asset('asset/img/icons/logo.jpg')}}" class="logo" alt="logo" style="width:70px;height:70px;margin-right:15px;">
+            </div>
+             <p class="InstituteName">Educare Coaching Center</p>
+             <small>19/c Shaheb Ali Road Notun Bazar Mymensingh</small>
+        </div>
 
-    <style>
-        @page {
-            margin: 0px;
-        }
-        body {
-            margin: 0px;
-        }
-        * {
-            font-family: Verdana, Arial, sans-serif;
-        }
+        <div>
+            <h4 class="admission">Admission Form</h4>
+        </div>
 
-        .admission{
-            margin-left: 15px;
-            margin-right: 15px;
-            width: 100%;
-
-        }
-        .admission h3{
-            margin-left: 15px;
-            text-align: center;
-            font-size: 30px;
-            text-decoration: underline;
-        }
-
-        .admission p {
-            font-size: 18px;
-        }
-        .information {
-            background-color: #6c0202;
-            color: #FFF;
-        }
-        .information table {
-            text-align: center;
-        }
-        .information table tr  h3{
-            font-size: 35px;
-        }
-        .information table tr h3 small{
-            font-size: 15px;
-        }
-        .details{
-            margin: auto;
-            width: 50%;
-            padding: 10px;
-        }
-    </style>
-
-</head>
-<body>
-    <div class="information">
-        <table >
+        <table class="basic_info">
             <tr>
-                <h3>Educare Coaching Center <br>
-                    <small>19/c Shaheb Ali Road Notun Bazar Mymensingh</small>
-                </h3>
+                <td >
+                    <span >Form No: 1234</span>
+                </td>
+                    <td>
+                    <span>Date: 22/12/2022</span>
+                </td>
+                    <td>
+                    <span>Roll No: 2022010016</span>
+                </td>
+                    <td rowspan="3">
+                    <img src="{{asset('asset/img/avatars/83305.jpg')}}" class="logo" alt="logo" style="width:75px;height:100px;margin-left:5px;margin-right:5px;">
+                </td>
+            </tr>
+                <tr>
+                <td>
+                    <span>Class: {{$class->name}}</span>
+                </td>
+                    <td>
+                    <span>Batch: {{$batch->name}}</span>
+                </td>
             </tr>
         </table>
-    </div>
-<br/>
+        <P>Personal information Section</P>
+          <table class="pi">
+                 <tr >
+                    <td >
+                        <span >Name of the student </span>
+                    </td>
+                     
+                     <td colspan="3" >
+                        <span class="text-center">Abdullah zahid</span>
+                    </td>
+                </tr>
 
-<div class="admission">
-    <h3>Admission Form</h3>
-    <div class="details">
-        <p>Student Id: <span style="text-decoration: underline " >{{$student}}</span></p>
-            <p>Class : <span style="text-decoration: underline ;">{{$class->name}}</span>
-                Batch :<span style="text-decoration: underline ;">{{$batch->name}}</span></p>
-        <p>Name: <span style="text-decoration: underline " >{{$request->name}}</span></p>
-        <p>Gender: <span style="text-decoration: underline ;">{{$request->gender}}</span></p>
-        <p>Date Of Buth: <span style="text-decoration: underline ;">{{$request->dob}}</span></p>
-        <p>Father Name: <span style="text-decoration: underline" >{{$request->father_name}}</span></p>
-        <p>Mother Name: <span style="text-decoration: underline" >{{$request->mother_name}}</span></p>
-        <p>Father Occupation: <span style="text-decoration: underline" >{{$request->father_occupation}}</span></p>
-        <p>Parent Contact Number: <span style="text-decoration: underline ;">{{$request->parent_contact_number}}</span></p>
-        <p>Emergency Contact Number: <span style="text-decoration: underline ;">{{$request->emergency_contact_number}}</span></p>
-        <p>Current Institute: <span style="text-decoration: underline ;">{{$request->institute}}</span></p>
-        <p>Mobile Number: <span style="text-decoration: underline ;">{{$request->mobile_number}}</span></p>
-        <p>Email Address: <span style="text-decoration: underline ;">{{$request->email}}</span></p>
-        <p>Division: <span style="text-decoration: underline ;">{{$division->name}}</span></p>
-        <p>District: <span style="text-decoration: underline ;">{{$district->name}}</span></p>
-        <p>Present Address: <span style="text-decoration: underline ;">{{$request->present_address}}</span></p>
-        <p>Permanent Address: <span style="text-decoration: underline ;">{{$request->permanent_address}}</span></p>
+                 <tr>
+                    <td >
+                        <span >Current Institute </span>
+                    </td>
+                     
+                     <td colspan="3">
+                        <span>Southeast University</span>
+                    </td>
+                </tr>
+               
+               
+                 <tr>
+                    <td >
+                        <span >Contact No.: </span>
+                    </td>
+                     <td >
+                        <span>+8801780134797</span>
+                    </td>
+                     <td>
+                        <span>Email</span>
+                    </td>
+                     <td>
+                        <span>Abdullahzahidjoy@gmail.com</span>
+                    </td>
+                </tr>
+                 <tr >
+                    <td >
+                        <span >Date of birth:  </span>
+                    </td>
+                     <td >
+                        <span>26/12/1998</span>
+                    </td>
+                     <td>
+                        <span>Gender</span>
+                    </td>
+                    <td>
+                        <span> Male</span>
+                    </td>
+                </tr>
+                  <tr>
+                    <td >
+                        <span >Father's Name </span>
+                    </td>
+                     
+                     <td colspan="3">
+                        <span>Mr. x</span>
+                    </td>
+                </tr>
 
-    </div>
+                 <tr>
+                    <td >
+                        <span >Profession </span>
+                    </td>
+                     
+                     <td >
+                        <span>Teacher</span>
+                    </td>
+                    <td>
+                        <span>Contact No.:</span>
+                    </td>
+                    <td>
+                        <span>+8801780134797</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+                        <span >Mother's Name </span>
+                    </td>
+                     
+                     <td colspan="3">
+                        <span>Ms. y</span>
+                    </td>
+                </tr>
+                 <tr>
+                    <td >
+                        <span >Emerg  Contact number </span>
+                    </td>
+                     
+                     <td colspan="3">
+                        <span>+8801780134797</span>
+                    </td>
+                </tr>
 
+                 <tr>
+                    <td >
+                        <span >Division </span>
+                    </td>
+                     
+                     <td >
+                        <span>{{$division->name}}</span>
+                    </td>
 
+                     <td >
+                        <span >District </span>
+                    </td>
+                     
+                     <td>
+                        <span>{{$district->name}}</span>
+                    </td>
+                </tr>
+
+                 <tr>
+                    <td >
+                        <span >Permanent Address </span>
+                    </td>
+                     
+                     <td colspan="3">
+                        <span>Dhaka Bangladesh</span>
+                    </td>
+                </tr>
+
+                 <tr>
+                    <td >
+                        <span >Present Address </span>
+                    </td>
+                     
+                     <td colspan="3">
+                        <span>Dhaka Bangladesh</span>
+                    </td>
+                </tr>
+        </table>
+<div class="signature">
+    <p class="gurdian">
+        Guardian's signature
+    </p>
+    <p class="author"></p>
 </div>
-
-</body>
+        
+    </body>
 </html>

@@ -5,10 +5,13 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Classes;
 use App\Models\studentDetails;
+use App\Trait\SendSmsTrait;
 use Illuminate\Http\Request;
 
 class NoticeController extends Controller
 {
+    use SendSmsTrait;
+
     public function create(){
         $classes =  Classes::all();
         return view('admin.pages.student.notice',['classes' =>$classes ]);
@@ -23,11 +26,10 @@ class NoticeController extends Controller
 
         $student = studentDetails::where('class_id',$request->input('class'))
             ->where('batch_id',$request->input('batch'))->get();
-        $number= "";
-        foreach ($student as $row){
-            $number = $row->parent_contact_number.",".  $number ;
-        }
-        $this->send_sms($number , $request->input('message'));
+        
+        $number = $this->prepare_number($student);
+        $data = $this->prepare_data($number, $request->input('message'));
+        $this->send($data);
 
         $notification=array(
             'messege'=>'Notice Send Successfully!',

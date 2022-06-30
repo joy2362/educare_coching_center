@@ -14,8 +14,9 @@ class CreateStudentDetailsTable extends Migration
     public function up()
     {
         Schema::create('student_details', function (Blueprint $table) {
-            $table->id()->startingValue(201022001);
-            $table->string('name');
+            $table->id();
+            $table->string('first_name');
+            $table->string('last_name');
             $table->string('father_name');
             $table->string('mother_name');
             $table->string('parent_contact_number');

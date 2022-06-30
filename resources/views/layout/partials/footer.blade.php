@@ -7,6 +7,12 @@
                 </p>
             </div>
 
+             <div class="col-6 text-end">
+                <p class="mb-0">
+                   version &alpha; - 0.0.1</a>
+                </p>
+            </div>
+
         </div>
     </div>
 </footer>

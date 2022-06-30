@@ -30,3 +30,11 @@ Route::get('/profile/edit', function () {
 Route::view('password/change','password_change')
     ->middleware('auth')
     ->name('user.password.change');
+
+Route::get('/test',function(){
+   
+       $pdf = app('dompdf.wrapper');
+       $pdf->loadView('pdf.test');
+
+       return $pdf->stream("test.pdf");
+});
