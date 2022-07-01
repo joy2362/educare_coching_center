@@ -8,19 +8,38 @@ use Illuminate\Database\Eloquent\Model;
 class studentDetails extends Model
 {
     use HasFactory;
-    /**
-     * @var string[]
-     */
-    protected $fillable = [
-        'name','father_name',
-        'mother_name','parent_contact_number','emergency_contact_number',
-        'father_occupation','present_address','permanent_address',
-        'gender','current_institute','dob',
-        'district_id','division_id','class_id', 'batch_id'
-    ];
+
+    protected $guarded = [''];
+    
 
     public function results()
     {
         return $this->hasMany(Result::class, 'student_id', 'id');
     }
+
+     public function district()
+     {
+        return $this->belongsTo(District::class);
+     }
+
+     public function division(){
+        return $this->belongsTo(Divisions::class);
+     }
+
+     public function class(){
+     return $this->belongsTo(Classes::class);
+     }
+
+     public function batch(){
+     return $this->belongsTo(Batch::class);
+     }
+
+    public function user(){
+    return $this->hasOne(User::class);
+   }
+
+     public function getNameAttribute()
+     {
+        return "{$this->first_name} {$this->last_name}";
+     }
 }

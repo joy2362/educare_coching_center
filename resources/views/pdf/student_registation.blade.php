@@ -12,7 +12,7 @@
                 margin: 0%;
             }
             .InstituteName{
-                  margin: 0%;
+                margin: 0%;
                 line-height: 1.0;
                 font-size: 30px;
                 font-weight: bold;
@@ -20,9 +20,8 @@
             .basic_info{
                 font-family: 20px;
                 font-weight: bold;
-                
             }
-           .basic_info td, th {
+           .basic_info_text {
                 padding: 10px;
                 min-width: 200px;
                 background: white;
@@ -35,7 +34,7 @@
             .pi td, th {
                 border: 1px solid #000;
                 padding: 10px 5px;
-                min-width: 100px;
+                min-width: 175px;
                 background: white;
                 box-sizing: border-box;
                 text-align: left;
@@ -45,7 +44,7 @@
                 font-size: 25px;
             } 
             .signature{
-                margin: 50px 2px;
+                margin: 40px 2px;
             }
             .gurdian{
                 border-top: 2px solid #000;
@@ -57,7 +56,7 @@
     <body>
         <div class="header_container ">
             <div class="logo">
-                <img src="{{asset('asset/img/icons/logo.jpg')}}" class="logo" alt="logo" style="width:70px;height:70px;margin-right:15px;">
+                <img src="{{asset('asset/img/icons/logo.jpg')}}" class="logo" alt="logo" style="width:70px;height:70px;">
             </div>
              <p class="InstituteName">Educare Coaching Center</p>
              <small>19/c Shaheb Ali Road Notun Bazar Mymensingh</small>
@@ -69,25 +68,25 @@
 
         <table class="basic_info">
             <tr>
-                <td >
+                <td class="basic_info_text">
                     <span >Form No: 1234</span>
                 </td>
-                    <td>
+                    <td class="basic_info_text">
                     <span>Date: 22/12/2022</span>
                 </td>
-                    <td>
+                <td class="basic_info_text">
                     <span>Roll No: 2022010016</span>
                 </td>
                     <td rowspan="3">
-                    <img src="{{asset('asset/img/avatars/83305.jpg')}}" class="logo" alt="logo" style="width:75px;height:100px;margin-left:5px;margin-right:5px;">
+                     <img src="{{asset($user->user->avatar)}}" alt="{{$user->first_name . ' ' . $user->last_name}}" class="logo" alt="logo" style="width:100px;height:120px;margin-left:5px;margin-right:5px;">
                 </td>
             </tr>
-                <tr>
-                <td>
-                    <span>Class: {{$class->name}}</span>
+            <tr>
+                <td class="basic_info_text">
+                    <span>Class: {{$user->class->name}}</span>
                 </td>
-                    <td>
-                    <span>Batch: {{$batch->name}}</span>
+                <td class="basic_info_text">
+                    <span>Batch: {{$user->batch->name}}</span>
                 </td>
             </tr>
         </table>
@@ -99,7 +98,7 @@
                     </td>
                      
                      <td colspan="3" >
-                        <span class="text-center">Abdullah zahid</span>
+                        <span class="text-center">{{$user->first_name . ' ' . $user->last_name}}</span>
                     </td>
                 </tr>
 
@@ -109,7 +108,7 @@
                     </td>
                      
                      <td colspan="3">
-                        <span>Southeast University</span>
+                        <span>{{$user->current_institute}}</span>
                     </td>
                 </tr>
                
@@ -119,13 +118,13 @@
                         <span >Contact No.: </span>
                     </td>
                      <td >
-                        <span>+8801780134797</span>
+                        <span></span>
                     </td>
                      <td>
                         <span>Email</span>
                     </td>
                      <td>
-                        <span>Abdullahzahidjoy@gmail.com</span>
+                        <span>{{$user->user->gmail}}</span>
                     </td>
                 </tr>
                  <tr >
@@ -133,13 +132,13 @@
                         <span >Date of birth:  </span>
                     </td>
                      <td >
-                        <span>26/12/1998</span>
+                        <span>{{$user->dob}}</span>
                     </td>
                      <td>
                         <span>Gender</span>
                     </td>
                     <td>
-                        <span> Male</span>
+                        <span> {{$user->gender}}</span>
                     </td>
                 </tr>
                   <tr>
@@ -148,23 +147,23 @@
                     </td>
                      
                      <td colspan="3">
-                        <span>Mr. x</span>
+                        <span>{{$user->father_name}}</span>
                     </td>
                 </tr>
 
                  <tr>
                     <td >
-                        <span >Profession </span>
+                        <span >Profession</span>
                     </td>
                      
                      <td >
-                        <span>Teacher</span>
+                        <span>{{$user->father_occupation}}</span>
                     </td>
                     <td>
-                        <span>Contact No.:</span>
+                        <span>P. Contact No.:</span>
                     </td>
                     <td>
-                        <span>+8801780134797</span>
+                        <span>{{$user->parent_contact_number}}</span>
                     </td>
                 </tr>
                 <tr>
@@ -173,7 +172,7 @@
                     </td>
                      
                      <td colspan="3">
-                        <span>Ms. y</span>
+                        <span>{{$user->mother_name}}</span>
                     </td>
                 </tr>
                  <tr>
@@ -182,7 +181,7 @@
                     </td>
                      
                      <td colspan="3">
-                        <span>+8801780134797</span>
+                        <span>{{$user->emergency_contact_number}}</span>
                     </td>
                 </tr>
 
@@ -192,7 +191,7 @@
                     </td>
                      
                      <td >
-                        <span>{{$division->name}}</span>
+                        <span>{{$user->division->name}}</span>
                     </td>
 
                      <td >
@@ -200,7 +199,7 @@
                     </td>
                      
                      <td>
-                        <span>{{$district->name}}</span>
+                        <span>{{$user->district->name}}</span>
                     </td>
                 </tr>
 
@@ -210,7 +209,7 @@
                     </td>
                      
                      <td colspan="3">
-                        <span>Dhaka Bangladesh</span>
+                        <span>{{$user->permanent_address}}</span>
                     </td>
                 </tr>
 
@@ -220,16 +219,16 @@
                     </td>
                      
                      <td colspan="3">
-                        <span>Dhaka Bangladesh</span>
+                        <span>{{$user->present_address}}</span>
                     </td>
                 </tr>
         </table>
-<div class="signature">
-    <p class="gurdian">
-        Guardian's signature
-    </p>
-    <p class="author"></p>
-</div>
-        
+        <div class="signature">
+            <p class="gurdian">
+                Guardian's signature
+            </p>
+            <p class="author"></p>
+        </div>
+                
     </body>
 </html>

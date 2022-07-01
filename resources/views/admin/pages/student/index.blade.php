@@ -13,11 +13,11 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <form class="row g-3" method="post" action="{{url('admin/student/filter')}}">
-                                @csrf
+                            <form class="row g-3" method="get" action="{{url('admin/student')}}">
+                               
                                 <div class="col-auto">
                                     <select class="form-select @error('class') is-invalid @enderror" name="class" id="class">
-
+                                         <option value="" >Select Class</option>
                                         @foreach($classes as $row)
                                             <option value="{{$row->id}}">{{$row->name}}</option>
                                         @endforeach
@@ -25,7 +25,7 @@
                                 </div>
                                 <div class="col-auto">
                                     <select class="form-select @error('batch') is-invalid @enderror" id="batch" aria-label="batch" name="batch" >
-
+                                        <option value="" >Select Batch</option>
                                     </select>
                                 </div>
                                 <div class="col-auto">
@@ -52,12 +52,12 @@
                                         @foreach( $students as $row)
                                             <tr>
                                                 <td>{{$row->id}}</td>
-                                                <td>{{$row->name}}</td>
+                                                <td>{{$row->first_name . ' ' . $row->last_name}}</td>
                                                 <td>{{$row->parent_contact_number}}</td>
-                                                <td>{{$row->class}}</td>
-                                                <td>{{$row->batch}}</td>
-                                                <td>{{$row->division}}</td>
-                                                <td>{{$row->district}}</td>
+                                                <td>{{$row->class->name}}</td>
+                                                <td>{{$row->batch->name}}</td>
+                                                <td>{{$row->division->name}}</td>
+                                                <td>{{$row->district->name}}</td>
                                                 <td>
                                                     <form method="post" action="{{ route('admin.student.destroy', $row->id) }}">
                                                         @csrf

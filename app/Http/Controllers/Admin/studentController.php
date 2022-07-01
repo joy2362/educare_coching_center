@@ -23,16 +23,20 @@ class studentController extends Controller
      *
      *
      */
-    public function index()
+    public function index(Request $request)
     {
         $class = DB::table('classes')->where('status','active')->where('deleted',"no")->get();
-        $students = DB::table('student_details')
-            ->join('classes','classes.id','=','student_details.class_id')
-            ->join('batches','batches.id','=','student_details.batch_id')
-            ->join('districts','districts.id','=','student_details.district_id')
-            ->join('divisions','divisions.id','=','student_details.division_id')
-            ->select('student_details.*','classes.name as class','batches.name as batch','districts.name as district','divisions.name as division')
-            ->get();
+        $students = studentDetails::with('district:id,name','division:id,name','class:id,name','batch:id,name')->get();
+
+
+        if($request->class && $request->batch){
+            $students =
+            studentDetails::with('district:id,name','division:id,name','class:id,name','batch:id,name')->where('class_id',$request->class)->where('batch_id',$request->batch)->get();
+           
+        }else{
+            $students = studentDetails::with('district:id,name','division:id,name','class:id,name','batch:id,name')->get();
+        }
+
         return view('admin.pages.student.index',['students'=>$students,'classes'=>$class]);
     }
 
@@ -78,30 +82,52 @@ class studentController extends Controller
             'avatar' => 'required',
         ]);
 
-        $name = $request->input('firstname'). " ". $request->input('lastname');
 
-        $student = DB::table('student_details')->insertGetId([
-            'name' => $name,
-            'father_name' => $request->father_name,
-            'mother_name' => $request->mother_name,
-            'current_institute' => $request->institute,
-            'parent_contact_number' => $request->parent_contact_number,
-            'emergency_contact_number' => $request->emergency_contact_number,
-            'father_occupation' => $request->father_occupation,
+        // $student = studentDetails::create([
+        //     'first_name' => $request->firstname,
+        //     'last_name' => $request->lastname,
+        //     'father_name' => $request->father_name,
+        //     'mother_name' => $request->mother_name,
+        //     'current_institute' => $request->institute,
+        //     'parent_contact_number' => $request->parent_contact_number,
+        //     'emergency_contact_number' => $request->emergency_contact_number,
+        //     'father_occupation' => $request->father_occupation,
 
-            'present_address' => $request->present_address,
-            'permanent_address' => $request->permanent_address,
-            'gender' => $request->gender,
-            'dob' => $request->dob,
-            'district_id' => $request->district,
-            'division_id' => $request->division,
-            'class_id' => $request->class,
-            'batch_id' => $request->batch,
-        ]);
+        //     'present_address' => $request->present_address,
+        //     'permanent_address' => $request->permanent_address,
+        //     'gender' => $request->gender,
+        //     'dob' => $request->dob,
+        //     'district_id' => $request->district,
+        //     'division_id' => $request->division,
+        //     'class_id' => $request->class,
+        //     'batch_id' => $request->batch,
+        // ]);
+
+        $student = new studentDetails();
+        $student->first_name = $request->firstname;
+        $student->last_name = $request->lastname;
+        $student->father_name = $request->father_name;
+        $student->mother_name = $request->mother_name;
+        $student->current_institute = $request->institute;
+        $student->parent_contact_number = $request->parent_contact_number;
+            $student->emergency_contact_number = $request->emergency_contact_number;
+            $student->father_occupation = $request->father_occupation;
+                $student->present_address = $request->present_address;
+                $student->permanent_address = $request->permanent_address;
+                    $student->gender =$request->gender;
+                    $student->dob = $request->dob;
+                        $student->district_id = $request->district;
+                        $student->division_id = $request->division;
+                            $student->class_id = $request->class;
+                            $student->batch_id = $request->batch;
+                                $student->save();
+
+         
         $student_password = Str::random('6');
 
         $student_id = new User();
-        $student_id->username = $student;
+        $student_id->username = rand(1,9999);
+        $student_id->student_details_id = $student->id;
         $student_id->password = Hash::make($student_password);
 
         if ($request->hasFile('avatar')){
@@ -120,7 +146,7 @@ class studentController extends Controller
 
         $student_id->save();
 
-        $message = $this->admission($student ,$student_password);
+        $message = $this->admission($student->id ,$student_password);
         $data = $this->prepare_data($request->input('parent_contact_number'), $message);
         //$this->send($data);
 
@@ -130,18 +156,14 @@ class studentController extends Controller
         );
 
         if ($request->has('is_download')){
-            $district = District::find($request->input('district'));
-            $division = Divisions::find($request->input('division'));
-          
-            $class = Classes::find($request->input('class'));
-            $batch = Batch::find($request->input('batch'));
-
+            $user = studentDetails::with('user','district:id,name','division:id,name','class:id,name','batch:id,name')->find($student->id);
+           
             $pdf = app('dompdf.wrapper');
-            $pdf->loadView('pdf.student_registation' , compact(
-                'request' ,'student' ,'district','division', 'class' ,'batch'));
+
+            $pdf->loadView('pdf.student_registation' , compact('user'));
 
             //return $pdf->stream($student.'.pdf');
-            return $pdf->download($student.'.pdf');
+            return $pdf->download($user->id.'.pdf');
         }
 
         return Redirect()->back()->with($notification);
