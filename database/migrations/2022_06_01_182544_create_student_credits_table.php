@@ -15,10 +15,12 @@ class CreateStudentCreditsTable extends Migration
     {
         Schema::create('student_credits', function (Blueprint $table) {
             $table->id();
-            $table->integer('amount');
-            $table->string('name');
-            $table->string('status')->default('active');
+            $table->double('amount',10,2);
+            $table->string('type');
+            $table->unsignedBigInteger('user_id');
+            $table->string('status')->default('pending');
             $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

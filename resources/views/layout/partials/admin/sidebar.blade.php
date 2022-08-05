@@ -33,11 +33,26 @@
                     <i class="align-middle" data-feather="user-plus"></i> <span class="align-middle">Admission</span>
                 </a>
             </li>
-            <li class="sidebar-item {{ request()->is('admin/student*') && !request()->is('admin/student/create') ? 'active' :'' }}">
+            <li class="sidebar-item {{ request()->is('admin/student') && !request()->is('admin/student/create') ? 'active' :'' }}">
                 <a class="sidebar-link" href=" {{ route('admin.student.index') }}  ">
                     <i class="align-middle" data-feather="user"></i> <span class="align-middle">Student</span>
                 </a>
             </li>
+
+            <li class="sidebar-header">
+                Account
+            </li>
+            <li class="sidebar-item {{ request()->is('admin/student-account/create')  ? 'active' :'' }}">
+                <a class="sidebar-link" href=" {{ route('admin.student-account.create') }}  ">
+                    <i class="align-middle" data-feather="dollar-sign"></i> <span class="align-middle">Make Payment </span>
+                </a>
+            </li>
+            <li class="sidebar-item {{ request()->is('admin/student-account')  ? 'active' :'' }}">
+                <a class="sidebar-link" href=" {{ route('admin.student-account.index') }}  ">
+                    <i class="align-middle" data-feather="smile"></i> <span class="align-middle">Payment History</span>
+                </a>
+            </li>
+
             <li class="sidebar-header">
                 Notice
             </li>
@@ -46,6 +61,8 @@
                     <i class="align-middle" data-feather="mail"></i> <span class="align-middle">Notice</span>
                 </a>
             </li>
+
+
             <li class="sidebar-header">
                 Exam
             </li>

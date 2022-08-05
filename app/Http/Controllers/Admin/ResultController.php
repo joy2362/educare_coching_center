@@ -7,7 +7,7 @@ use App\Models\Batch;
 use App\Models\Exam;
 use App\Models\Result;
 use App\Models\studentDetails;
-use App\Trait\SendSmsTrait;
+use App\Traits\SendSmsTrait;
 use Illuminate\Http\Request;
 
 class ResultController extends Controller

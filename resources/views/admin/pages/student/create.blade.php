@@ -8,7 +8,7 @@
             <h1 class="h2 mb-3 text-center fw-bold ">Admission Form</h1>
             <div class="d-flex">
                 <div class="col">
-                    <form method="post" action="{{route('admin.student.stores')}}" enctype="multipart/form-data">
+                    <form method="post" action="{{route('admin.student.store')}}" enctype="multipart/form-data">
                         @csrf
                         <div class="card ">
                             <div class="card-body text-center">
@@ -32,6 +32,22 @@
                                         <div class="form-floating g-2 mb-3">
                                             <input type="date" class="form-control @error('dob') is-invalid @enderror" placeholder="dob" id="dob" name="dob" value="{{ old('dob') }}" max="{{date('Y-m-d')}}" >
                                             <label for="dob">DOB</label>
+                                        </div>                                    
+                                    </div>
+                                      <div class="col">
+                                        <div class="form-floating g-2 mb-3">
+                                            <select class="form-select @error('blood_group') is-invalid @enderror" id="blood_group" aria-label="blood_group" name="blood_group" >
+                                                <option value="">Select Blood group</option>
+                                                <option value="A+">A positive (A+)</option>
+                                                <option value="A-">A negative (A-)</option>
+                                                <option value="B+">B positive (B+)</option>
+                                                <option value="B-">B negative (B-)</option>
+                                                <option value="O+">O positive (O+)</option>
+                                                <option value="O-">O negative (O-)</option>
+                                                <option value="AB+">AB positive (AB+)</option>
+                                                <option value="AB-">AB negative (AB-)</option>
+                                            </select>
+                                            <label for="blood_group">Blood Group</label>
                                         </div>                                    
                                     </div>
                                     <div class="col">
@@ -66,14 +82,14 @@
                                 <div class="form-row">
                                     <div class="col">
                                         <div class="form-floating g-2 mb-3">
-                                            <input type="text" class="form-control @error('parent_contact_number') is-invalid @enderror" placeholder="Mobile number" id="parent-contact-number" name="parent_contact_number" value="{{ old('parent_contact_number') }}">
-                                            <label for="parent-contact-number">Parent Contact number(+88)</label>
+                                            <input type="text" class="form-control @error('contact_number') is-invalid @enderror" placeholder="Contact number" id="contact-number" name="contact_number" value="{{ old('contact_number') }}">
+                                            <label for="contact-number">Contact number(+88)</label>
                                         </div>
                                     </div>
                                     <div class="col">
                                         <div class="form-floating g-2 mb-3">
-                                            <input type="text" class="form-control @error('emergency_contact_number') is-invalid @enderror" placeholder="Mobile number" id="emergency-contact-number" name="emergency_contact_number" value="{{ old('emergency_contact_number') }}">
-                                            <label for="emergency-contact-number">Emergency Contact number(+88)</label>
+                                            <input type="text" class="form-control @error('parent_contact_number') is-invalid @enderror" placeholder="Contact number" id="parent-contact-number" name="parent_contact_number" value="{{ old('parent_contact_number') }}">
+                                            <label for="parent-contact-number">Parent Contact number(+88)</label>
                                         </div>
                                     </div>
                                 </div>
@@ -110,6 +126,7 @@
                                             <label for="division">Division</label>
                                         </div>
                                     </div>
+
                                     <div class="col">
                                         <div class="form-floating g-2 mb-3 district_class">
                                             <select class="form-select @error('district') is-invalid @enderror" id="district" aria-label="district" name="district" >
@@ -138,20 +155,14 @@
                                         </div>
                                     </div>
 
-                                <div class="col">
-                                    <div class="form-floating g-2 mb-3 batch_class">
-                                        <select class="form-select @error('batch') is-invalid @enderror" id="batch" aria-label="batch" name="batch" >
-                                            <option selected>....</option>
-                                        </select>
-                                        <label for="batch">Batch</label>
+                                    <div class="col">
+                                        <div class="form-floating g-2 mb-3 batch_class">
+                                            <select class="form-select @error('batch') is-invalid @enderror" id="batch" aria-label="batch" name="batch" >
+                                                <option selected>....</option>
+                                            </select>
+                                            <label for="batch">Batch</label>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                                
-                              
-                                <div class="form-check form-switch float-left">
-                                    <input class="form-check-input" type="checkbox" role="switch" id="download" checked name="is_download" value="1">
-                                    <label class="form-check-label" for="download"> Download Admission Form</label>
                                 </div>
                             </div>
                         </div>

@@ -23,7 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('avatar');
             $table->rememberToken();
             $table->timestamps();
-            $table->foreign('student_details_id')->references('id')->on('student_details');
+            $table->foreign('student_details_id')->references('id')->on('student_details')->onDelete('cascade');
         });
     }
 

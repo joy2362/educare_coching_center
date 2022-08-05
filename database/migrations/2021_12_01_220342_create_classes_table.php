@@ -19,6 +19,7 @@ class CreateClassesTable extends Migration
             $table->integer('admission_fee');
             $table->integer('monthly_fee');
             $table->integer('other_fee');
+            $table->string('class_code')->nullable();
             $table->enum('status',['active','inactive'])->default('active');
             $table->enum('deleted',['yes','no'])->default('no');
             $table->timestamps();

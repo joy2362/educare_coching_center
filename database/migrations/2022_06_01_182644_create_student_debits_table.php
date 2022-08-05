@@ -15,11 +15,12 @@ class CreateStudentDebitsTable extends Migration
     {
         Schema::create('student_debits', function (Blueprint $table) {
             $table->id();
-            $table->integer('amount');
-            $table->unsignedBigInteger('student_id');
-             $table->enum('payment_type',['cash' ,'online'])->default('cash');
+            $table->double('amount',10,2);
+            $table->unsignedBigInteger('user_id');
+            $table->enum('payment_type',['cash' ,'online'])->default('cash');
             $table->string('status')->default('paid');
             $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

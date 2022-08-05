@@ -2,12 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\Storage;
 
 class User extends Authenticatable
 {
@@ -18,14 +17,7 @@ class User extends Authenticatable
      *
      * @var string[]
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
-
-
-
+    protected $guarded = [];
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -49,7 +41,34 @@ class User extends Authenticatable
 
     public function details()
     {
-        return $this->hasOne(studentDetails::class);
+        return $this->belongsTo(studentDetails::class, 'student_details_id','id');
     }
+
+    public function getAvatarAttribute($value)
+    {
+        if (!empty($value)) {
+            return Storage::url($value) ;
+        }
+         return null;
+    }
+
+    /**
+     * Get the class.
+    */
+    public function classes()
+    {
+        return $this->belongsToMany( Classes::class )->using( studentDetails::class );
+    }
+
+    public function credit()
+    {
+        return $this->hasMany(StudentCredit::class);
+    }
+
+    public function debit()
+    {
+        return $this->hasMany(StudentDebit::class);
+    }
+
 
 }

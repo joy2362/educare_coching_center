@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\ExamController;
 use App\Http\Controllers\Admin\NoticeController;
 use App\Http\Controllers\Admin\ResultController;
+use App\Http\Controllers\Admin\Student\AccountController;
 use App\Http\Controllers\Admin\studentController;
 use App\Http\Controllers\Admin\ClassesController;
 use App\Http\Controllers\Admin\SubjectController;
@@ -59,9 +60,8 @@ Route::prefix('admin')->name('admin.')->middleware('auth:admin')->group(function
     Route::post('/exam/result/create', [ResultController::class, 'store'])->name('result.store');
     Route::post('/exam/result/update', [ResultController::class, 'update'])->name('result.update');
     //student
-    Route::post('student/store', [studentController::class, 'storeStudent'])->name('student.stores');
-    Route::resource('student', studentController::class)->except(['store']);
-    Route::post('student/filter', [studentController::class, 'filter']);
+    Route::resource('student', studentController::class);
+    Route::get('student/{id}/print', [studentController::class, 'printAdmissionForm' ]);
     Route::get('district/fetch/{id}', [studentController::class, 'districtList']);
     Route::get('batch/fetch/{id}', [studentController::class, 'batchList']);
 
@@ -72,5 +72,6 @@ Route::prefix('admin')->name('admin.')->middleware('auth:admin')->group(function
     Route::get('/website/brake/maintain', [AdminController::class, 'brake']);
     Route::get('/website/up/maintain', [AdminController::class, 'up']);
 
-});
+    Route::resource('student-account', AccountController::class)->except('edit','update','destroy');
 
+});

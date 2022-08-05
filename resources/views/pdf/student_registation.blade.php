@@ -69,17 +69,18 @@
         <table class="basic_info">
             <tr>
                 <td class="basic_info_text">
-                    <span >Form No: 1234</span>
+                    <span >Form No: #{{str_pad($user->id, 3, '0', STR_PAD_LEFT) }}</span>
                 </td>
                     <td class="basic_info_text">
-                    <span>Date: 22/12/2022</span>
+                    <span>Date: {{$user->created_at}}</span>
                 </td>
                 <td class="basic_info_text">
-                    <span>Roll No: 2022010016</span>
+                    <span>Roll No: {{$user->user->username}}</span>
                 </td>
-                    <td rowspan="3">
-                     <img src="{{asset($user->user->avatar)}}" alt="{{$user->first_name . ' ' . $user->last_name}}" class="logo" alt="logo" style="width:100px;height:120px;margin-left:5px;margin-right:5px;">
+                 <td rowspan="3">
+                     <img src="{{$user->user->avatar}}" alt="{{$user->first_name . ' ' . $user->last_name}}" class="logo" alt="logo" style="width:75px;height:90px;margin-left:5px;margin-right:5px;">
                 </td>
+                   
             </tr>
             <tr>
                 <td class="basic_info_text">
@@ -88,6 +89,7 @@
                 <td class="basic_info_text">
                     <span>Batch: {{$user->batch->name}}</span>
                 </td>
+               
             </tr>
         </table>
         <P>Personal information Section</P>
@@ -118,7 +120,7 @@
                         <span >Contact No.: </span>
                     </td>
                      <td >
-                        <span></span>
+                        <span>{{$user->contact_number}}</span>
                     </td>
                      <td>
                         <span>Email</span>
@@ -129,16 +131,16 @@
                 </tr>
                  <tr >
                     <td >
-                        <span >Date of birth:  </span>
+                        <span >Date of birth: </span>
                     </td>
                      <td >
                         <span>{{$user->dob}}</span>
                     </td>
                      <td>
-                        <span>Gender</span>
+                        <span>Gender: {{$user->gender}}</span>
                     </td>
                     <td>
-                        <span> {{$user->gender}}</span>
+                        <span>Blood Group {{$user->blood_group}} </span>
                     </td>
                 </tr>
                   <tr>
@@ -175,15 +177,7 @@
                         <span>{{$user->mother_name}}</span>
                     </td>
                 </tr>
-                 <tr>
-                    <td >
-                        <span >Emerg  Contact number </span>
-                    </td>
-                     
-                     <td colspan="3">
-                        <span>{{$user->emergency_contact_number}}</span>
-                    </td>
-                </tr>
+
 
                  <tr>
                     <td >

@@ -33,4 +33,6 @@
         text-decoration: none;
         margin: 4px;
     }
+    @yield('style')
 </style>
+

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Classes;
 use App\Models\studentDetails;
-use App\Trait\SendSmsTrait;
+use App\Traits\SendSmsTrait;
 use Illuminate\Http\Request;
 
 class NoticeController extends Controller

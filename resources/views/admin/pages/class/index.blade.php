@@ -7,7 +7,7 @@
         <div class="container-fluid p-0">
 
             <h1 class="h3 mb-3">Class
-                <a href="#" class="float-end btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#add_class">Add New</a>
+                <a href="#" class="float-end btn btn-sm btn-success rounded" data-bs-toggle="modal" data-bs-target="#add_class">Add New</a>
             </h1>
             <!-- Modal for add  -->
             <div class="modal fade" id="add_class" tabindex="-1" aria-labelledby="add_class_Label" aria-hidden="true">
@@ -35,6 +35,10 @@
                                 <div class="form-group mb-3">
                                     <label for="other_fee" class="form-label">Other Fee</label>
                                     <input type="text" class="form-control" id="other_fee" name="other_fee" required>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="class_code" class="form-label">Class Unique Code</label>
+                                    <input type="number" class="form-control" id="class_code" name="class_code" required>
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -75,6 +79,12 @@
                                     <label for="edit_other_fee" class="form-label">Other Fee</label>
                                     <input type="text" class="form-control" id="edit_other_fee" name="other_fee" required>
                                 </div>
+
+                                <div class="form-group mb-3">
+                                    <label for="edit_class_code" class="form-label">Class Unique Code</label>
+                                    <input type="number" class="form-control" id="edit_class_code" name="class_code" required>
+                                </div>
+
                                 <div class="form-group mb-3">
                                     <label  class="form-label mr-4">Status: </label>
                                     <input class="form-check-input" type="radio" name="status" id="edit_status1" value="active" >
@@ -124,12 +134,20 @@
                                         <td>{{$class->admission_fee}}</td>
                                         <td>{{$class->monthly_fee}}</td>
                                         <td>{{$class->other_fee}}</td>
-                                        <td>{{$class->status}}</td>
+                                        <td> <span class="badge @if($class->status == "active") badge-success @else badge-danger @endif" >{{ucfirst($class->status)}}</span>
+                                        </td>
                                         <td>
-                                            <button class="m-2 btn btn-sm btn-primary edit_button" value="{{$class->id}}"><i class="align-middle" data-feather="edit"></i></button>
-                                            <a class="m-2 btn btn-sm btn-success" href="{{url('/admin/class/subject/'.$class->id)}}">Subject</a>
-                                            <a class="m-2 btn btn-sm btn-info" href="{{url('/admin/class/batch/'.$class->id)}}">Batch</a>
-                                            <a class="m-2 btn btn-sm btn-danger" id="delete" href="{{url('/admin/class/delete/'.$class->id)}}"><i class="align-middle" data-feather="trash-2"></i></a>
+                                            <div class="dropdown">
+                                                <button class="btn " type="button" data-toggle="dropdown" aria-expanded="false">
+                                                    <i class="align-middle" data-feather="more-vertical"></i>
+                                                </button>
+                                                <div class="dropdown-menu">
+                                                    <button class="m-2 dropdown-item  edit_button" value="{{$class->id}}">Edit</button>
+                                                    <a class="m-2 dropdown-item" href="{{url('/admin/class/subject/'.$class->id)}}">Subject</a>
+                                                    <a class="m-2 dropdown-item" href="{{url('/admin/class/batch/'.$class->id)}}">Batch</a>
+                                                    <a class="m-2 dropdown-item" id="delete" href="{{url('/admin/class/delete/'.$class->id)}}">Delete</a>
+                                                </div>
+                                            </div>
                                         </td>
                                     </tr>
                                     @endforeach
@@ -187,6 +205,7 @@
                             $('#edit_admission_fee').val(response.class.admission_fee);
                             $('#edit_monthly_fee').val(response.class.monthly_fee);
                             $('#edit_other_fee').val(response.class.other_fee);
+                            $('#edit_class_code').val(response.class.class_code);
 
                             if(response.class.status === 'active'){
                                 $("#edit_status1").prop("checked", true);

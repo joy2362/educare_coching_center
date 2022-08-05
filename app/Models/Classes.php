@@ -12,7 +12,7 @@ class Classes extends Model
     /**
      * @var string[]
      */
-    protected $fillable = [
-        'name','admission_fee','monthly_fee','other_fee','status','deleted'
-    ];
+    protected $guarded = [];
+
+
 }

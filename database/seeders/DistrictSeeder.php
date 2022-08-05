@@ -14,7 +14,6 @@ class DistrictSeeder extends Seeder
      */
     public function run()
     {
-
         District::create(['name'=> 'Barguna' ,'slug' => 'barguna' ,'division_slug' => 'barisal']);
         District::create(['name'=> 'Barisal' ,'slug' => 'barisal' ,'division_slug' => 'barisal']);
         District::create(['name'=> 'Bhola' ,'slug' => 'bhola' ,'division_slug' => 'barisal']);

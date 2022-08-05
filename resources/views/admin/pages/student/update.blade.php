@@ -94,7 +94,8 @@
                                     <label for="district">District</label>
                                 </div>
                                 <div class="form-floating g-2 mb-3">
-                                    <img src="{{asset($student->avatar)}}" alt="{{$student->name}}" height="100px" width="100px" class="img-thumbnail m-3">
+                                    
+                                    <img src="{{ $student->user->avatar }}" alt="{{$student->first_name}}" height="100px" width="100px" class="img-thumbnail m-3">
                                     <input class="form-control @error('avatar') is-invalid @enderror" type="file" id="avatar" accept="image/*" name="avatar">
                                     <label for="formFile">Image</label>
                                 </div>

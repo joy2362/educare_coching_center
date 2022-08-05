@@ -51,20 +51,29 @@
                                     <tbody>
                                         @foreach( $students as $row)
                                             <tr>
-                                                <td>{{$row->id}}</td>
+                                                <td>{{$row->user->username}}</td>
                                                 <td>{{$row->first_name . ' ' . $row->last_name}}</td>
-                                                <td>{{$row->parent_contact_number}}</td>
-                                                <td>{{$row->class->name}}</td>
-                                                <td>{{$row->batch->name}}</td>
+                                                <td>{{ $row->contact_number ? $row->contact_number : $row->parent_contact_number}}</td>
+                                                <td>{{$row->class ? $row->class->name : '...'}}</td>
+                                                <td>{{$row->batch ? $row->batch->name : '...' }}</td>
                                                 <td>{{$row->division->name}}</td>
                                                 <td>{{$row->district->name}}</td>
                                                 <td>
-                                                    <form method="post" action="{{ route('admin.student.destroy', $row->id) }}">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <a class="m-2 btn btn-sm btn-primary" href="{{url('/admin/student/'.$row->id.'/edit')}}"> <i class="align-middle" data-feather="edit"></i></a>
-                                                        <button type="submit" id="destroy" class="m-2 btn btn-sm btn-danger"><i class="align-middle" data-feather="trash-2"></i></button>
-                                                    </form>
+                                                    <div class="dropleft">
+                                                        <a class="btn btn-success rounded btn-sm  dropdown-toggle" href="#" role="button" id="action" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            Action
+                                                        </a>
+
+                                                        <div class="dropdown-menu" aria-labelledby="action">
+                                                            <a class="m-2 dropdown-item" href="{{url('/admin/student/'.$row->id.'/print')}}"> Admission form</a>
+                                                            <a class="m-2 dropdown-item" href="{{url('/admin/student/'.$row->id.'/edit')}}"> Edit </a>
+                                                            <form method="post" action="{{ route('admin.student.destroy', $row->id) }}">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit" id="destroy" class="m-2 dropdown-item ">Delete</button>
+                                                            </form>
+                                                        </div>
+                                                    </div>         
                                                 </td>
                                             </tr>
                                         @endforeach

@@ -1,5 +1,5 @@
 <?php
-namespace App\Trait;
+namespace App\Traits;
 
 trait SendSmsTrait {
     //do somthing useful
@@ -19,13 +19,17 @@ trait SendSmsTrait {
      }
 
      public function admission($id,$student_password){
-     return "Congratulations.Admission Successful.Username:".$id ." Password:".$student_password
-     .".https://www.educaremymbd.com";
+     return "Congratulations. Admission Successful. Username:".$id ." Password:".$student_password
+     .". https://www.educaremymbd.com";
      }
 
      public function result($subject,$result,$total){
      return "Result published for ".$subject." . Your result " .$result."/".$total.".";
      }
+
+    public function payment(){
+        return "Your payment is successful.";
+    }
 
      public function prepare_data($number,$text){
      $data = array(

@@ -15,11 +15,15 @@ class adminSeeder extends Seeder
      */
     public function run()
     {
-        Admin::create([
-            'name'=> 'abdullahzahidjoy',
-            'email'=> 'admin@admin.com',
-            'password'=> hash::make('1234'),
-            'avatar'=>'asset/img/avatars/admin/admin.png',
-        ]);
+        $admin = Admin::get();
+        if(count($admin) == 0){
+            Admin::create([
+                'name'=> 'abdullahzahidjoy',
+                'email'=> 'admin@admin.com',
+                'password'=> hash::make('1234'),
+                'avatar'=>'asset/img/avatars/admin/admin.png',
+            ]);
+        }
+
     }
 }

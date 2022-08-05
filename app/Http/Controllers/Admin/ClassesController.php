@@ -25,13 +25,11 @@ class ClassesController extends Controller
             'admission_fee' => 'required|numeric',
             'monthly_fee' => 'required|numeric',
             'other_fee' => 'required|numeric',
+            'class_code' => 'required|numeric|unique:classes,class_code',
        ]);
-       $class = new Classes();
-       $class->name = $request->input('name');
-       $class->admission_fee = $request->input('admission_fee');
-       $class->monthly_fee = $request->input('monthly_fee');
-       $class->other_fee = $request->input('other_fee');
-       $class->save();
+
+       $data = $request->all();
+        Classes::create($data);
 
         $notification=array(
             'messege'=>'Class Added Successfully!',
@@ -61,14 +59,14 @@ class ClassesController extends Controller
     {
         $request->validate([
             'name' => 'required|max:255',
+            'admission_fee' => 'required|numeric',
+            'monthly_fee' => 'required|numeric',
+            'other_fee' => 'required|numeric',
+            'class_code' => 'required|numeric|unique:classes,class_code,'.$request->id,
         ]);
-        $class = Classes::find($request->id);
-        $class->name = $request->input('name');
-        $class->admission_fee = $request->input('admission_fee');
-        $class->monthly_fee = $request->input('monthly_fee');
-        $class->other_fee = $request->input('other_fee');
-        $class->status = $request->input('status');
-        $class->save();
+        $data = $request->except('id');
+
+       Classes::find($request->id)->update($data);
 
         $notification=array(
             'messege'=>'Class Update Successfully!',
