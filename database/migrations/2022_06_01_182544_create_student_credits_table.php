@@ -17,6 +17,7 @@ class CreateStudentCreditsTable extends Migration
             $table->id();
             $table->double('amount',10,2);
             $table->string('type');
+            $table->string('date')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->string('status')->default('pending');
             $table->timestamps();

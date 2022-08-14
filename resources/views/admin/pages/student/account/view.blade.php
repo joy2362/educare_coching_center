@@ -5,7 +5,9 @@
 @section('content')
     <main class="content">
         <div class="container-fluid p-0">
-            <h1 class="h3 mb-3">View Payment Details</h1>
+            <h1 class="h3 mb-3">Payment Details
+                <a href="{{route('admin.student.payment.print',$debit->id)}}" class="float-end btn btn-sm btn-success rounded" ><i class="align-middle" data-feather="printer"></i></a>
+            </h1>
 
             <div class="row mt-6">
                 <div class="col-12">
@@ -19,7 +21,7 @@
                                                 <h6 class="mb-0">Roll</h6>
                                             </div>
                                             <div class="col-sm-9 text-secondary">
-                                                202212001
+                                                {{$debit->student->username ?? "-"}}
                                             </div>
                                         </div>
                                         <hr>
@@ -28,7 +30,25 @@
                                                 <h6 class="mb-0">Full Name</h6>
                                             </div>
                                             <div class="col-sm-9 text-secondary">
-                                                Abdullah zahid
+                                                {{ ucfirst($debit->student->details->first_name ?? "-")}} {{ $debit->student->details->last_name ?? "-"}}
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <h6 class="mb-0">Class</h6>
+                                            </div>
+                                            <div class="col-sm-9 text-secondary">
+                                                {{ ucfirst($debit->student->details->class->name ?? "-")}}
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <h6 class="mb-0">Batch</h6>
+                                            </div>
+                                            <div class="col-sm-9 text-secondary">
+                                                {{ ucfirst($debit->student->details->batch->name ?? "-")}}
                                             </div>
                                         </div>
                                         <hr>

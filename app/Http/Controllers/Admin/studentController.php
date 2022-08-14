@@ -27,13 +27,22 @@ class studentController extends Controller
     public function index(Request $request)
     {
         $class = DB::table('classes')->where('status','active')->where('deleted',"no")->get();
-        $students =
-        studentDetails::with('user','district:id,name','division:id,name','class:id,name','batch:id,name')->where('status','active')->get();
+
+        $students = User::with(['details'=>function($q){
+            $q->with(['class:id,name','batch:id,name','district:id,name','division:id,name']);
+        }])->get();
 
         if($request->class && $request->batch){
-            $students =
-            studentDetails::with('user','district:id,name','division:id,name','class:id,name','batch:id,name')->where('status','active')->where('class_id',$request->class)->where('batch_id',$request->batch)->get();
+            $students = User::with(['details'=>function($q) use($request){
+                $q->with(['class:id,name' => function($q) use ($request) {
+                    $q->where('id',$request->class);
+                },'batch:id,name' =>function($q) use ($request) {
+                    $q->where('id',$request->batch);
+                },'district:id,name','division:id,name']);
+            }])->get();
         }
+
+
 
         return view('admin.pages.student.index',['students'=>$students,'classes'=>$class]);
     }
@@ -94,8 +103,7 @@ class studentController extends Controller
             'alert-type'=>'success'
         );
 
-        return Redirect()->back()->with($notification);
-
+        return Redirect('/admin/student/'.$student['user']->id.'/show')->with($notification);
     }
 
     /**
@@ -105,7 +113,10 @@ class studentController extends Controller
      */
     public function show($id)
     {
-
+        $student = User::with(['details'=>function($q){
+                $q->with(['class:id,name','batch:id,name','district:id,name','division:id,name']);
+            }])->find($id);
+       return view('admin.pages.student.view',['student'=>$student]);
     }
 
     /**
@@ -254,11 +265,11 @@ class studentController extends Controller
 
     public function printAdmissionForm($id){
       $user = studentDetails::with('user','district:id,name','division:id,name','class:id,name','batch:id,name')->find($id);
-        $pdf = app('dompdf.wrapper');
+      $pdf = app('dompdf.wrapper');
 
-        $pdf->loadView('pdf.student_registation' , compact('user'));
+      $pdf->loadView('pdf.admission' , compact('user'));
 
-        //return $pdf->stream($student.'.pdf');
-        return $pdf->download($user->user->username.'.pdf');
+        return $pdf->stream($user->user->username.'.pdf');
+        //return $pdf->download($user->user->username.'.pdf');
     }   
 }

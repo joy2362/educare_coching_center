@@ -81,6 +81,7 @@ trait StudentTrait {
     static function generate_username($id,$details){
         $class = Classes::find($id);
         $last_id = self::check_last_username($class,$details);
+
         $new_id = intval($last_id) + 1;
         $user_id =self::check_id_value($new_id);
         
@@ -96,8 +97,16 @@ trait StudentTrait {
         // ' my name'
         $student = studentDetails::with('user')->where('id','!=',$id)->where('class_id',$class->id)->latest()->first();
        // return now()->format('Y') . $class->class_code;
-       
-       return !empty( $student->user ) ? Str::after($student->user->username, now()->format('Y') . $class->class_code) : 0;
+        if(!empty($student)){
+            if(!Str::startsWith($student->user->username , now()->format('Y'))){
+
+                return 0;
+            }else{
+               return Str::after($student->user->username, now()->format('Y') . $class->class_code);
+            }
+        }else{
+            return 0;
+        }
     }
 
 }

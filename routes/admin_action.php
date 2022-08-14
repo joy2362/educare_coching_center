@@ -60,7 +60,8 @@ Route::prefix('admin')->name('admin.')->middleware('auth:admin')->group(function
     Route::post('/exam/result/create', [ResultController::class, 'store'])->name('result.store');
     Route::post('/exam/result/update', [ResultController::class, 'update'])->name('result.update');
     //student
-    Route::resource('student', studentController::class);
+    Route::resource('student', studentController::class)->except('show');
+    Route::get('student/{id}/show', [studentController::class, 'show' ]);
     Route::get('student/{id}/print', [studentController::class, 'printAdmissionForm' ]);
     Route::get('district/fetch/{id}', [studentController::class, 'districtList']);
     Route::get('batch/fetch/{id}', [studentController::class, 'batchList']);
@@ -73,5 +74,6 @@ Route::prefix('admin')->name('admin.')->middleware('auth:admin')->group(function
     Route::get('/website/up/maintain', [AdminController::class, 'up']);
 
     Route::resource('student-account', AccountController::class)->except('edit','update','destroy');
-
+    Route::get('student-account/payment/{id}/print', [AccountController::class, 'print'])->name('student.payment.print');
+    Route::get('/student/account/credit/add', [AccountController::class, 'addCredit'])->name('student.credit.add');
 });

@@ -51,29 +51,29 @@
                                     <tbody>
                                         @foreach( $students as $row)
                                             <tr>
-                                                <td>{{$row->user->username}}</td>
-                                                <td>{{$row->first_name . ' ' . $row->last_name}}</td>
-                                                <td>{{ $row->contact_number ? $row->contact_number : $row->parent_contact_number}}</td>
-                                                <td>{{$row->class ? $row->class->name : '...'}}</td>
-                                                <td>{{$row->batch ? $row->batch->name : '...' }}</td>
-                                                <td>{{$row->division->name}}</td>
-                                                <td>{{$row->district->name}}</td>
+                                                <td>{{$row->username}}</td>
+                                                <td>{{$row->details->first_name . ' ' . $row->details->last_name}}</td>
+                                                <td>{{ $row->details->contact_number ??  $row->details->parent_contact_number}}</td>
+                                                <td>{{$row->details->class ? $row->details->class->name : '...'}}</td>
+                                                <td>{{$row->details->batch ? $row->details->batch->name : '...' }}</td>
+                                                <td>{{$row->details->division->name}}</td>
+                                                <td>{{$row->details->district->name}}</td>
                                                 <td>
-                                                    <div class="dropleft">
-                                                        <a class="btn btn-success rounded btn-sm  dropdown-toggle" href="#" role="button" id="action" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                            Action
-                                                        </a>
-
-                                                        <div class="dropdown-menu" aria-labelledby="action">
-                                                            <a class="m-2 dropdown-item" href="{{url('/admin/student/'.$row->id.'/print')}}"> Admission form</a>
-                                                            <a class="m-2 dropdown-item" href="{{url('/admin/student/'.$row->id.'/edit')}}"> Edit </a>
-                                                            <form method="post" action="{{ route('admin.student.destroy', $row->id) }}">
+                                                    <div class="btn-group dropleft">
+                                                        <button class="btn " type="button" data-toggle="dropdown" aria-expanded="false">
+                                                            <i class="align-middle" data-feather="more-vertical"></i>
+                                                        </button>
+                                                        <div class="dropdown-menu">
+                                                            <a class="m-2 dropdown-item" href="{{url('/admin/student/'.$row->id.'/show')}}"> View </a>
+                                                            <a class="m-2 dropdown-item" href="{{url('/admin/student/'.$row->details->id.'/edit')}}"> Edit </a>
+                                                            <form method="post" action="{{ route('admin.student.destroy', $row->details->id) }}">
                                                                 @csrf
                                                                 @method('DELETE')
                                                                 <button type="submit" id="destroy" class="m-2 dropdown-item ">Delete</button>
                                                             </form>
                                                         </div>
-                                                    </div>         
+                                                    </div>
+
                                                 </td>
                                             </tr>
                                         @endforeach

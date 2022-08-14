@@ -58,61 +58,14 @@
                                 </div>
                             </div>
                             <div class="col-md-8">
-                                <div class="card mb-3">
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-sm-3">
-                                                <h6 class="mb-0">Roll</h6>
-                                            </div>
-                                            <div class="col-sm-9 text-secondary">
-                                                {{$student->username}}
-                                            </div>
-                                        </div>
-                                        <hr>
-                                        <div class="row">
-                                            <div class="col-sm-3">
-                                                <h6 class="mb-0">Full Name</h6>
-                                            </div>
-                                            <div class="col-sm-9 text-secondary">
-                                                {{ucfirst($student->details->first_name)}} {{$student->details->last_name}}
-                                            </div>
-                                        </div>
-                                        <hr>
-                                        <div class="row">
-                                            <div class="col-sm-3">
-                                                <h6 class="mb-0">Blood Group</h6>
-                                            </div>
-                                            <div class="col-sm-9 text-secondary">
-                                                {{ucfirst($student->details->blood_group) ?? "-"}}
-                                            </div>
-                                        </div>
-                                        <hr>
-                                        <div class="row">
-                                            <div class="col-sm-3">
-                                                <h6 class="mb-0">Mobile</h6>
-                                            </div>
-                                            <div class="col-sm-9 text-secondary">
-                                                {{$student->details->contact_number ?? $student->details->parent_contact_number}}
-                                            </div>
-                                        </div>
-                                        <hr>
-                                        <div class="row">
-                                            <div class="col-sm-3">
-                                                <h6 class="mb-0">Address</h6>
-                                            </div>
-                                            <div class="col-sm-9 text-secondary">
-                                                {{$student->details->permanent_address}}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+
                                 <form method="post" action="{{route('admin.student-account.store')}}">
                                     @csrf
                                     <div class="row gutters-sm">
                                         <div class="col-sm-6 mb-3">
                                             <div class="card h-100">
                                                 <div class="card-body">
-                                                    <h4 class="d-flex align-items-center mb-3 fw-bold">Pending Credits</h4>
+                                                    <h4 class="d-flex align-items-center mb-3 fw-bold">Pending Due</h4>
                                                     @if(count($student->credit) > 0)
                                                         @php
                                                           $amount = 0;
@@ -124,7 +77,7 @@
                                                         <input type="hidden" name="id" value="{{$student->id}}">
                                                         <div class="form-group">
                                                             <div class="form-check form-check-inline">
-                                                                <input class="form-check-input" checked type="checkbox" id="credit_{{$credit->id}}" name="credit[]" value="{{$credit->id}}">
+                                                                <input class="form-check-input due" checked type="checkbox" id="credit_{{$credit->id}}" name="credit[]" value="{{$credit->id}}" data-amount="{{$credit->amount}}">
                                                                 <label class="form-check-label" for="credit_{{$credit->id}}">{{ucfirst($credit->type) . " (".$credit->amount . ")" }}</label>
                                                             </div>
                                                         </div>
@@ -163,45 +116,24 @@
 
 @section('script')
     <script>
-        $(document).ready(function() {
+        document.addEventListener("DOMContentLoaded", function() {
+            $(document).ready(function() {
 
+                $(document).on('change','.due',function(e){
+
+                    var checkedValue = null;
+                    $('input[name=checkbox]:checked').each(function()
+                    {
+                        console.log($(this).val() + ",");
+                    }
+                    );
+
+
+
+                     
+                });
+
+            });
         });
     </script>
-@endsection
-@section('style')
-
-        .card {
-            box-shadow: 0 1px 3px 0 rgba(0,0,0,.1), 0 1px 2px 0 rgba(0,0,0,.06);
-        }
-
-        .card {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            min-width: 0;
-            word-wrap: break-word;
-            background-color: #fff;
-            background-clip: border-box;
-            border: 0 solid rgba(0,0,0,.125);
-            border-radius: .25rem;
-        }
-
-        .card-body {
-            flex: 1 1 auto;
-            min-height: 1px;
-            padding: 1rem;
-        }
-
-        .gutters-sm {
-            margin-right: -8px;
-            margin-left: -8px;
-        }
-
-        .gutters-sm>.col, .gutters-sm>[class*=col-] {
-            padding-right: 8px;
-            padding-left: 8px;
-        }
-
-
-
 @endsection

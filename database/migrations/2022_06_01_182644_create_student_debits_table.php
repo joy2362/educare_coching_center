@@ -16,6 +16,7 @@ class CreateStudentDebitsTable extends Migration
         Schema::create('student_debits', function (Blueprint $table) {
             $table->id();
             $table->double('amount',10,2);
+            $table->bigInteger('sl_no')->default(1001);
             $table->unsignedBigInteger('user_id');
             $table->enum('payment_type',['cash' ,'online'])->default('cash');
             $table->string('status')->default('paid');

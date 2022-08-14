@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class StudentDebit extends Model
 {
     use HasFactory;
+
     protected $guarded = [];
 
     /**

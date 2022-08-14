@@ -70,13 +70,32 @@ class AccountController extends Controller
                 ->withErrors($validator)
                 ->withInput();
         }
-
+        
+        $lastDebit = StudentDebit::latest('id')->first();
+        $data['sl_no'] = $lastDebit && $lastDebit->sl_no ? $lastDebit->sl_no + 1 : 1001;
+        
         $data['amount'] = $request->amount;
+
         $debit = User::find($request->id)->debit()->create($data);
 
-        StudentCredit::whereIn('id',$request->credit)->update([
-            'status'=>'paid'
-        ]);
+        $paid = $request->amount;
+        $credits = StudentCredit::whereIn('id',$request->credit)->get();
+
+        foreach($credits as $credit){
+            $credit->update([
+                'status'=>'paid'
+            ]);
+            if($credit->amount > $paid){
+                $data = now()->format("Ym");
+                $due['amount'] = $credit->amount - $paid;
+                $due['type'] = "Due";
+                $due['date'] = $data;
+                User::find($request->id)->credit()->create($due);
+            }
+
+            $paid -= $credit->amount;
+
+        }
 
         $student = User::with('details')->find($request->id);
 
@@ -101,11 +120,45 @@ class AccountController extends Controller
     {
         $debit = StudentDebit::with(['student'=> function($q){
             $q->with(['details'=>function($q){
-                $q->with(['class:name','batch:name']);
+                $q->with(['class:id,name','batch:id,name']);
             }]);
         }])->find($id);
        // dd($debit);
         return view('admin.pages.student.account.view',['debit'=>$debit]);
+    }
+
+    public function print($id){
+        $debit = StudentDebit::with(['student'=> function($q){
+            $q->with(['details'=>function($q){
+                $q->with(['class:id,name','batch:id,name']);
+            }]);
+        }])->find($id);
+
+        $pdf = app('dompdf.wrapper');
+
+        $pdf->loadView('pdf.payment' , ['debit'=>$debit]);
+
+        return $pdf->stream($debit->sl_no.'.pdf');
+        //return $pdf->download($user->user->username.'.pdf');
+    }
+
+    public function addCredit(){
+        $students = User::with(['details'=>function($q){
+            $q->with(['class:id,monthly_fee']);
+        }])->get();
+        foreach ($students as $student ){
+            $data['amount'] = $student->details->class->monthly_fee;
+            $data['type'] = "monthly fee";
+           $student->credit()->create($data);
+        }
+
+
+        $notification=array(
+            'messege'=>'Credit Added Successfully!',
+            'alert-type'=>'success'
+        );
+
+        return Redirect()->back()->with($notification);
     }
 
 }

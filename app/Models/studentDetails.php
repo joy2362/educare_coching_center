@@ -45,7 +45,7 @@ class studentDetails extends Model
      }
 
     public function user(){
-      return $this->hasOne(User::class);
+      return $this->hasOne(User::class,'student_details_id','id');
    }
 
      public function getNameAttribute()
