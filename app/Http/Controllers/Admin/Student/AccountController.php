@@ -37,6 +37,8 @@ class AccountController extends Controller
                 $q->where('status','pending');
             },'debit'=> function($q){
                 $q->orderBy('id','desc')->take(5);
+            },'details'=>function($q){
+                $q->with(['class:id,name,monthly_fee']);
             }])->where('username',$request->username)->first();
         }else{
             $student = null;
@@ -52,11 +54,12 @@ class AccountController extends Controller
      */
     public function store(Request $request)
     {
+
         $validator = Validator::make($request->all(), [
             'amount' => 'required|numeric',
         ]);
 
-        if($request->credit == null  || count($request->credit) == 0){
+        if($request->credit == null || count($request->credit) == 0){
             $validator->errors()->add('credit','Please select credit');
             return redirect()
                 ->back()
@@ -79,6 +82,19 @@ class AccountController extends Controller
         $debit = User::find($request->id)->debit()->create($data);
 
         $paid = $request->amount;
+
+        if($request->month != null || count($request->month) != 0){
+            foreach ($request->month as $month ){
+                $adv['date'] = $month;
+                $adv['status'] = "paid";
+                $adv['type'] = "monthly fee";
+                $adv['amount'] = $request->monthly_fee;
+                User::find($request->id)->credit()->create($adv);
+                $paid -= $request->monthly_fee;
+            }
+        }
+
+
         $credits = StudentCredit::whereIn('id',$request->credit)->get();
 
         foreach($credits as $credit){
@@ -86,9 +102,9 @@ class AccountController extends Controller
                 'status'=>'paid'
             ]);
             if($credit->amount > $paid){
-                $data = now()->format("Ym");
+                $data = now()->format("Y-m");
                 $due['amount'] = $credit->amount - $paid;
-                $due['type'] = "Due";
+                $due['type'] = "due";
                 $due['date'] = $data;
                 User::find($request->id)->credit()->create($due);
             }
@@ -123,7 +139,7 @@ class AccountController extends Controller
                 $q->with(['class:id,name','batch:id,name']);
             }]);
         }])->find($id);
-       // dd($debit);
+
         return view('admin.pages.student.account.view',['debit'=>$debit]);
     }
 
@@ -154,7 +170,7 @@ class AccountController extends Controller
 
 
         $notification=array(
-            'messege'=>'Credit Added Successfully!',
+            'messege'=>'Due Added Successfully!',
             'alert-type'=>'success'
         );
 

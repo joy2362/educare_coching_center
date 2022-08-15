@@ -1,6 +1,6 @@
 @extends('layout.master')
 @section('title')
-    <title>Student</title>
+    <title>Payment</title>
 @endsection
 @section('content')
     <main class="content">
@@ -58,12 +58,11 @@
                                 </div>
                             </div>
                             <div class="col-md-8">
-
                                 <form method="post" action="{{route('admin.student-account.store')}}">
                                     @csrf
                                     <div class="row gutters-sm">
                                         <div class="col-sm-6 mb-3">
-                                            <div class="card h-100">
+                                            <div class="card">
                                                 <div class="card-body">
                                                     <h4 class="d-flex align-items-center mb-3 fw-bold">Pending Due</h4>
                                                     @if(count($student->credit) > 0)
@@ -87,6 +86,18 @@
                                                     @endif
                                                 </div>
                                             </div>
+                                            <div class="card ">
+                                                <div class="card-body">
+                                                    <h4 class="d-flex align-items-center mb-3 fw-bold">Advance </h4>
+                                                    <div class="from-group mb-3">
+                                                        <button type="button" class="btn btn-success rounded btn-sm" name="add" id="add" ><i class="align-middle" data-feather="plus"></i></button>
+                                                        <button type="button" class="btn btn-danger rounded btn-sm d-none"  id="remove" ><i class="align-middle" data-feather="minus"></i></button>
+                                                    </div>
+                                                    <div class="adv_pay">
+
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="col-sm-6 mb-3">
                                             <div class="card h-100">
@@ -95,6 +106,7 @@
                                                     <div class="form-group">
                                                         <label for="amount">Amount</label>
                                                         <input type="text" class="form-control" id="amount" name="amount" value="{{ $amount ?? 0}}">
+                                                        <input type="hidden"  name="monthly_fee" value="{{$student->details->class->monthly_fee ?? 0}}">
                                                     </div>
                                                     <div class="form-group float-end">
                                                         <button type="submit" class="btn btn-success">Save</button>
@@ -117,22 +129,58 @@
 @section('script')
     <script>
         document.addEventListener("DOMContentLoaded", function() {
+
+            const monthly_fee = {{$student->details->class->monthly_fee ?? 0}};
+
+            const amount_input = $("#amount");
+            var count_adv = 0;
+
             $(document).ready(function() {
+                function calculateDate(val){
+                    const date = new Date();
+                    date.setMonth(date.getMonth() + val);
+                    let year = date.getFullYear();
+                    let month = ("0" + (date.getMonth() +　1)).slice(-2);
+                    return year + "-" + month;
+                }
+                $('#add').click(function(){
+                    const value = $(".adv_pay").find(".form-group").length;
+                    const date = calculateDate( value + 1);
+
+                    $('.adv_pay').append(' <div class="form-group"> <label for="month"> Month </label> <input id="month" class="form-control" type="month" name="month[]" min="' + date + '" value="' + date + '"readonly > </div>');
+                    if( $("#remove").hasClass("d-none")){
+                        $("#remove").removeClass("d-none");
+                    }
+
+                    let amount = parseInt( amount_input.val()) + monthly_fee;
+                    amount_input.val(amount);
+                    count_adv ++;
+
+                });
+
+                $('#remove').click(function(){
+
+                    $(".adv_pay").find(".form-group:last").remove();
+                    const value = $(".adv_pay").find(".form-group").length;
+
+                    let amount = parseInt( amount_input.val()) - monthly_fee;
+                    amount_input.val(amount);
+                    count_adv --;
+                    if(value === 0){
+                        $("#remove").addClass("d-none");
+                    }
+                });
 
                 $(document).on('change','.due',function(e){
 
-                    var checkedValue = null;
-                    $('input[name=checkbox]:checked').each(function()
-                    {
-                        console.log($(this).val() + ",");
-                    }
-                    );
+                    let amount = 0;
+                    $('.due:checked').each(function(){
+                        amount += $(this).data("amount") ;
+                    });
 
-
-
+                    amount_input.val((count_adv * monthly_fee) + amount);
                      
                 });
-
             });
         });
     </script>
