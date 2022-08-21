@@ -6,10 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\Batch;
 use App\Models\Classes;
 use App\Models\Routine;
-use App\Models\section;
 use App\Models\Subject;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class ClassesController extends Controller
 {
@@ -17,19 +18,68 @@ class ClassesController extends Controller
         $classes = Classes::where('deleted',"no")->get();
         return view('admin.pages.class.index',['classes'=>$classes]);
     }
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
+     */
+    public function create()
+    {
+        return view('admin.pages.class.create');
+    }
 
     public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
-       $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => 'required|unique:classes|max:255',
             'admission_fee' => 'required|numeric',
             'monthly_fee' => 'required|numeric',
             'other_fee' => 'required|numeric',
             'class_code' => 'required|numeric|unique:classes,class_code',
-       ]);
+        ]);
 
-       $data = $request->all();
-        Classes::create($data);
+        if($request->sub_name == null || count($request->sub_name) == 0){
+            $validator->errors()->add('Subject','At least one subject required');
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+        try {
+            DB::beginTransaction();
+            $data = $request->only('name','admission_fee','monthly_fee','other_fee','class_code');
+            $class =  Classes::create($data);
+            $subject = [];
+            foreach ($request->sub_name as $sub){
+                $subject[] = ['name'=>$sub];
+            }
+
+            $class->subject()->createMany($subject);
+            $batch = [];
+            for ($i =0 ; $i < count($request->batch_name) ; $i++ ){
+                $batch[] = [
+                    'name' => $request->batch_name[$i],
+                    'batch_start' => $request->class_start[$i],
+                    'batch_end' => $request->class_end[$i],
+                ];
+            }
+            $class->batch()->createMany($batch);
+            DB::commit();
+        }catch ( Exception $ex ){
+            DB::rollBack();
+            $notification = array(
+                'messege' => 'Something went wrong!',
+                'alert-type' => 'error'
+            );
+            return Redirect()->back()->with($notification);
+        }
 
         $notification=array(
             'messege'=>'Class Added Successfully!',

@@ -20,11 +20,13 @@ Route::prefix('admin')->name('admin.')->middleware('auth:admin')->group(function
     })->name('home');
 
     //class crud
-    Route::get('/class', [ClassesController::class, 'index'])->name('class.index');
-    Route::get('/class/show/{id}', [ClassesController::class, 'show']);
-    Route::get('/class/delete/{id}', [ClassesController::class, 'destroy']);
-    Route::post('/class/create', [ClassesController::class, 'store'])->name('class.create');
-    Route::post('/class/update', [ClassesController::class, 'update'])->name('class.update');
+    Route::resource('class', ClassesController::class);
+
+//    Route::get('/class', [ClassesController::class, 'index'])->name('class.index');
+//    Route::get('/class/show/{id}', [ClassesController::class, 'show']);
+//    Route::get('/class/delete/{id}', [ClassesController::class, 'destroy']);
+//    Route::post('/class/create', [ClassesController::class, 'store'])->name('class.create');
+//    Route::post('/class/update', [ClassesController::class, 'update'])->name('class.update');
 
     //subject crud
     Route::get('/class/subject/{id}', [SubjectController::class, 'index']);

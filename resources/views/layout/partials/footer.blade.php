@@ -9,7 +9,7 @@
 
              <div class="col-6 text-end">
                 <p class="mb-0">
-                   version &alpha; - 0.0.1</a>
+                   version &alpha; - 0.1.0
                 </p>
             </div>
 
