@@ -12,6 +12,7 @@ class Subject extends Model
         'name','class_id','status','deleted'
     ];
 
+    //handle subject update with class
     public static function updateViaClass($class,$subjectName,$subjectId){
         if(!empty($subjectId)){
             Subject::whereNotIn('id',$subjectId)->delete();
