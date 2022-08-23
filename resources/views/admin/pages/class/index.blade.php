@@ -30,7 +30,7 @@
                                     <tbody>
                                     @foreach($classes as $class)
                                     <tr>
-                                        <td>{{$loop->index    +1}}</td>
+                                        <td>{{$loop->index +1}}</td>
                                         <td>{{$class->name}}</td>
                                         <td>{{$class->admission_fee}}</td>
                                         <td>{{$class->monthly_fee}}</td>
@@ -43,7 +43,7 @@
                                                     <i class="align-middle" data-feather="more-vertical"></i>
                                                 </button>
                                                 <div class="dropdown-menu">
-                                                    <button class="m-2 dropdown-item  edit_button" value="{{$class->id}}">Edit</button>
+                                                    <a class="m-2 dropdown-item" href="{{route('admin.class.edit',$class->id)}}">Edit</a>
                                                     <a class="m-2 dropdown-item" href="{{url('/admin/class/subject/'.$class->id)}}">Subject</a>
                                                     <a class="m-2 dropdown-item" href="{{url('/admin/class/batch/'.$class->id)}}">Batch</a>
                                                     <a class="m-2 dropdown-item" id="delete" href="{{url('/admin/class/delete/'.$class->id)}}">Delete</a>

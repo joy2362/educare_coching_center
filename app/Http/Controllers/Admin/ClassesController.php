@@ -28,7 +28,7 @@ class ClassesController extends Controller
         return view('admin.pages.class.create');
     }
 
-    public function store(Request $request): \Illuminate\Http\RedirectResponse
+    public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|unique:classes|max:255',
@@ -105,25 +105,80 @@ class ClassesController extends Controller
         }
     }
 
-    public function update(Request $request): \Illuminate\Http\RedirectResponse
+    public function edit($id)
     {
-        $request->validate([
-            'name' => 'required|max:255',
-            'admission_fee' => 'required|numeric',
-            'monthly_fee' => 'required|numeric',
-            'other_fee' => 'required|numeric',
-            'class_code' => 'required|numeric|unique:classes,class_code,'.$request->id,
-        ]);
-        $data = $request->except('id');
+       $class =  Classes::with('subject','batch')->find($id);
 
-       Classes::find($request->id)->update($data);
+       return view('admin.pages.class.edit',['class'=>$class]);
 
-        $notification=array(
-            'messege'=>'Class Update Successfully!',
-            'alert-type'=>'success'
+    }
+
+    public function update(Request $request,$id)
+    {
+        $validator = $this->formValidation($request);
+
+        if($validator == true){
+            try {
+                DB::beginTransaction();
+
+                $data = $request->only('name','admission_fee','monthly_fee','other_fee','class_code');
+                Classes::find($id)->update($data);
+
+
+                for ($i =0 ; $i < count($request->sub_name) ; $i++ ){
+
+                    $subject['name'] = $request->sub_name[$i];
+                    if(!empty($request->sub_id[$i])){
+                        Subject::find($request->sub_id[$i])->update($subject);
+                    }else{
+                        $subject['class_id'] = $id;
+                        Subject::created($subject);
+                    }
+                }
+
+
+
+                for ($i =0 ; $i < count($request->batch_name) ; $i++ ){
+                    $batch['name'] = $request->batch_name[$i];
+                    $batch['batch_start'] = $request->class_start[$i];
+                    $batch['batch_end'] = $request->class_end[$i];
+
+                    if(!empty($request->batch_id[$i])){
+                        Batch::find($request->batch_id[$i])->update( $batch);
+                    }else{
+                        $batch['class_id'] = $id;
+                        Batch::created($subject);
+                    }
+
+                }
+
+                DB::commit();
+            }catch (Exception $ex){
+                DB::rollBack();
+               // dd($ex);
+                $notification = array(
+                    'messege' => $ex->getMessage(),
+                    'alert-type' => 'error'
+                );
+                return Redirect()->back()->with($notification);
+            }
+        }else{
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput();
+//            $notification=array(
+//                'messege'=>'Something went wrong!',
+//                'alert-type'=>'success'
+//            );
+//            return Redirect()->back()->with($notification);
+        }
+
+        $notification = array(
+            'messege' => "class info Update!!",
+            'alert-type' => 'success'
         );
         return Redirect()->back()->with($notification);
-
     }
 
     public function destroy($id): \Illuminate\Http\RedirectResponse
@@ -150,6 +205,26 @@ class ClassesController extends Controller
         );
 
         return Redirect()->back()->with($notification);
+    }
+
+    public function formValidation(Request $request){
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|unique:classes|max:255',
+            'admission_fee' => 'required|numeric',
+            'monthly_fee' => 'required|numeric',
+            'other_fee' => 'required|numeric',
+            'class_code' => 'required|numeric|unique:classes,class_code',
+        ]);
+
+        if($request->sub_name == null || count($request->sub_name) == 0){
+            $validator->errors()->add('Subject','At least one subject required');
+            return $validator;
+        }
+
+        if ($validator->fails()) {
+            return $validator;
+        }
+        return true;
     }
 
 

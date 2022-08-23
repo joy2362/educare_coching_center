@@ -20,7 +20,9 @@ Route::prefix('admin')->name('admin.')->middleware('auth:admin')->group(function
     })->name('home');
 
     //class crud
-    Route::resource('class', ClassesController::class);
+    Route::resource('class', ClassesController::class)->parameters([
+        'class' => 'id'
+    ]);
 
 //    Route::get('/class', [ClassesController::class, 'index'])->name('class.index');
 //    Route::get('/class/show/{id}', [ClassesController::class, 'show']);

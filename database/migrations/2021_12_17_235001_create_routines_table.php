@@ -23,6 +23,8 @@ class CreateRoutinesTable extends Migration
             $table->string('teacher_initial');
             $table->enum('deleted',['yes','no'])->default('no');
             $table->timestamps();
+            $table->foreign('batch_id')->on('batches')->references('id')->onDelete("cascade");
+            $table->foreign('subject_id')->on('subjects')->references('id')->onDelete("cascade");
         });
     }
 
