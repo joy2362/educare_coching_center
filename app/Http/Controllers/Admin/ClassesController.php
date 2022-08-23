@@ -124,38 +124,13 @@ class ClassesController extends Controller
                 $data = $request->only('name','admission_fee','monthly_fee','other_fee','class_code');
                 Classes::find($id)->update($data);
 
+                Subject::updateViaClass($id,$request->sub_name,$request->sub_id);
 
-                for ($i =0 ; $i < count($request->sub_name) ; $i++ ){
-
-                    $subject['name'] = $request->sub_name[$i];
-                    if(!empty($request->sub_id[$i])){
-                        Subject::find($request->sub_id[$i])->update($subject);
-                    }else{
-                        $subject['class_id'] = $id;
-                        Subject::created($subject);
-                    }
-                }
-
-
-
-                for ($i =0 ; $i < count($request->batch_name) ; $i++ ){
-                    $batch['name'] = $request->batch_name[$i];
-                    $batch['batch_start'] = $request->class_start[$i];
-                    $batch['batch_end'] = $request->class_end[$i];
-
-                    if(!empty($request->batch_id[$i])){
-                        Batch::find($request->batch_id[$i])->update( $batch);
-                    }else{
-                        $batch['class_id'] = $id;
-                        Batch::created($subject);
-                    }
-
-                }
+                Batch::updateViaClass($id,$request->batch_name,$request->class_start,$request->class_end,$request->batch_id);
 
                 DB::commit();
             }catch (Exception $ex){
                 DB::rollBack();
-               // dd($ex);
                 $notification = array(
                     'messege' => $ex->getMessage(),
                     'alert-type' => 'error'
@@ -167,11 +142,6 @@ class ClassesController extends Controller
                 ->back()
                 ->withErrors($validator)
                 ->withInput();
-//            $notification=array(
-//                'messege'=>'Something went wrong!',
-//                'alert-type'=>'success'
-//            );
-//            return Redirect()->back()->with($notification);
         }
 
         $notification = array(

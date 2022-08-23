@@ -56,28 +56,18 @@
                             <div class="row sub" >
                                 @if(count($class->subject ) > 0)
                                 @foreach($class->subject as $subject)
-                                    @if($loop->index == 0)
-                                            <div class="col-md-6 mt-3" id="{{'sub_'. ($loop->index +1)}}">
-                                                <div class="form-inline">
-                                                    <div class="form-group mt-3">
-                                                        <label for="{{'sub_name_'. ($loop->index +1)}}">Name</label>
-                                                        <input type="text" class="form-control mx-sm-3" id="{{'sub_name_'. ($loop->index +1)}}" name="sub_name[]" required value="{{$subject->name}}">
-                                                        <input type="hidden" name="sub_id[]"  value="{{$subject->id}}">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        @else
-                                        <div class="col-md-6 mt-3" id="{{'sub_'. ($loop->index +1)}}">
-                                            <div class="form-inline">
-                                                <div class="form-group mt-3">
-                                                    <label for="{{'sub_name_'. ($loop->index +1)}}">Name</label>
-                                                    <input type="text" class="form-control mx-sm-3" id="{{'sub_name_'. ($loop->index +1)}}" name="sub_name[]" required value="{{$subject->name}}">
-                                                    <input type="hidden" name="sub_id[]"  value="{{$subject->id}}">
-                                                    <button type="button" class="btn text-danger remove_sub fw-bold" id="{{($loop->index +1)}}" onclick="handle_remove_sub({{($loop->index +1)}})"> x </button>
-                                                </div>
+                                    <div class="col-md-6 mt-3" id="{{'sub_'. ($loop->index +1)}}">
+                                        <div class="form-inline">
+                                            <div class="form-group mt-3">
+                                                <label for="{{'sub_name_'. ($loop->index +1)}}">Name</label>
+                                                <input type="text" class="form-control mx-sm-3" id="{{'sub_name_'. ($loop->index +1)}}" name="sub_name[]" required value="{{$subject->name}}">
+                                                <input type="hidden" name="sub_id[]"  value="{{$subject->id}}">
+                                                @if($loop->index != 0)
+                                                <button type="button" class="btn text-danger remove_sub fw-bold" id="{{($loop->index +1)}}" onclick="handle_remove_sub({{($loop->index +1)}})"> x </button>
+                                                @endif
                                             </div>
                                         </div>
-                                        @endif
+                                    </div>
                                 @endforeach
                                 @else
                                     <div class="col-md-6 mt-3" id="sub_1">
@@ -96,51 +86,70 @@
                             </div>
 
                         </fieldset>
+
                         <fieldset class="border border-secondary p-2 mt-2">
                             <legend class="float-none w-auto p-2">Batch</legend>
                             <div id="batch">
                                 @if(count($class->batch ) > 0)
                                 @foreach($class->batch as $batch)
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="form-group ">
-                                            <label for="batch_name">Name</label>
-                                            <input type="text" class="form-control" id="batch_name" name="batch_name[]" required value="{{$batch->name}}">
-                                            <input type="hidden"  name="batch_id[]"  value="{{$batch->id}}">
+
+                                        <div class="row mt-3" id="{{'batch_'. ($loop->index +1)}}">
+                                            <div class="col-md-4">
+                                                <div class="form-inline">
+                                                    <div class="form-group ">
+                                                        <label for="{{'batch_name_'. ($loop->index +1)}}">Name</label>
+                                                        <input type="text" class="form-control mx-sm-3" id="{{'batch_name_'. ($loop->index +1)}}" name="batch_name[]" required value="{{$batch->name}}">
+                                                        <input type="hidden"  name="batch_id[]"  value="{{$batch->id}}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-inline">
+                                                    <div class="form-group ">
+                                                        <label for="{{'class_start_'. ($loop->index +1)}}">Class Start</label>
+                                                        <input type="time" class="form-control mx-sm-3" id="{{'class_start_'. ($loop->index +1)}}" name="class_start[]" required value="{{$batch->batch_start}}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-inline">
+                                                    <div class="form-group ">
+                                                        <label for="{{'class_end_'. ($loop->index +1)}}">Class End</label>
+                                                        <input type="time" class="form-control mx-sm-3" id="{{'class_end_'. ($loop->index +1)}}" name="class_end[]" required value="{{$batch->batch_end}}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @if($loop->index != 0)
+                                            <div class="col-md-1 text-center">
+                                                <button type="button" class="btn text-danger remove_batch fw-bold" id="{{($loop->index +1)}}" onclick="handle_remove_batch({{($loop->index +1)}})"> x </button>
+                                            </div>
+                                            @endif
                                         </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group ">
-                                            <label for="class_start">Class Start</label>
-                                            <input type="time" class="form-control" id="class_start" name="class_start[]" required value="{{$batch->batch_start}}">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group ">
-                                            <label for="class_end">Class End</label>
-                                            <input type="time" class="form-control" id="class_end" name="class_end[]" required value="{{$batch->batch_start}}">
-                                        </div>
-                                    </div>
-                                </div>
                                 @endforeach
                                 @else
-                                    <div class="row">
+                                    <div class="row mt-3" id="batch_1">
                                         <div class="col-md-4">
-                                            <div class="form-group ">
-                                                <label for="batch_name">Name</label>
-                                                <input type="text" class="form-control" id="batch_name" name="batch_name[]" required >
+                                            <div class="form-inline">
+                                                <div class="form-group ">
+                                                    <label for="batch_name_1">Name</label>
+                                                    <input type="text" class="form-control mx-sm-3" id="batch_name_1" name="batch_name[]" required value="{{$batch->name}}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-inline">
+                                                <div class="form-group ">
+                                                    <label for="class_start_1">Class Start</label>
+                                                    <input type="time" class="form-control mx-sm-3" id="class_start_1" name="class_start[]" required>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
-                                            <div class="form-group ">
-                                                <label for="class_start">Class Start</label>
-                                                <input type="time" class="form-control" id="class_start" name="class_start[]" required >
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group ">
-                                                <label for="class_end">Class End</label>
-                                                <input type="time" class="form-control" id="class_end" name="class_end[]" required >
+                                            <div class="form-inline">
+                                                <div class="form-group ">
+                                                    <label for="class_end_1">Class End</label>
+                                                    <input type="time" class="form-control mx-sm-3" id="class_end_1" name="class_end[]" required>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

@@ -11,4 +11,21 @@ class Subject extends Model
     protected $fillable = [
         'name','class_id','status','deleted'
     ];
+
+    public static function updateViaClass($class,$subjectName,$subjectId){
+        if(!empty($subjectId)){
+            Subject::whereNotIn('id',$subjectId)->delete();
+        }
+        for ($i =0 ; $i < count($subjectName) ; $i++ ){
+            $subject['name'] = $subjectName[$i];
+
+            if(!empty($subjectId[$i])){
+
+                Subject::find($subjectId[$i])->update($subject);
+            }else{
+                $subject['class_id'] = $class;
+                Subject::create($subject);
+            }
+        }
+    }
 }
