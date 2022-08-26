@@ -27,17 +27,18 @@
                                 <div class="card mt-3">
                                     <h4 class="fw-bold text-center">Academic Info</h4>
                                     <ul class="list-group list-group-flush">
-                                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                                            <h6 class="mb-0">Roll</h6>
-                                            <span class="text-secondary">{{$student->username}}</span>
-                                        </li>
+
                                         <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                                             <h6 class="mb-0">Class</h6>
-                                            <span class="text-secondary">{{$student->details->class->name}}</span>
+                                            <span class="text-secondary">{{$student->class->name}}</span>
                                         </li>
                                         <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
                                             <h6 class="mb-0">Batch</h6>
-                                            <span class="text-secondary">{{$student->details->batch->name}}</span>
+                                            <span class="text-secondary">{{$student->batch->name}}</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                                            <h6 class="mb-0">ID</h6>
+                                            <span class="text-secondary">{{$student->username}}</span>
                                         </li>
                                     </ul>
                                 </div>

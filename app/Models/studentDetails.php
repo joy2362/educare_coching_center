@@ -27,14 +27,7 @@ class studentDetails extends Model
         return $this->hasMany(Result::class, 'student_id', 'id');
     }
 
-     public function district()
-     {
-        return $this->belongsTo(District::class);
-     }
 
-     public function division(){
-        return $this->belongsTo(Divisions::class);
-     }
 
      public function class(){
          return $this->belongsTo(Classes::class);

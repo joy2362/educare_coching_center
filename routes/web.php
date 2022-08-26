@@ -32,9 +32,6 @@ Route::view('password/change','password_change')
     ->name('user.password.change');
 
 Route::get('/test',function(){
-   
-       $pdf = app('dompdf.wrapper');
-       $pdf->loadView('pdf.test');
 
-       return $pdf->stream("test.pdf");
+    return view('admin.pages.routine.create');
 });

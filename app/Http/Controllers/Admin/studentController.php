@@ -7,13 +7,14 @@ use App\Models\Batch;
 use App\Models\Classes;
 use App\Models\District;
 use App\Models\Divisions;
-use App\Models\studentDetails;
 use App\Models\User;
+use App\Models\userDetail;
 use App\Traits\FileUploadTrait;
 use App\Traits\SendSmsTrait;
 use App\Traits\StudentTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 class studentController extends Controller
@@ -28,23 +29,17 @@ class studentController extends Controller
     {
         $class = DB::table('classes')->where('status','active')->where('deleted',"no")->get();
 
-        $students = User::with(['details'=>function($q){
-            $q->with(['class:id,name','batch:id,name','district:id,name','division:id,name']);
-        }])->get();
+        $query = User::with(['details'=>function($q){
+            $q->with(['district:id,name','division:id,name']);
+        },'class:id,name','batch:id,name']);
 
         if($request->class && $request->batch){
-            $students = User::with(['details'=>function($q) use($request){
-                $q->with(['class:id,name' => function($q) use ($request) {
-                    $q->where('id',$request->class);
-                },'batch:id,name' =>function($q) use ($request) {
-                    $q->where('id',$request->batch);
-                },'district:id,name','division:id,name']);
-            }])->get();
+            $query->where('class_id',$request->class)->where('batch_id',$request->batch);
         }
 
+        $students = $query->get();
 
-
-        return view('admin.pages.student.index',['students'=>$students,'classes'=>$class]);
+        return view('admin.pages.student.index',['students' => $students,'classes' => $class]);
     }
 
     /**
@@ -67,43 +62,44 @@ class studentController extends Controller
      */
     public function store(Request $request)
     {
-        $this->store_validation($request);
+       $this->store_validation($request);
+        try {
+            DB::beginTransaction();
+            $password = Str::random('6');
+            $userInfo = User::getUserInfo($request,$password);
 
-        $details = $this->student_create($request);
+            if($request->hasFile("avatar")){
+                $userInfo['avatar'] = $this->upload( $request->file('avatar'),"avatar/student");
+            }
 
-        $avatar = $this->upload( $request->file('avatar'),"avatar/student");
+            $user = User::create($userInfo);
 
-        $student = $this->user_create( $request->class , $details->id , $avatar, $request->email);
-        
-        $message = $this->admission($student['username'] , $student['password']);
+            $details = userDetail::getData($request);
+            $userDetails = $user->details()->create($details);
 
-        $data = $this->prepare_data($request->input('parent_contact_number'), $message);
-        $class = Classes::find($request->class);
-        $fee = [
-            [
-                'type' => 'admission fee',
-                'amount' => $class->admission_fee,
-            ],
-            [
-            'type' => 'other fee',
-            'amount' => $class->other_fee,
-            ],
-            [
-                'type' => 'monthly fee',
-                'amount' => $class->monthly_fee,
-            ]
-        ];
+            $message = $this->admission($user->username , $password);
+            $sms = $this->prepareSms($userDetails->parent_contact_number, $message);
+            User::addAdmissionFee($user->id);
+            $this->send($sms);
 
-        $student['user']->credit()->createMany($fee);
-        
-        $this->send($data);
+            DB::commit();
+        }catch (\Exception $ex){
+            DB::rollBack();
+
+            $notification=array(
+                'messege'=> $ex->getMessage(),
+                'alert-type'=>'success'
+            );
+
+            return Redirect()->back()->with($notification);
+        }
 
         $notification=array(
-            'messege'=>'Student Added Successfully!',
+            'messege'=>'Student Admit Successfully!',
             'alert-type'=>'success'
         );
 
-        return Redirect('/admin/student/'.$student['user']->id.'/show')->with($notification);
+        return Redirect('/admin/student/'. $user->id.'/show')->with($notification);
     }
 
     /**
@@ -114,8 +110,10 @@ class studentController extends Controller
     public function show($id)
     {
         $student = User::with(['details'=>function($q){
-                $q->with(['class:id,name','batch:id,name','district:id,name','division:id,name']);
-            }])->find($id);
+                $q->with(['district:id,name','division:id,name']);
+            },'class','batch'])->find($id);
+
+
        return view('admin.pages.student.view',['student'=>$student]);
     }
 
@@ -129,10 +127,13 @@ class studentController extends Controller
     {
         $divisions = Divisions::all();
         $classes =  Classes::all();
-        $student = studentDetails::with('user','district:id,name','division:id,name','class:id,name','batch:id,name')->find($id);
 
-        $division = Divisions::where('id',$student->division_id)->first();
-        $batches = Batch::where('class_id',$student->class_id)->get();
+        $student = User::with(['details' => function($q){
+            $q->with(['district:id,name','division:id,name']);
+        },'class','batch'])->find($id);
+
+        $division = Divisions::where('id',$student->details->division_id)->first();
+        $batches = Batch::where('class_id',$student->details->class_id)->get();
         $districts = District::where('division_slug',$division->slug)->get();
 
         return view('admin.pages.student.update',['divisions'=>$divisions,'classes'=>$classes,'student'=>$student,'districts'=>$districts,'batches'=>$batches]);
@@ -271,5 +272,31 @@ class studentController extends Controller
 
         return $pdf->stream($user->user->username.'.pdf');
         //return $pdf->download($user->user->username.'.pdf');
-    }   
+    }
+
+
+    public function store_validation (Request $request){
+        $request->validate([
+            'firstname' => 'required|max:55',
+            'lastname' => 'required|max:55',
+            'dob' => 'required',
+            'gender' => 'required',
+            'father_name' => 'required',
+            'mother_name' => 'required',
+            'institute' => 'required',
+            'parent_contact_number' => 'required|regex:/(01)[0-9]{9}/',
+            'contact_number' => 'nullable|regex:/(01)[0-9]{9}/',
+            'father_occupation' => 'required',
+
+            'present_address' => 'required',
+            'permanent_address' => 'required',
+
+            'class' => 'required',
+            'batch' => 'required',
+
+            'division' => 'required',
+            'district' => 'required',
+            'avatar' => 'required',
+        ]);
+    }
 }

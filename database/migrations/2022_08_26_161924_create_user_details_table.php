@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateStudentDetailsTable extends Migration
+class CreateUserDetailsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreateStudentDetailsTable extends Migration
      */
     public function up()
     {
-        Schema::create('student_details', function (Blueprint $table) {
+        Schema::create('user_details', function (Blueprint $table) {
             $table->id();
-            
+
             $table->string('first_name');
             $table->string('last_name');
-            
+
             $table->string('father_name');
             $table->string('mother_name');
             $table->string('blood_group')->nullable();
@@ -34,19 +34,17 @@ class CreateStudentDetailsTable extends Migration
             $table->date('dob');
 
             $table->unsignedBigInteger('district_id');
+            $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('division_id');
-            
+
             $table->string('status')->default('active');
-            
-            $table->unsignedBigInteger('class_id')->nullable();
-            $table->unsignedBigInteger('batch_id')->nullable();
 
             $table->timestamps();
 
+            $table->foreign('user_id')->references('id')->on('users')->onDelete("cascade");
             $table->foreign('district_id')->references('id')->on('districts');
             $table->foreign('division_id')->references('id')->on('divisions');
-            $table->foreign('class_id')->references('id')->on('classes');
-            $table->foreign('batch_id')->references('id')->on('batches');
+
         });
     }
 
@@ -57,6 +55,6 @@ class CreateStudentDetailsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('student_details');
+        Schema::dropIfExists('user_details');
     }
 }

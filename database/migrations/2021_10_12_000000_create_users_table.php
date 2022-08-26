@@ -16,14 +16,17 @@ class CreateUsersTable extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('username')->unique();
-            $table->unsignedBigInteger('student_details_id');
             $table->string('email')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('avatar');
+            $table->string('avatar')->nullable();
+            $table->unsignedBigInteger('class_id')->nullable();
+            $table->unsignedBigInteger('batch_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
-            $table->foreign('student_details_id')->references('id')->on('student_details')->onDelete('cascade');
+
+            $table->foreign('class_id')->references('id')->on('classes');
+            $table->foreign('batch_id')->references('id')->on('batches');
         });
     }
 

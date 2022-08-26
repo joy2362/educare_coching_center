@@ -44,8 +44,7 @@
                                                 </button>
                                                 <div class="dropdown-menu">
                                                     <a class="m-2 dropdown-item" href="{{route('admin.class.edit',$class->id)}}">Edit</a>
-                                                    <a class="m-2 dropdown-item" href="{{url('/admin/class/subject/'.$class->id)}}">Subject</a>
-                                                    <a class="m-2 dropdown-item" href="{{url('/admin/class/batch/'.$class->id)}}">Batch</a>
+                                                    <a class="m-2 dropdown-item" href="{{route('admin.class.show',$class->id)}}">View</a>
                                                     <a class="m-2 dropdown-item" id="delete" href="{{url('/admin/class/delete/'.$class->id)}}">Delete</a>
                                                 </div>
                                             </div>
@@ -70,56 +69,4 @@
             });
         });
     </script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            $(document).ready(function() {
-
-            function ajax_setup(){
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-            }
-
-            $(document).on('click','.edit_button',function(e){
-                e.preventDefault();
-                let id = $(this).val();
-                $('#edit_class').modal('show');
-                ajax_setup();
-                $.ajax({
-                    type:'get',
-                    url:"/admin/class/show/"+id,
-                    dataType:'json',
-                    success: function(response){
-                        if(response.status === 404){
-                            $('#edit_brand').modal('hide');
-                            Swal.fire(
-                                'Error!',
-                                response.message,
-                                'error'
-                            )
-                        }
-                        else{
-                            $('#edit_id').val(response.class.id);
-                            $('#edit_name').val(response.class.name);
-                            $('#edit_admission_fee').val(response.class.admission_fee);
-                            $('#edit_monthly_fee').val(response.class.monthly_fee);
-                            $('#edit_other_fee').val(response.class.other_fee);
-                            $('#edit_class_code').val(response.class.class_code);
-
-                            if(response.class.status === 'active'){
-                                $("#edit_status1").prop("checked", true);
-                            }else{
-                                $("#edit_status2").prop("checked", true);
-                            }
-                        }
-                    }
-                })
-
-            });
-        });
-        });
-    </script>
-
 @endsection

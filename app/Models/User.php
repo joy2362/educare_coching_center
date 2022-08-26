@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Storage;
 
@@ -39,10 +41,6 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function details()
-    {
-        return $this->belongsTo(studentDetails::class, 'student_details_id','id');
-    }
 
     public function getAvatarAttribute($value)
     {
@@ -52,23 +50,71 @@ class User extends Authenticatable
          return null;
     }
 
-    /**
-     * Get the class.
-    */
-    public function classes()
+    public function class()
     {
-        return $this->belongsToMany( Classes::class )->using( studentDetails::class );
+        return $this->belongsTo(Classes::class);
     }
 
-    public function credit()
+    public function batch()
+    {
+        return $this->belongsTo(Batch::class);
+    }
+    public function details(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(userDetail::class);
+    }
+
+    public function credit(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(StudentCredit::class);
     }
 
-    public function debit()
+    public function debit(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(StudentDebit::class);
     }
 
+    public static function getLastUsername($classId,$batchId){
+        $student = User::where('class_id',$classId)->where('batch_id',$batchId)->latest('id')->first();
+        $class = Classes::find($classId);
+        if(!empty($student)){
+            if(!Str::startsWith($student->username , now()->format('Y'))){
+                $id = 1;
+            }else{
+                $id = Str::after($student->user->username, now()->format('Y') . $class->class_code);
+            }
+        }else{
+            $id = 1;
+        }
+        return  now()->format('Y') . $class->class_code . str_pad($id, 3, '0', STR_PAD_LEFT);
+    }
 
+    public static function getUserInfo($request,$pass){
+        $userInfo = $request->only('email');
+        $userInfo['class_id'] = $request->class;
+        $userInfo['batch_id'] = $request->batch;
+        $userInfo['password'] = Hash::make( $pass);
+        $userInfo['username'] = User::getLastUsername($request->class , $request->batch);
+
+        return $userInfo;
+    }
+
+    public static function addAdmissionFee($id){
+        $student = User::with('class')->find($id);
+        $fee = [
+            [
+                'type' => 'admission fee',
+                'amount' => $student->class->admission_fee,
+            ],
+            [
+            'type' => 'other fee',
+            'amount' => $student->class->other_fee,
+            ],
+            [
+                'type' => 'monthly fee',
+                'amount' => $student->class->monthly_fee,
+            ]
+        ];
+        $student->credit()->createMany($fee);
+    }
 }

@@ -38,6 +38,7 @@
                                 <table class="table table-border" id="student">
                                     <thead>
                                     <tr>
+                                        <th>Sl no</th>
                                         <th>ID</th>
                                         <th>Name</th>
                                         <th>Mobile</th>
@@ -51,11 +52,12 @@
                                     <tbody>
                                         @foreach( $students as $row)
                                             <tr>
+                                                <td>{{$loop->index+1}}</td>
                                                 <td>{{$row->username}}</td>
                                                 <td>{{$row->details->first_name . ' ' . $row->details->last_name}}</td>
                                                 <td>{{ $row->details->contact_number ??  $row->details->parent_contact_number}}</td>
-                                                <td>{{$row->details->class ? $row->details->class->name : '...'}}</td>
-                                                <td>{{$row->details->batch ? $row->details->batch->name : '...' }}</td>
+                                                <td>{{$row->class ? $row->class->name : '...'}}</td>
+                                                <td>{{$row->batch ? $row->batch->name : '...' }}</td>
                                                 <td>{{$row->details->division->name}}</td>
                                                 <td>{{$row->details->district->name}}</td>
                                                 <td>
@@ -65,8 +67,8 @@
                                                         </button>
                                                         <div class="dropdown-menu">
                                                             <a class="m-2 dropdown-item" href="{{url('/admin/student/'.$row->id.'/show')}}"> View </a>
-                                                            <a class="m-2 dropdown-item" href="{{url('/admin/student/'.$row->details->id.'/edit')}}"> Edit </a>
-                                                            <form method="post" action="{{ route('admin.student.destroy', $row->details->id) }}">
+                                                            <a class="m-2 dropdown-item" href="{{url('/admin/student/'.$row->id.'/edit')}}"> Edit </a>
+                                                            <form method="post" action="{{ route('admin.student.destroy', $row->id) }}">
                                                                 @csrf
                                                                 @method('DELETE')
                                                                 <button type="submit" id="destroy" class="m-2 dropdown-item ">Delete</button>

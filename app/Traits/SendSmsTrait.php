@@ -2,13 +2,13 @@
 namespace App\Traits;
 
 trait SendSmsTrait {
-    //do somthing useful
-     private $bluksms_user_id, $bluksms_user_password , $bluksms_url;
+    //do something useful
+     private $bulkSms_user_id, $bulkSms_user_password , $bulksms_url;
 
      public function __construct(){
-         $this->bluksms_user_id = env('BULKSMS_USER_ID');
-         $this->bluksms_user_password = env('BULKSMS_PASSWORD');
-         $this->bluksms_url = env('BULKSMS_URL');
+         $this->bulkSms_user_id = config('bulkSms.username');
+         $this->bulkSms_user_password = config('bulkSms.password');
+         $this->bulksms_url = config('bulkSms.url');
      }
 
      public function prepare_number($student){
@@ -18,33 +18,36 @@ trait SendSmsTrait {
          }
      }
 
-     public function admission($id,$student_password){
-         return "Congratulations. Admission Successful. Username:".$id ." Password:".$student_password
+     public function admission($id,$password): string
+     {
+         return "Congratulations. Admission Successful. Username:".$id ." Password:".$password
          .". https://www.educaremymbd.com";
      }
 
-     public function result($subject,$result,$total){
+     public function result($subject,$result,$total): string
+     {
         return "Result published for ".$subject." . Your result " .$result."/".$total.".";
      }
 
-    public function payment(){
+    public function payment(): string
+    {
         return "Your payment is successful.";
     }
 
-     public function prepare_data($number,$text){
-         $data = array(
-             'username'=> $this->bluksms_user_id,
-             'password'=> $this->bluksms_user_password,
-             'number'=> $number,
+     public function prepareSms($number,$text): array
+     {
+         return array(
+             'username'=> $this->bulkSms_user_id,
+             'password'=> $this->bulkSms_user_password,
+             'number'=> $number ,
              'message'=> "$text" ,
          );
-         return $data;
      }
 
 
      public function send($data){
          $ch = curl_init(); // Initialize cURL
-         curl_setopt($ch, CURLOPT_URL, $this->bluksms_url);
+         curl_setopt($ch, CURLOPT_URL, $this->bulksms_url);
          curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
          curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
          curl_exec($ch);

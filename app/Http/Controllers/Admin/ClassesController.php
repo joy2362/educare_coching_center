@@ -89,20 +89,10 @@ class ClassesController extends Controller
 
     }
 
-    public function show($id): \Illuminate\Http\JsonResponse
+    public function show($id)
     {
-        $class = Classes::find($id);
-        if ($class){
-            return response()->json([
-                'status' => 200,
-                'class' => $class
-            ]);
-        }else{
-            return response()->json([
-                'status' => 404,
-                'message' => "Class Not Found"
-            ]);
-        }
+        $class = Classes::with('subject','batch')->find($id);
+        return view('admin.pages.class.view',['class'=>$class]);
     }
 
     public function edit($id)
@@ -196,6 +186,24 @@ class ClassesController extends Controller
         }
         return true;
     }
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function subjectList($id){
+        $subjects = Subject::where('class_id',$id)->where('status','active')->where('deleted','no')->get();
 
+        if ($subjects){
+            return response()->json([
+                'status' => 200,
+                'subjects' => $subjects
+            ]);
+        }else{
+            return response()->json([
+                'status' => 404,
+                'message' => "Subject Not Found"
+            ]);
+        }
+    }
 
 }
