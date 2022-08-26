@@ -18,21 +18,17 @@ class CreateUserDetailsTable extends Migration
 
             $table->string('first_name');
             $table->string('last_name');
-
             $table->string('father_name');
             $table->string('mother_name');
             $table->string('blood_group')->nullable();
-
             $table->string('parent_contact_number');
             $table->string('contact_number')->nullable();
-
             $table->string('father_occupation');
             $table->text('present_address');
             $table->text('permanent_address');
             $table->enum('gender',['male','female']);
             $table->string('current_institute')->nullable();
             $table->date('dob');
-
             $table->unsignedBigInteger('district_id');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('division_id');

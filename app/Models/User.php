@@ -74,26 +74,32 @@ class User extends Authenticatable
         return $this->hasMany(StudentDebit::class);
     }
 
-    public static function getLastUsername($classId,$batchId){
-        $student = User::where('class_id',$classId)->where('batch_id',$batchId)->latest('id')->first();
+    public static function getLastUsername($classId,$batchId): string
+    {
         $class = Classes::find($classId);
-        if(!empty($student)){
-            if(!Str::startsWith($student->username , now()->format('Y'))){
-                $id = 1;
-            }else{
-                $id = Str::after($student->user->username, now()->format('Y') . $class->class_code);
+        $students = User::where('class_id',$classId)->where('batch_id',$batchId)->latest('id')->get();
+
+        if(!empty($students)){
+            foreach ($students as $student){
+                if( Str::startsWith(  $student->username , now()->format('Y'))){
+                    $id = intval(Str::after($student->username, now()->format('Y') . $class->class_code))+1 ;
+                    break;
+                }
             }
         }else{
             $id = 1;
         }
+
         return  now()->format('Y') . $class->class_code . str_pad($id, 3, '0', STR_PAD_LEFT);
     }
 
-    public static function getUserInfo($request,$pass){
+    public static function getUserInfo($request,$pass = null){
         $userInfo = $request->only('email');
         $userInfo['class_id'] = $request->class;
         $userInfo['batch_id'] = $request->batch;
-        $userInfo['password'] = Hash::make( $pass);
+        if ($pass){
+            $userInfo['password'] = Hash::make( $pass);
+        }
         $userInfo['username'] = User::getLastUsername($request->class , $request->batch);
 
         return $userInfo;

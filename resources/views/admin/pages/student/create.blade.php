@@ -16,13 +16,13 @@
                                     <div class="col">
                                        <div class="form-floating g-2 mb-3">
                                             <input type="text" class="form-control @error('firstname') is-invalid @enderror " placeholder="First Name" id="firstname" name="firstname" value="{{ old('firstname') }}">
-                                            <label for="firstname">First Name</label>
+                                            <label for="firstname">First Name <span class="text-danger">*</span></label>
                                         </div>                                 
                                     </div>
                                     <div class="col">
                                          <div class="form-floating g-2 mb-3">
                                             <input type="text" class="form-control @error('lastname') is-invalid @enderror " placeholder="Last Name" id="lastname" name="lastname" value="{{ old('lastname') }}">
-                                            <label for="lastname">Last Name</label>
+                                            <label for="lastname">Last Name<span class="text-danger">*</span></label>
                                         </div>                                     
                                     </div>
                                 </div>
@@ -31,7 +31,7 @@
                                     <div class="col">
                                         <div class="form-floating g-2 mb-3">
                                             <input type="date" class="form-control @error('dob') is-invalid @enderror" placeholder="dob" id="dob" name="dob" value="{{ old('dob') }}" max="{{date('Y-m-d')}}" >
-                                            <label for="dob">DOB</label>
+                                            <label for="dob">DOB<span class="text-danger">*</span></label>
                                         </div>                                    
                                     </div>
                                       <div class="col">
@@ -56,27 +56,27 @@
                                                 <option selected value="male">Male</option>
                                                 <option value="female">Female</option>
                                             </select>
-                                            <label for="gender">Gender</label>
+                                            <label for="gender">Gender<span class="text-danger">*</span></label>
                                         </div>                                    
                                     </div>
                                 </div>
                               
                                 <div class="form-floating g-2 mb-3">
                                     <input type="text" class="form-control @error('institute') is-invalid @enderror " placeholder="Institute" id="institute" name="institute" value="{{ old('institute') }}">
-                                    <label for="institute">Current Institute</label>
+                                    <label for="institute">Current Institute<span class="text-danger">*</span></label>
                                 </div>
 
                                 <div class="form-floating g-2 mb-3">
                                     <input type="text" class="form-control @error('father_name') is-invalid @enderror" placeholder="father name" id="father-name" name="father_name" value="{{ old('father_name') }}">
-                                    <label for="father-name">Father Name</label>
+                                    <label for="father-name">Father Name<span class="text-danger">*</span></label>
                                 </div>
                                 <div class="form-floating g-2 mb-3">
                                     <input type="text" class="form-control @error('mother_name') is-invalid @enderror" placeholder="mother name" id="mother-name" name="mother_name" value="{{ old('mother_name') }}">
-                                    <label for="mother-name">Mother Name</label>
+                                    <label for="mother-name">Mother Name<span class="text-danger">*</span></label>
                                 </div>
                                 <div class="form-floating g-2 mb-3">
                                     <input type="text" class="form-control @error('father_occupation') is-invalid @enderror" placeholder="Occupation" id="father-occupation" name="father_occupation" value="{{ old('father_occupation') }}">
-                                    <label for="father-occupation">Father's Occupation</label>
+                                    <label for="father-occupation">Father's Occupation<span class="text-danger">*</span></label>
                                 </div>
 
                                 <div class="form-row">
@@ -89,7 +89,7 @@
                                     <div class="col">
                                         <div class="form-floating g-2 mb-3">
                                             <input type="text" class="form-control @error('parent_contact_number') is-invalid @enderror" placeholder="Contact number" id="parent-contact-number" name="parent_contact_number" value="{{ old('parent_contact_number') }}">
-                                            <label for="parent-contact-number">Parent Contact number(+88)</label>
+                                            <label for="parent-contact-number">Parent Contact number(+88)<span class="text-danger">*</span></label>
                                         </div>
                                     </div>
                                 </div>
@@ -103,13 +103,13 @@
                                     <div class="col">
                                         <div class="form-floating g-2 mb-3">
                                             <textarea class="form-control @error('present_address') is-invalid @enderror" placeholder="present-address" id="present-address" name="present_address" style="height: 100px">{{ old('present_address')}}</textarea>
-                                            <label for="present-address">Present Address</label>
+                                            <label for="present-address">Present Address<span class="text-danger">*</span></label>
                                         </div>
                                     </div>
                                     <div class="col">
                                         <div class="form-floating g-2 mb-3">
                                             <textarea class="form-control @error('permanent_address') is-invalid @enderror" placeholder="Permanent Address" id="permanent-address" name="permanent_address" style="height: 100px">{{ old('permanent_address')}}</textarea>
-                                            <label for="permanent-address">Permanent Address</label>
+                                            <label for="permanent-address">Permanent Address<span class="text-danger">*</span></label>
                                         </div>
                                     </div>
                                 </div>
@@ -118,12 +118,12 @@
                                      <div class="col">
                                         <div class="form-floating g-2 mb-3">
                                             <select class="form-select @error('division') is-invalid @enderror" id="division" aria-label="Division" name="division" >
-                                                <option selected>....</option>
+                                                <option selected>Choose one</option>
                                                 @foreach($divisions as $row)
                                                     <option value="{{$row->id}}">{{$row->name}}</option>
                                                 @endforeach
                                             </select>
-                                            <label for="division">Division</label>
+                                            <label for="division">Division<span class="text-danger">*</span></label>
                                         </div>
                                     </div>
 
@@ -132,7 +132,7 @@
                                             <select class="form-select @error('district') is-invalid @enderror" id="district" aria-label="district" name="district" >
                                                 <option selected>....</option>
                                             </select>
-                                            <label for="district">District</label>
+                                            <label for="district">District<span class="text-danger">*</span></label>
                                         </div>
                                     </div>
                                 </div>
@@ -146,12 +146,12 @@
                                     <div class="col">
                                         <div class="form-floating g-2 mb-3">
                                             <select class="form-select @error('class') is-invalid @enderror" id="class" aria-label="Class" name="class" >
-                                                <option selected>....</option>
+                                                <option selected>Choose one</option>
                                                 @foreach($classes as $row)
                                                     <option  value="{{$row->id}}">{{$row->name}}</option>
                                                 @endforeach
                                             </select>
-                                            <label for="class">Class</label>
+                                            <label for="class">Class<span class="text-danger">*</span></label>
                                         </div>
                                     </div>
 
@@ -160,13 +160,13 @@
                                             <select class="form-select @error('batch') is-invalid @enderror" id="batch" aria-label="batch" name="batch" >
                                                 <option selected>....</option>
                                             </select>
-                                            <label for="batch">Batch</label>
+                                            <label for="batch">Batch<span class="text-danger">*</span></label>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-outline-primary btn-lg g-2 float-right">Save</button>
+                        <button type="submit" class="btn btn-success btn-lg g-2 float-right">Admit</button>
                     </form>
                 </div>
             </div>

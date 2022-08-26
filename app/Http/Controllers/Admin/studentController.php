@@ -11,15 +11,13 @@ use App\Models\User;
 use App\Models\userDetail;
 use App\Traits\FileUploadTrait;
 use App\Traits\SendSmsTrait;
-use App\Traits\StudentTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 class studentController extends Controller
 {
-    use SendSmsTrait , StudentTrait , FileUploadTrait;
+    use SendSmsTrait , FileUploadTrait;
     /**
      * Display a listing of the resource.
      *
@@ -85,10 +83,9 @@ class studentController extends Controller
             DB::commit();
         }catch (\Exception $ex){
             DB::rollBack();
-
             $notification=array(
                 'messege'=> $ex->getMessage(),
-                'alert-type'=>'success'
+                'alert-type'=>'error'
             );
 
             return Redirect()->back()->with($notification);
@@ -133,10 +130,10 @@ class studentController extends Controller
         },'class','batch'])->find($id);
 
         $division = Divisions::where('id',$student->details->division_id)->first();
-        $batches = Batch::where('class_id',$student->details->class_id)->get();
+        $batches = Batch::where('class_id',$student->class_id)->get();
         $districts = District::where('division_slug',$division->slug)->get();
 
-        return view('admin.pages.student.update',['divisions'=>$divisions,'classes'=>$classes,'student'=>$student,'districts'=>$districts,'batches'=>$batches]);
+        return view('admin.pages.student.edit',['divisions'=>$divisions,'classes'=>$classes,'student'=>$student,'districts'=>$districts,'batches'=>$batches]);
     }
 
     /**
@@ -148,60 +145,31 @@ class studentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'name' => 'required|max:55',
-            'dob' => 'required',
-            'gender' => 'required',
-            'father_name' => 'required',
-            'mother_name' => 'required',
-            'institute' => 'required',
-            'parent_contact_number' => 'required|regex:/(01)[0-9]{9}/',
-            'emergency_contact_number' => 'required|regex:/(01)[0-9]{9}/',
-            'father_occupation' => 'required',
+        $this->store_validation($request);
 
-            'present_address' => 'required',
-            'permanent_address' => 'required',
+        try {
+            DB::beginTransaction();
+            $userInfo = User::getUserInfo($request);
+            $user = User::find($id);
+            if($request->hasFile("avatar")){
+                $userInfo['avatar'] = $this->upload( $request->file('avatar'),"avatar/student",$user->avatar);
+            }
 
-            'class' => 'required',
-            'batch' => 'required',
-            'division' => 'required',
-            'district' => 'required',
-        ]);
+            $user->update($userInfo);
 
-        studentDetails::find($id)->update([
-            'name' => $request->name,
-            'father_name' => $request->father_name,
-            'mother_name' => $request->mother_name,
-            'current_institute' => $request->institute,
-            'parent_contact_number' => $request->parent_contact_number,
-            'emergency_contact_number' => $request->emergency_contact_number,
-            'father_occupation' => $request->father_occupation,
+            $details = userDetail::getData($request);
+            $user->details()->update($details);
 
-            'present_address' => $request->present_address,
-            'permanent_address' => $request->permanent_address,
-            'gender' => $request->gender,
-            'dob' => $request->dob,
-            'district_id' => $request->district,
-            'division_id' => $request->division,
-            'class_id' => $request->class,
-            'batch_id' => $request->batch,
-        ]);
-        $user = User::where('username',$id)->first();
-        if ($request->hasFile('avatar')){
-            $file = $request->file('avatar');
-            $ext = $file->getClientOriginalExtension();
-            $fileName = Str::random(30).'.'.$ext;
-            $folder="asset/img/avatars/student";
-            $url =$folder ."/".$fileName;
-            $file->move($folder,$fileName);
-            unlink( $user->avatar);
-            $user->avatar =  $url;
+            DB::commit();
+        }catch (\Exception $ex){
+            DB::rollBack();
+            $notification=array(
+                'messege'=> $ex->getMessage(),
+                'alert-type'=>'success'
+            );
+
+            return Redirect()->back()->with($notification);
         }
-
-        if($request->has('email')){
-            $user->email = $request->email;
-        }
-        $user->save();
 
         $notification=array(
             'messege'=>'Student Update Successfully!',
@@ -219,10 +187,9 @@ class studentController extends Controller
      */
     public function destroy($id)
     {
-        $user = studentDetails::find($id)->user()->first();
+        $user = User::find($id);
         $this->deleteFile($user->avatar);
-       
-        studentDetails::destroy($id);
+        $user->delete();
 
         $notification=array(
             'messege'=>'Student Removed Successfully!',
@@ -296,7 +263,6 @@ class studentController extends Controller
 
             'division' => 'required',
             'district' => 'required',
-            'avatar' => 'required',
         ]);
     }
 }
