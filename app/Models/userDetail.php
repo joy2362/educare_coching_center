@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
+use App\Models\System\BaseModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 
-class userDetail extends Model
+class userDetail extends BaseModel
 {
     use HasFactory;
 
@@ -36,16 +37,6 @@ class userDetail extends Model
     {
         return "{$this->first_name} {$this->last_name}";
     }
-    public function getCreatedAtAttribute($date): string
-    {
-        return Carbon::createFromFormat('Y-m-d H:i:s', $date)->format('Y-m-d');
-    }
-
-    public function getUpdatedAtAttribute($date): string
-    {
-        return Carbon::createFromFormat('Y-m-d H:i:s', $date)->format('Y-m-d');
-    }
-
 
 
 }

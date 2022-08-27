@@ -6,8 +6,9 @@
     <main class="content">
         <div class="container-fluid p-0">
             <h1 class="h3 mb-3">Student Details
-                <a href="{{url('/admin/student/'.$student->details->id.'/print')}}" class="float-end mx-2 btn btn-sm btn-success rounded" >Admission Form</a>
-                <a href="{{url('/admin/student-account/create?username='.$student->username)}}" class="float-end btn btn-sm btn-info rounded" >Make payment</a>
+                <a href="{{url('/admin/student/'.$student->id.'/print')}}" class="float-end mx-2 btn btn-sm btn-success rounded" >Print Admission Form</a>
+                <a href="{{url('/admin/student-account/create?username='.$student->username)}}" class="float-end  mx-2 btn btn-sm btn-info rounded" >Make payment</a>
+                <a href="{{route('admin.student.edit',$student->id)}}" class="float-end  mx-2 btn btn-sm btn-secondary rounded" >Edit</a>
             </h1>
 
             <div class="row">

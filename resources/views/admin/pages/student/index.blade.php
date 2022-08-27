@@ -66,8 +66,8 @@
                                                             <i class="align-middle" data-feather="more-vertical"></i>
                                                         </button>
                                                         <div class="dropdown-menu">
-                                                            <a class="m-2 dropdown-item" href="{{url('/admin/student/'.$row->id.'/show')}}"> View </a>
-                                                            <a class="m-2 dropdown-item" href="{{url('/admin/student/'.$row->id.'/edit')}}"> Edit </a>
+                                                            <a class="m-2 dropdown-item" href="{{route('admin.student.show',$row->id)}}"> View </a>
+                                                            <a class="m-2 dropdown-item" href="{{route('admin.student.edit',$row->id)}}"> Edit </a>
                                                             <form method="post" action="{{ route('admin.student.destroy', $row->id) }}">
                                                                 @csrf
                                                                 @method('DELETE')

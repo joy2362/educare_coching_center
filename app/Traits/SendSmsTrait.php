@@ -11,11 +11,12 @@ trait SendSmsTrait {
          $this->bulksms_url = config('bulkSms.url');
      }
 
-     public function prepare_number($student){
+     public function prepareNumber($student){
          $number = "";
          foreach ($student as $row){
-            $number = $row->parent_contact_number.",". $number ;
+            $number = $row.",". $number ;
          }
+         return $number;
      }
 
      public function admission($id,$password): string

@@ -109,13 +109,13 @@
             <td >
             <span >
                 Class:
-                <span class="value">{{ ucfirst($debit->student->details->class->name ?? "-")}}</span>
+                <span class="value">{{ ucfirst($debit->student->class->name ?? "-")}}</span>
             </span>
             </td>
             <td >
             <span >
                 Batch:
-                <span class="value">{{ ucfirst($debit->student->details->batch->name ?? "-")}}</span>
+                <span class="value">{{ ucfirst($debit->student->batch->name ?? "-")}}</span>
             </span>
             </td>
             <td >
@@ -184,13 +184,13 @@
             <td >
             <span >
                 Class:
-                <span class="value">{{ ucfirst($debit->student->details->class->name ?? "-")}}</span>
+                <span class="value">{{ ucfirst($debit->student->class->name ?? "-")}}</span>
             </span>
             </td>
             <td >
             <span >
                 Batch:
-                <span class="value">{{ ucfirst($debit->student->details->batch->name ?? "-")}}</span>
+                <span class="value">{{ ucfirst($debit->student->batch->name ?? "-")}}</span>
             </span>
             </td>
             <td >

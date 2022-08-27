@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
+use App\Models\System\BaseModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
-class Result extends Model
+class Result extends BaseModel
 {
     use HasFactory;
     protected $guarded = [];

@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
+use App\Models\System\BaseModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
-class StudentDebit extends Model
+class StudentDebit extends BaseModel
 {
     use HasFactory;
 

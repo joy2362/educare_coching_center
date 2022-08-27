@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
+use App\Models\System\BaseModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
-class Batch extends Model
+class Batch extends BaseModel
 {
     use HasFactory;
 
@@ -22,7 +22,7 @@ class Batch extends Model
     }
     public function students()
     {
-        return $this->hasMany(studentDetails::class, 'batch_id', 'id');
+        return $this->hasMany(User::class);
     }
 
     public static function updateViaClass($class,$batchName,$batchStart,$batchEnd,$batchId){

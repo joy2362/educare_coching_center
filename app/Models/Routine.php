@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
+use App\Models\System\BaseModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
-class Routine extends Model
+class Routine extends BaseModel
 {
     use HasFactory;
 }

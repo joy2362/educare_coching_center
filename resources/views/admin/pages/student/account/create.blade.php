@@ -41,7 +41,7 @@
                                     </div>
                                 </div>
                                 <div class="card mt-3">
-                                    <h5 class="fw-bold text-center">Recent payment history</h5>
+                                    <h4 class="fw-bold text-center">Recent payment history</h4>
                                     <ul class="list-group list-group-flush">
                                         @if(count($student->debit) >0)
                                             @foreach($student->debit as $debit)
@@ -130,7 +130,7 @@
     <script>
         document.addEventListener("DOMContentLoaded", function() {
 
-            const monthly_fee = {{$student->details->class->monthly_fee ?? 0}};
+            const monthly_fee = {{$student->class->monthly_fee ?? 0}};
 
             const amount_input = $("#amount");
             var count_adv = 0;

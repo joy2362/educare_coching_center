@@ -39,7 +39,7 @@
                                                 <h6 class="mb-0">Class</h6>
                                             </div>
                                             <div class="col-sm-9 text-secondary">
-                                                {{ ucfirst($debit->student->details->class->name ?? "-")}}
+                                                {{ ucfirst($debit->student->class->name ?? "-")}}
                                             </div>
                                         </div>
                                         <hr>
@@ -48,7 +48,7 @@
                                                 <h6 class="mb-0">Batch</h6>
                                             </div>
                                             <div class="col-sm-9 text-secondary">
-                                                {{ ucfirst($debit->student->details->batch->name ?? "-")}}
+                                                {{ ucfirst($debit->student->batch->name ?? "-")}}
                                             </div>
                                         </div>
                                         <hr>

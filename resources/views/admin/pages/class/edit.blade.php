@@ -171,8 +171,6 @@
 @endsection
 @section('script')
     <script>
-
-
         document.addEventListener("DOMContentLoaded", function() {
             $(document).ready(function() {
                 let sub_count = {{ count($class->subject ) }} !== 0 ? {{ count($class->subject ) }} : 2;

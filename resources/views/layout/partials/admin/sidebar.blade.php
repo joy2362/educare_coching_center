@@ -71,6 +71,15 @@
                 </a>
             </li>
 
+            <li class="sidebar-header">
+                Activity
+            </li>
+            <li class="sidebar-item {{ request()->is('admin.activity-log.index*') ? 'active' :'' }}">
+                <a class="sidebar-link" href=" {{ route('admin.activity-log.index') }}  ">
+                    <i class="align-middle" data-feather="gift"></i> <span class="align-middle">Activity-log</span>
+                </a>
+            </li>
+
         </ul>
     </div>
 </nav>

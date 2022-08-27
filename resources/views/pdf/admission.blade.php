@@ -90,7 +90,7 @@
 <table class="sl_date">
     <tr>
         <td class="sl_no">
-            <span >Sl No: #{{str_pad($user->id, 3, '0', STR_PAD_LEFT) }}</span>
+            <span >Sl No: #{{str_pad($user->details->id, 3, '0', STR_PAD_LEFT) }}</span>
         </td>
         {{--                <td class="date">--}}
         {{--                    <span>Date: {{$user->created_at}}</span>--}}
@@ -103,7 +103,7 @@
 
         <tr>
             <td class="basic_info_text">
-                <span>Roll No: {{$user->user->username}}</span>
+                <span>ID: {{$user->username}}</span>
             </td>
             <td class="basic_info_text">
                 <span>Class: {{$user->class->name}}</span>
@@ -114,7 +114,7 @@
         </tr>
     </table>
     <div class="avatar">
-        <img src="{{$user->user->avatar ?? asset('asset/img/avatars/student/default.png')}}" alt="{{$user->first_name . ' ' . $user->last_name}}" class="logo"  style="width:75px;height:90px;margin-left:5px;margin-right:5px;">
+        <img src="{{$user->avatar ?? asset('asset/img/avatars/student/default.png')}}" alt="{{$user->details->first_name . ' ' . $user->details->last_name}}" class="logo"  style="width:75px;height:90px;margin-left:5px;margin-right:5px;">
     </div>
 </div>
 
@@ -126,7 +126,7 @@
         </td>
 
         <td colspan="3" >
-            <span class="text-center">{{$user->first_name . ' ' . $user->last_name}}</span>
+            <span class="text-center">{{$user->details->first_name . ' ' . $user->details->last_name}}</span>
         </td>
     </tr>
 
@@ -136,7 +136,7 @@
         </td>
 
         <td colspan="3">
-            <span>{{$user->current_institute}}</span>
+            <span>{{$user->details->current_institute}}</span>
         </td>
     </tr>
 
@@ -146,13 +146,13 @@
             <span >Contact No.: </span>
         </td>
         <td >
-            <span>{{$user->contact_number}}</span>
+            <span>{{$user->details->contact_number}}</span>
         </td>
         <td>
             <span>Email</span>
         </td>
         <td>
-            <span>{{$user->user->gmail}}</span>
+            <span>{{$user->email}}</span>
         </td>
     </tr>
     <tr >
@@ -160,13 +160,13 @@
             <span >Date of birth: </span>
         </td>
         <td >
-            <span>{{$user->dob}}</span>
+            <span>{{$user->details->dob}}</span>
         </td>
         <td>
-            <span>Gender: {{$user->gender}}</span>
+            <span>Gender: {{$user->details->gender}}</span>
         </td>
         <td>
-            <span>Blood Group {{$user->blood_group}} </span>
+            <span>Blood Group {{$user->details->blood_group}} </span>
         </td>
     </tr>
     <tr>
@@ -175,7 +175,7 @@
         </td>
 
         <td colspan="3">
-            <span>{{$user->father_name}}</span>
+            <span>{{$user->details->father_name}}</span>
         </td>
     </tr>
 
@@ -185,13 +185,13 @@
         </td>
 
         <td >
-            <span>{{$user->father_occupation}}</span>
+            <span>{{$user->details->father_occupation}}</span>
         </td>
         <td>
             <span>P. Contact No.:</span>
         </td>
         <td>
-            <span>{{$user->parent_contact_number}}</span>
+            <span>{{$user->details->parent_contact_number}}</span>
         </td>
     </tr>
     <tr>
@@ -200,7 +200,7 @@
         </td>
 
         <td colspan="3">
-            <span>{{$user->mother_name}}</span>
+            <span>{{$user->details->mother_name}}</span>
         </td>
     </tr>
 
@@ -211,7 +211,7 @@
         </td>
 
         <td >
-            <span>{{$user->division->name}}</span>
+            <span>{{$user->details->division->name}}</span>
         </td>
 
         <td >
@@ -219,7 +219,7 @@
         </td>
 
         <td>
-            <span>{{$user->district->name}}</span>
+            <span>{{$user->details->district->name}}</span>
         </td>
     </tr>
 
@@ -229,7 +229,7 @@
         </td>
 
         <td colspan="3">
-            <span>{{$user->permanent_address}}</span>
+            <span>{{$user->details->permanent_address}}</span>
         </td>
     </tr>
 
@@ -239,7 +239,7 @@
         </td>
 
         <td colspan="3">
-            <span>{{$user->present_address}}</span>
+            <span>{{$user->details->present_address}}</span>
         </td>
     </tr>
 </table>

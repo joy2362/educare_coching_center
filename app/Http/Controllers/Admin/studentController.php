@@ -96,7 +96,7 @@ class studentController extends Controller
             'alert-type'=>'success'
         );
 
-        return Redirect('/admin/student/'. $user->id.'/show')->with($notification);
+        return Redirect()->route('admin.student.show',$user->id)->with($notification);
     }
 
     /**
@@ -231,16 +231,33 @@ class studentController extends Controller
         }
     }
 
+    public function studentList($id){
+        $students = User::with('details')->where('batch_id',$id)->get();
+
+        if ($students ){
+            return response()->json([
+                'status' => 200,
+                'students' => $students
+            ]);
+        }else{
+            return response()->json([
+                'status' => 404,
+                'message' => "student Not Found"
+            ]);
+        }
+    }
+
     public function printAdmissionForm($id){
-      $user = studentDetails::with('user','district:id,name','division:id,name','class:id,name','batch:id,name')->find($id);
+      $user = User::with(['details'=>function($q){
+          $q->with(['district:id,name','division:id,name']);
+      },'class','batch'])->find($id);
+
       $pdf = app('dompdf.wrapper');
 
       $pdf->loadView('pdf.admission' , compact('user'));
 
-        return $pdf->stream($user->user->username.'.pdf');
-        //return $pdf->download($user->user->username.'.pdf');
+      return $pdf->stream($user->username.'.pdf');
     }
-
 
     public function store_validation (Request $request){
         $request->validate([

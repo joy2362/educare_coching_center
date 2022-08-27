@@ -8,10 +8,12 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Admin extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable,TwoFactorAuthenticatable;
+    use HasApiTokens, HasFactory, Notifiable,TwoFactorAuthenticatable, LogsActivity;
 
     /**
      * The attributes that are mass assignable.
@@ -44,4 +46,11 @@ class Admin extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['*']);
+
+    }
 }

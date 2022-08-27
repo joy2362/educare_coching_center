@@ -35,3 +35,5 @@ Route::get('/test',function(){
 
     return view('admin.pages.routine.create');
 });
+
+

@@ -4,9 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
+use App\Models\StudentCredit;
+use App\Models\StudentDebit;
+use App\Models\userDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class AdminController extends Controller
@@ -47,5 +51,14 @@ class AdminController extends Controller
     public function up(){
         Artisan::call('up');
         dd('site up successfully');
+    }
+
+    public function dashboard(){
+       $studentByGender = userDetail::select('gender',DB::raw("count(*) as total"))->groupBy('gender')->get();
+        $dueCollectBymonth = StudentCredit::select(DB::raw("sum(amount) as total_amount"),DB::raw("DATE_FORMAT(created_at,'%b-%Y') as month"))
+
+            ->groupBy(DB::raw("DATE_FORMAT(created_at,'%b-%Y')"))->get();
+
+        return view('admin.pages.home.index',['studentByGender'=>$studentByGender,'dueCollectBymonth'=>$dueCollectBymonth]);
     }
 }
