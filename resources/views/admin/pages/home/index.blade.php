@@ -104,7 +104,7 @@
                     <div class="card flex-fill w-100">
                         <div class="card-header">
 
-                            <h5 class="card-title mb-0">Recent Movement</h5>
+                            <h5 class="card-title mb-0">Total Collection</h5>
                         </div>
                         <div class="card-body py-3">
                             <div class="chart chart-sm">

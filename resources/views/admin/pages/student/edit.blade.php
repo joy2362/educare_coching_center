@@ -17,13 +17,13 @@
                                     <div class="col">
                                         <div class="form-floating g-2 mb-3">
                                             <input type="text" class="form-control @error('firstname') is-invalid @enderror " placeholder="First Name" id="firstname" name="firstname" value="{{ $student->details->first_name }}">
-                                            <label for="firstname">First Name</label>
+                                            <label for="firstname">First Name <span class="text-danger">*</span></label>
                                         </div>
                                     </div>
                                     <div class="col">
                                         <div class="form-floating g-2 mb-3">
                                             <input type="text" class="form-control @error('lastname') is-invalid @enderror " placeholder="Last Name" id="lastname" name="lastname" value="{{ $student->details->last_name }}">
-                                            <label for="lastname">Last Name</label>
+                                            <label for="lastname">Last Name <span class="text-danger">*</span></label>
                                         </div>
                                     </div>
                                 </div>
@@ -32,7 +32,7 @@
                                     <div class="col">
                                         <div class="form-floating g-2 mb-3">
                                             <input type="date" class="form-control @error('dob') is-invalid @enderror" placeholder="dob" id="dob" name="dob" value="{{  $student->details->dob }}" max="{{date('Y-m-d')}}" >
-                                            <label for="dob">DOB</label>
+                                            <label for="dob">DOB <span class="text-danger">*</span></label>
                                         </div>
                                     </div>
                                     <div class="col">
@@ -57,27 +57,27 @@
                                                 <option value="male" @if( $student->details->gender == "male" ) selected @endif>Male</option>
                                                 <option value="female" @if( $student->details->gender == "female" ) selected @endif>Female</option>
                                             </select>
-                                            <label for="gender">Gender</label>
+                                            <label for="gender">Gender<span class="text-danger">*</span></label>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="form-floating g-2 mb-3">
                                     <input type="text" class="form-control @error('institute') is-invalid @enderror " placeholder="Institute" id="institute" name="institute" value="{{ $student->details->current_institute }}">
-                                    <label for="institute">Current Institute</label>
+                                    <label for="institute">Current Institute<span class="text-danger">*</span></label>
                                 </div>
 
                                 <div class="form-floating g-2 mb-3">
                                     <input type="text" class="form-control @error('father_name') is-invalid @enderror" placeholder="father name" id="father-name" name="father_name" value="{{ $student->details->father_name }}">
-                                    <label for="father-name">Father Name</label>
+                                    <label for="father-name">Father Name<span class="text-danger">*</span></label>
                                 </div>
                                 <div class="form-floating g-2 mb-3">
                                     <input type="text" class="form-control @error('mother_name') is-invalid @enderror" placeholder="mother name" id="mother-name" name="mother_name" value="{{ $student->details->mother_name }}">
-                                    <label for="mother-name">Mother Name</label>
+                                    <label for="mother-name">Mother Name<span class="text-danger">*</span></label>
                                 </div>
                                 <div class="form-floating g-2 mb-3">
                                     <input type="text" class="form-control @error('father_occupation') is-invalid @enderror" placeholder="Occupation" id="father-occupation" name="father_occupation" value="{{ $student->details->father_occupation }}">
-                                    <label for="father-occupation">Father's Occupation</label>
+                                    <label for="father-occupation">Father's Occupation<span class="text-danger">*</span></label>
                                 </div>
 
                                 <div class="form-row">
@@ -90,7 +90,7 @@
                                     <div class="col">
                                         <div class="form-floating g-2 mb-3">
                                             <input type="text" class="form-control @error('parent_contact_number') is-invalid @enderror" placeholder="Contact number" id="parent-contact-number" name="parent_contact_number" value="{{ $student->details->parent_contact_number }}">
-                                            <label for="parent-contact-number">Parent Contact number(+88)</label>
+                                            <label for="parent-contact-number">Parent Contact number(+88)<span class="text-danger">*</span></label>
                                         </div>
                                     </div>
                                 </div>
@@ -104,13 +104,13 @@
                                     <div class="col">
                                         <div class="form-floating g-2 mb-3">
                                             <textarea class="form-control @error('present_address') is-invalid @enderror" placeholder="present-address" id="present-address" name="present_address" style="height: 100px">{!! $student->details->present_address !!}  </textarea>
-                                            <label for="present-address">Present Address</label>
+                                            <label for="present-address">Present Address<span class="text-danger">*</span></label>
                                         </div>
                                     </div>
                                     <div class="col">
                                         <div class="form-floating g-2 mb-3">
                                             <textarea class="form-control @error('permanent_address') is-invalid @enderror" placeholder="Permanent Address" id="permanent-address" name="permanent_address" style="height: 100px"> {!! $student->details->permanent_address !!} </textarea>
-                                            <label for="permanent-address">Permanent Address</label>
+                                            <label for="permanent-address">Permanent Address<span class="text-danger">*</span></label>
                                         </div>
                                     </div>
                                 </div>
@@ -128,7 +128,7 @@
                                                     @endif
                                                 @endforeach
                                             </select>
-                                            <label for="division">Division</label>
+                                            <label for="division">Division<span class="text-danger">*</span></label>
                                         </div>
                                     </div>
 
@@ -144,7 +144,7 @@
                                                     @endif
                                                 @endforeach
                                             </select>
-                                            <label for="district">District</label>
+                                            <label for="district">District<span class="text-danger">*</span></label>
                                         </div>
                                     </div>
                                 </div>
@@ -170,7 +170,7 @@
                                                     @endif
                                                 @endforeach
                                             </select>
-                                            <label for="class">Class</label>
+                                            <label for="class">Class<span class="text-danger">*</span></label>
                                         </div>
                                     </div>
 
@@ -186,7 +186,7 @@
                                                     @endif
                                                 @endforeach
                                             </select>
-                                            <label for="batch">Batch</label>
+                                            <label for="batch">Batch<span class="text-danger">*</span></label>
                                         </div>
                                     </div>
                                 </div>

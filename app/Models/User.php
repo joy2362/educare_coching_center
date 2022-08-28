@@ -83,12 +83,16 @@ class User extends Authenticatable
 
         if(!empty($students)){
             foreach ($students as $student){
-                if( Str::startsWith(  $student->username , now()->format('Y'))){
+                if( Str::startsWith( $student->username , now()->format('Y') . $class->class_code)){
                     $id = intval(Str::after($student->username, now()->format('Y') . $class->class_code))+1 ;
                     break;
                 }
             }
         }else{
+            $id = 1;
+        }
+
+        if(empty($id)){
             $id = 1;
         }
 

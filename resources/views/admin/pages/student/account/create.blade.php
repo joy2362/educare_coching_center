@@ -53,13 +53,15 @@
                                         @else
                                             <h5 class="fw-bold text-center">No previous payment recode found</h5>
                                         @endif
-
                                     </ul>
                                 </div>
                             </div>
                             <div class="col-md-8">
                                 <form method="post" action="{{route('admin.student-account.store')}}">
                                     @csrf
+                                    <input type="hidden" name="id" value="{{$student->id}}">
+                                    <input type="hidden"  name="monthly_fee" value="{{$student->class->monthly_fee ?? 0}}">
+
                                     <div class="row gutters-sm">
                                         <div class="col-sm-6 mb-3">
                                             <div class="card">
@@ -73,7 +75,6 @@
                                                         @php
                                                         $amount += $credit->amount;
                                                         @endphp
-                                                        <input type="hidden" name="id" value="{{$student->id}}">
                                                         <div class="form-group">
                                                             <div class="form-check form-check-inline">
                                                                 <input class="form-check-input due" checked type="checkbox" id="credit_{{$credit->id}}" name="credit[]" value="{{$credit->id}}" data-amount="{{$credit->amount}}">
@@ -106,7 +107,6 @@
                                                     <div class="form-group">
                                                         <label for="amount">Amount</label>
                                                         <input type="text" class="form-control" id="amount" name="amount" value="{{ $amount ?? 0}}">
-                                                        <input type="hidden"  name="monthly_fee" value="{{$student->details->class->monthly_fee ?? 0}}">
                                                     </div>
                                                     <div class="form-group float-end">
                                                         <button type="submit" class="btn btn-success">Save</button>
@@ -136,16 +136,18 @@
             var count_adv = 0;
 
             $(document).ready(function() {
-                function calculateDate(val){
-                    const date = new Date();
+                function calculateDate(currentDate,val){
+                    const date = new Date(currentDate.date);
+
                     date.setMonth(date.getMonth() + val);
                     let year = date.getFullYear();
                     let month = ("0" + (date.getMonth() +　1)).slice(-2);
                     return year + "-" + month;
                 }
                 $('#add').click(function(){
-                    const value = $(".adv_pay").find(".form-group").length;
-                    const date = calculateDate( value + 1);
+                    const number = $(".adv_pay").find(".form-group").length;
+                    const value = {!! $lastDue ? json_encode($lastDue->toArray()) : 0!!};
+                    const date = calculateDate( value ,number + 1);
 
                     $('.adv_pay').append(' <div class="form-group"> <label for="month"> Month </label> <input id="month" class="form-control" type="month" name="month[]" min="' + date + '" value="' + date + '"readonly > </div>');
                     if( $("#remove").hasClass("d-none")){

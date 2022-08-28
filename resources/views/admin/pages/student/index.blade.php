@@ -54,7 +54,7 @@
                                             <tr>
                                                 <td>{{$loop->index+1}}</td>
                                                 <td>{{$row->username}}</td>
-                                                <td>{{$row->details->first_name . ' ' . $row->details->last_name}}</td>
+                                                <td>{{$row->details->first_name ?? " " . ' ' . $row->details->last_name ?? ""}}</td>
                                                 <td>{{ $row->details->contact_number ??  $row->details->parent_contact_number}}</td>
                                                 <td>{{$row->class ? $row->class->name : '...'}}</td>
                                                 <td>{{$row->batch ? $row->batch->name : '...' }}</td>
