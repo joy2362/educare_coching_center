@@ -64,7 +64,7 @@ class studentController extends Controller
         try {
             DB::beginTransaction();
             $password = Str::random('6');
-            $userInfo = User::getUserInfo($request,$password);
+            $userInfo = User::getUserInfo($request,"create",$password);
 
             if($request->hasFile("avatar")){
                 $userInfo['avatar'] = $this->upload( $request->file('avatar'),"avatar/student");
@@ -149,7 +149,7 @@ class studentController extends Controller
 
         try {
             DB::beginTransaction();
-            $userInfo = User::getUserInfo($request);
+            $userInfo = User::getUserInfo($request,"update");
             $user = User::find($id);
             if($request->hasFile("avatar")){
                 $userInfo['avatar'] = $this->upload( $request->file('avatar'),"avatar/student",$user->avatar);

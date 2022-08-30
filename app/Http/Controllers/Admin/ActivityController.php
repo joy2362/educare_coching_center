@@ -20,6 +20,8 @@ class ActivityController extends Controller
     public function __invoke(Request $request)
     {
         $logs = Activity::all();
+       // dd($logs[0]->properties['attributes']);
+
         return view('admin.pages.activities.index' , [ 'logs' => $logs ]);
     }
 }

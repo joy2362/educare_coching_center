@@ -65,7 +65,7 @@ class AccountController extends Controller
             'amount' => 'required|numeric',
         ]);
 
-        if( ($request->credit == null || count($request->credit) == 0) && ($request->month == null || count($request->month) == 0)){
+        if( $request->credit == null && $request->month == null ){
             $validator->errors()->add('credit','Please select credit');
             return redirect()
                 ->back()
@@ -93,7 +93,7 @@ class AccountController extends Controller
             $debit = User::find($request->id)->debit()->create($data);
             $paid = $request->amount;
 
-            if($request->month != null || count($request->month) > 0){
+            if($request->month != null ){
                 foreach ($request->month as $month ){
                     $adv['date'] = $month;
                     $adv['status'] = "paid";

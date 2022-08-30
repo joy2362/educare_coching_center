@@ -79,34 +79,31 @@ class User extends Authenticatable
     public static function getLastUsername($classId,$batchId): string
     {
         $class = Classes::find($classId);
-        $students = User::where('class_id',$classId)->where('batch_id',$batchId)->latest('id')->get();
+        $student = User::where('class_id',$classId)->where('batch_id',$batchId)->latest('id')->first();
 
-        if(!empty($students)){
-            foreach ($students as $student){
-                if( Str::startsWith( $student->username , now()->format('Y') . $class->class_code)){
-                    $id = intval(Str::after($student->username, now()->format('Y') . $class->class_code))+1 ;
-                    break;
-                }
+        if(!empty($student)){
+            if( Str::startsWith( $student->username , now()->format('Y') . $class->class_code)){
+                $id = intval(Str::after($student->username, now()->format('Y') . $class->class_code))+1 ;
+            }else{
+                $id = intval(substr($student->username , -3))+1;
             }
-        }else{
-            $id = 1;
         }
-
         if(empty($id)){
             $id = 1;
         }
-
         return  now()->format('Y') . $class->class_code . str_pad($id, 3, '0', STR_PAD_LEFT);
     }
 
-    public static function getUserInfo($request,$pass = null){
+    public static function getUserInfo($request,$method,$pass = null){
         $userInfo = $request->only('email');
         $userInfo['class_id'] = $request->class;
         $userInfo['batch_id'] = $request->batch;
         if ($pass){
             $userInfo['password'] = Hash::make( $pass);
         }
+        if($method == "create"){
         $userInfo['username'] = User::getLastUsername($request->class , $request->batch);
+        }
 
         return $userInfo;
     }

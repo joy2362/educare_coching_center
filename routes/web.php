@@ -31,7 +31,7 @@ Route::view('password/change','password_change')
     ->middleware('auth')
     ->name('user.password.change');
 
-Route::get('/test',function(){
+Route::get('/st',function(){
 
     return view('admin.pages.routine.create');
 });
