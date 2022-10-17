@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
 
@@ -38,11 +39,23 @@ class AddDue extends Command
      */
     public function handle()
     {
-        Mail::raw("This is automatically generated Hourly Update", function($message)
+        $currentMonth = now()->format("Y-m");
+        $students = User::with(['class:id,monthly_fee'])->get();
+
+        foreach ($students as $student ){
+            $due = $student->credit()->where('date',$currentMonth)->first();
+            if(empty($due)){
+                $data['amount'] = $student->class->monthly_fee;
+                $data['type'] = "monthly fee";
+                $data['date'] = $currentMonth;
+                $student->credit()->create($data);
+            }
+
+        }
+
+        Mail::raw("This is automatically Due command run response Update", function($message)
         {
-
-
-            $message->to("abdullahzahidjoy@gmail.com")->subject('Hourly Update');
+            $message->to("abdullahzahidjoy@gmail.com")->subject('Due command run response');
 
         });
 
